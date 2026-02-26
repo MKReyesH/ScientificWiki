@@ -26,7 +26,7 @@
     "section": "",
     "text": "Here is the equation we discussed: \\[\ni\\hbar\\frac{\\partial}{\\partial t} \\Psi(\\mathbf{r},t) = \\hat{H} \\Psi(\\mathbf{r},t)\n\\]\nThis was proven by Smith (Reyes Hung 2023).\n\n\n\n\n\nReferences\n\nReyes Hung, Maykoll Anthonny. 2023. “Exploration of possible signals beyond special relativity using high-energy astroparticle physics.” PhD thesis, U. Zaragoza (main). https://arxiv.org/abs/2307.03462.",
     "crumbs": [
-      "Doc",
+      "Topics",
       "Quantum Dynamics"
     ]
   }
