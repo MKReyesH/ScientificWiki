@@ -9,9 +9,10 @@ website:
     contents:
       - href: index.qmd
         text: "Home"
-      - section: "Wiki Contents"
-        contents:
-          - auto: "doc/"
+      - auto: "doc/"
+      - href: https://github.com/MKReyesH/ScientificWiki
+        text: "GitHub Project"
+      - href: about.qmd
 
 bibliography: bib/references.bib
 
