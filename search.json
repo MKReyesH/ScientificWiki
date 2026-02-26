@@ -10,6 +10,17 @@
     ]
   },
   {
+    "objectID": "doc/page2.html",
+    "href": "doc/page2.html",
+    "title": "Quantum Field Theory",
+    "section": "",
+    "text": "This is other section. Many wonderful words.",
+    "crumbs": [
+      "Topics",
+      "Quantum Field Theory"
+    ]
+  },
+  {
     "objectID": "index.html",
     "href": "index.html",
     "title": "Scientific Wiki Template",
