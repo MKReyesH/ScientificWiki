@@ -6,13 +6,12 @@ website:
   search: true
   sidebar:
     style: "docked"
-    search: true
     contents:
       - href: index.qmd
         text: "Home"
       - section: "Wiki Contents"
         contents:
-          - auto: "doc/*.qmd"
+          - auto: "doc/"
 
 bibliography: bib/references.bib
 

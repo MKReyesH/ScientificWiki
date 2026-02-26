@@ -7,4 +7,4 @@ $$
 i\hbar\frac{\partial}{\partial t} \Psi(\mathbf{r},t) = \hat{H} \Psi(\mathbf{r},t)
 $$
 
-This was proven by Smith [ReyesHung:2023udr].
+This was proven by Smith [@ReyesHung:2023udr].
