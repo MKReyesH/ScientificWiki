@@ -4,16 +4,17 @@
     "href": "doc/page1.html",
     "title": "Quantum Dynamics",
     "section": "",
-    "text": "Here is the equation we discussed: \\[\ni\\hbar\\frac{\\partial}{\\partial t} \\Psi(\\mathbf{r},t) = \\hat{H} \\Psi(\\mathbf{r},t)\n\\]\nThis was proven by Smith [ReyesHung:2023udr].",
+    "text": "Here is the equation we discussed: \\[\ni\\hbar\\frac{\\partial}{\\partial t} \\Psi(\\mathbf{r},t) = \\hat{H} \\Psi(\\mathbf{r},t)\n\\]\nThis was proven by Smith (Reyes Hung 2023).\n\n\n\n\n\nReferences\n\nReyes Hung, Maykoll Anthonny. 2023. “Exploration of possible signals beyond special relativity using high-energy astroparticle physics.” PhD thesis, U. Zaragoza (main). https://arxiv.org/abs/2307.03462.",
     "crumbs": [
       "Wiki Contents",
+      "Doc",
       "Quantum Dynamics"
     ]
   },
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "ScientificWiki",
+    "title": "Home",
     "section": "",
     "text": "ScientificWiki\nGithub Pages template for a wiki-like page that renders LaTeX equations and citations automatically.",
     "crumbs": [

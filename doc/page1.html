@@ -20,7 +20,27 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="../site_libs/quarto-nav/quarto-nav.js"></script>
@@ -110,7 +130,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../doc/page1.html">Wiki Contents</a></li><li class="breadcrumb-item"><a href="../doc/page1.html">Quantum Dynamics</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Wiki Contents</li><li class="breadcrumb-item"><a href="../doc/page1.html">Doc</a></li><li class="breadcrumb-item"><a href="../doc/page1.html">Quantum Dynamics</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -150,12 +170,23 @@ window.Quarto = {
           </a> 
       </div>
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Doc</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth2 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../doc/page1.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Quantum Dynamics</span></a>
   </div>
 </li>
+      </ul>
+  </li>
       </ul>
   </li>
     </ul>
@@ -167,7 +198,7 @@ window.Quarto = {
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../doc/page1.html">Wiki Contents</a></li><li class="breadcrumb-item"><a href="../doc/page1.html">Quantum Dynamics</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Wiki Contents</li><li class="breadcrumb-item"><a href="../doc/page1.html">Doc</a></li><li class="breadcrumb-item"><a href="../doc/page1.html">Quantum Dynamics</a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title">Quantum Dynamics</h1>
 </div>
@@ -189,12 +220,17 @@ window.Quarto = {
 <p>Here is the equation we discussed: <span class="math display">\[
 i\hbar\frac{\partial}{\partial t} \Psi(\mathbf{r},t) = \hat{H} \Psi(\mathbf{r},t)
 \]</span></p>
-<p>This was proven by Smith [ReyesHung:2023udr].</p>
+<p>This was proven by Smith <span class="citation" data-cites="ReyesHung:2023udr">(<a href="#ref-ReyesHung:2023udr" role="doc-biblioref">Reyes Hung 2023</a>)</span>.</p>
 
 
 
 
-</main> <!-- /main -->
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-ReyesHung:2023udr" class="csl-entry" role="listitem">
+Reyes Hung, Maykoll Anthonny. 2023. <span>“<span class="nocase">Exploration of possible signals beyond special relativity using high-energy astroparticle physics</span>.”</span> PhD thesis, U. Zaragoza (main). <a href="https://arxiv.org/abs/2307.03462">https://arxiv.org/abs/2307.03462</a>.
+</div>
+</div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
