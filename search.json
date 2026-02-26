@@ -1,0 +1,23 @@
+[
+  {
+    "objectID": "doc/page1.html",
+    "href": "doc/page1.html",
+    "title": "Quantum Dynamics",
+    "section": "",
+    "text": "Here is the equation we discussed: \\[\ni\\hbar\\frac{\\partial}{\\partial t} \\Psi(\\mathbf{r},t) = \\hat{H} \\Psi(\\mathbf{r},t)\n\\]\nThis was proven by Smith [ReyesHung:2023udr].",
+    "crumbs": [
+      "Wiki Contents",
+      "Quantum Dynamics"
+    ]
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "ScientificWiki",
+    "section": "",
+    "text": "ScientificWiki\nGithub Pages template for a wiki-like page that renders LaTeX equations and citations automatically.",
+    "crumbs": [
+      "Home"
+    ]
+  }
+]
