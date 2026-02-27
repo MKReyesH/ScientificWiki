@@ -268,47 +268,76 @@ window.Quarto = {
 </header>
 
 
-<p>This is some text just after the title, before any other section or subsection.</p>
+<p>Standard GitHub Pages can transform simple Markdown files (plain text files with a <code>.md</code> extension) into HTML webpages. For this wiki, we go a step further by using <strong>Quarto</strong>, a scientific publishing system that seamlessly handles complex equations, cross-referencing, and bibliography management.</p>
+<p>Quarto Markdown syntax is highly intuitive. Below are examples of the formatting you will use most often.</p>
 <section id="this-is-a-section" class="level1">
 <h1>This is a section</h1>
-<p>With some text inside the section</p>
 <section id="this-is-a-subsection" class="level2">
 <h2 class="anchored" data-anchor-id="this-is-a-subsection">This is a subsection</h2>
-<p>One can use in-line LaTeX equations, like <span class="math inline">\(x^2+y^2=r^2\)</span>, or in their own line, like</p>
-<p><span class="math display">\[x=\frac{-b\pm \sqrt{b^2-4ac}}{2a}\]</span></p>
 <section id="this-is-a-subsubsection" class="level3">
 <h3 class="anchored" data-anchor-id="this-is-a-subsubsection">This is a subsubsection</h3>
-<p>This is an <em>italic text</em> and <strong>bold text</strong>. One can also insert an unsorted list</p>
+<p>Section names are created by adding one or more <code>#</code> symbols followed by a space. Use <code>##</code> or <code>###</code> for subsections and sub-subsections, respectively.</p>
+</section>
+<section id="mathematical-equations" class="level3">
+<h3 class="anchored" data-anchor-id="mathematical-equations">Mathematical Equations</h3>
+<p>You can write inline equations, such as <span class="math inline">\(x^2+y^2=r^2\)</span>, by enclosing the formula in single <code>$</code> symbols.</p>
+<p>To write a standalone (unnumbered) equation on its own line, enclose it in double <code>$$</code> symbols:</p>
+<p><span class="math display">\[
+x=\frac{-b\pm \sqrt{b^2-4ac}}{2a} \,
+\]</span></p>
+<p>If you want to create a <strong>labeled equation</strong> that you can reference later, simply append <code>{#eq-yourlabel}</code> to the closing <code>$$</code>:</p>
+<p><span id="eq-secondorder"><span class="math display">\[
+x=\frac{-b\pm \sqrt{b^2-4ac}}{2a} \,
+\tag{1}\]</span></span></p>
+<p>You can then easily reference this equation in your text by typing <code>@eq-secondorder</code>, which will automatically render as a clickable link (e.g., Equation <a href="#eq-secondorder" class="quarto-xref">Equation&nbsp;1</a>).</p>
+</section>
+<section id="text-formatting-lists" class="level3">
+<h3 class="anchored" data-anchor-id="text-formatting-lists">Text Formatting &amp; Lists</h3>
+<p>You can make text <em>italic</em> or <strong>bold</strong> by enclosing it in single <code>*</code> or double <code>**</code> asterisks, respectively.</p>
+<p>Create an unordered list using the <code>-</code> symbol. The level of indentation determines the hierarchy of the list:</p>
 <ul>
-<li>Element</li>
-<li>Element</li>
-<li>Element</li>
+<li>Level 1 item
+<ul>
+<li>Level 2 item</li>
+<li>Level 2 item
+<ul>
+<li>Level 3 item</li>
+</ul></li>
+</ul></li>
 </ul>
-<p>And a sorted list:</p>
+<p>For ordered lists, use numbers. You can actually just write <code>1.</code> for every item, and it will be automatically ordered correctly when the page renders:</p>
 <ol type="1">
-<li>Element 1</li>
-<li>Element 2</li>
-<li>Element 3</li>
+<li>First element</li>
+<li>Second element</li>
+<li>Third element</li>
 </ol>
-<p>And a nested list:</p>
-<ul>
-<li>level 1 item
-<ul>
-<li>level 2 item</li>
-<li>level 2 item
-<ul>
-<li>level 3 item</li>
-<li>level 3 item</li>
-</ul></li>
-</ul></li>
-</ul>
-<p>This is a table:</p>
+</section>
+<section id="figures-and-tables" class="level3">
+<h3 class="anchored" data-anchor-id="figures-and-tables">Figures and tables</h3>
+<p>To insert a cross-referenced image with a controlled width, use the following syntax: <code>![Your caption text here](path_to_file.png){#fig-label width="80%"}</code></p>
+<div id="fig-frog" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-frog-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="img/Examples/frog.png" class="img-fluid figure-img" style="width:80.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-frog-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Default frog picture.
+</figcaption>
+</figure>
+</div>
+<p>Markdown tables require a header row and a divider. The Quarto syntax allows you to easily add a caption and a label at the bottom:</p>
+<div id="tbl-example" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-example-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;1: Table caption
+</figcaption>
+<div aria-describedby="tbl-example-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top table">
 <thead>
 <tr class="header">
-<th style="text-align: left;">Head 1</th>
-<th style="text-align: left;">Head 2</th>
-<th style="text-align: left;">Head 3</th>
+<th style="text-align: left;">Column 1</th>
+<th style="text-align: left;">Column 2</th>
+<th style="text-align: left;">Column 3</th>
 </tr>
 </thead>
 <tbody>
@@ -324,35 +353,50 @@ window.Quarto = {
 </tr>
 </tbody>
 </table>
-<p>This is a quote:</p>
+</div>
+</figure>
+</div>
+</section>
+<section id="blockquotes" class="level3">
+<h3 class="anchored" data-anchor-id="blockquotes">Blockquotes</h3>
+<p>To emphasize a quote or important note, use the <code>&gt;</code> symbol at the start of the line:</p>
 <blockquote class="blockquote">
 <p>“If it is on the internet… it must be true.” - Abraham Lincoln</p>
 </blockquote>
-<p>This is a picture</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="https://github.githubassets.com/images/icons/emoji/octocat.png" class="img-fluid figure-img"></p>
-<figcaption>Octocat</figcaption>
-</figure>
+<p>Quarto also includes special <strong>Callout Blocks</strong> to draw attention to notes, warnings, or tips. You create them by opening and closing a block with three colons <code>:::</code> like this:</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
 </div>
-<p>One can also insert <code>in-line code</code>. But one can also insert code with highlighted syntax</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode cpp code-with-copy"><code class="sourceCode cpp"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> suma <span class="op">(){</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span> a<span class="op">,</span> b<span class="op">;</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> a<span class="op">+</span>b<span class="op">;</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>This is an internal link to <a href="#this-is-a-section">a section in the same page</a>. This is an external link to <a href="https://mkreyesh.github.io/DocTemplate/docs/page3.html#amazing-section">a section in another page</a>.</p>
-<p>Finally, one can also insert HTML code directly:</p>
-<iframe width="448" height="252" src="https://www.youtube.com/embed/..." frameborder="0" allowfullscreen="">
-</iframe>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This is a helpful note! You can also use <code>.callout-warning</code>, <code>.callout-tip</code>, <code>.callout-caution</code>, or <code>.callout-important</code> to change the color and icon of the box.</p>
+</div>
+</div>
 </section>
+<section id="code-snippets" class="level3">
+<h3 class="anchored" data-anchor-id="code-snippets">Code Snippets</h3>
+<p>To format short <code>inline code</code> within a sentence, enclose the text in single backticks <code>`</code>.</p>
+<p>To insert multi-line blocks of code with syntax highlighting, enclose the block in triple backticks `<code></code> ````` and specify the programming language on the first line:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode cpp code-with-copy"><code class="sourceCode cpp"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> sum<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span> a <span class="op">=</span> <span class="dv">5</span><span class="op">;</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span> b <span class="op">=</span> <span class="dv">10</span><span class="op">;</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> a <span class="op">+</span> b<span class="op">;</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-</section>
-<section id="this-is-another-section" class="level1">
-<h1>This is another section</h1>
-<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non dolor maximus, volutpat metus et, vehicula sem. Proin nisi tellus, fermentum et ullamcorper at, efficitur nec mauris. Nulla sodales pellentesque nibh, at pellentesque velit scelerisque a. Nulla ac neque sed ipsum mattis congue. Vivamus id lobortis sapien, hendrerit bibendum mi. Nullam magna mauris, vehicula sed dignissim eu, pulvinar et lacus. Sed vitae mollis mi. Aliquam magna ex, consequat quis pharetra sit amet, tristique nec arcu. Morbi purus odio, fermentum sit amet tincidunt eu, finibus egestas enim. Aliquam erat volutpat. Pellentesque at lacus vitae sem posuere convallis vitae et augue. Donec sit amet cursus sem.</p>
+<section id="links-and-citations" class="level3">
+<h3 class="anchored" data-anchor-id="links-and-citations">Links and Citations</h3>
+<p>To insert a hyperlink, place the text in square brackets and the URL in parentheses: <a href="https://github.com/MKReyesH/ScientificWiki">GitHub Repository</a></p>
+<p>To cite a paper from our bibliography file, use the <code>@</code> symbol followed by the citation key inside square brackets. Multiple citations are separated by semicolons: The expansion of the universe is accelerating <span class="citation" data-cites="riess1998 perlmutter1999">[<a href="#ref-riess1998" role="doc-biblioref"><strong>riess1998?</strong></a>,<a href="#ref-perlmutter1999" role="doc-biblioref"><strong>perlmutter1999?</strong></a>]</span>.</p>
 
 
 
+</section>
+</section>
 </section>
 
 </main> <!-- /main -->
