@@ -1,4 +1,4 @@
-h1.title {
+#title-block-header h1.title {
   font-size: 2.2rem;
   font-weight: 700;
   color: #111111;
@@ -7,7 +7,7 @@ h1.title {
   margin-bottom: 2rem;
 }
 
-section h1 {
+#quarto-document-content h1:not(.title) {
   font-size: 1.8rem;
   font-weight: 600;
   color: #111111;
@@ -16,7 +16,7 @@ section h1 {
   margin-bottom: 1.5rem;
 }
 
-section h2 {
+#quarto-document-content h2 {
   font-size: 1.5rem;
   font-weight: 500;
   color: #111111;
@@ -24,7 +24,7 @@ section h2 {
   margin-bottom: 1rem;
 }
 
-section h3 {
+#quarto-document-content h3 {
   font-size: 1.2rem;
   font-weight: 500;
   color: #111111;
