@@ -2,6 +2,8 @@
 title: "How to write a page in Markdown"
 ---
 
+This is some text just after the title, before any other section or subsection.
+
 # This is a section
 
 With some text inside the section
