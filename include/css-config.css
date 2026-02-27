@@ -3,8 +3,8 @@
   font-weight: 700;
   color: #111111;
   border-bottom: none;
-  margin-top: 1.5rem !important;
-  margin-bottom: 1.5rem !important;
+  padding: 0.5rem !important;
+  margin: 1rem !important;
 }
 
 #quarto-document-content h1:not(.title) {
@@ -12,8 +12,8 @@
   font-weight: 600;
   color: #111111;
   border-bottom: none;
-  margin-top: 1.5rem !important;
-  margin-bottom: 1.5rem !important;
+  padding: 0.5rem !important;
+  margin: 1rem !important;
 }
 
 #quarto-document-content h2 {
@@ -21,8 +21,8 @@
   font-weight: 550;
   color: #111111;
   border-bottom: none;
-  margin-top: 1.5rem !important;
-  margin-bottom: 1.5rem !important;
+  padding: 0.5rem !important;
+  margin: 1rem !important;
 }
 
 #quarto-document-content h3 {
@@ -30,6 +30,6 @@
   font-weight: 550;
   color: #111111;
   border-bottom: none;
-  margin-top: 1.5rem !important;
-  margin-bottom: 1.5rem !important;
+  padding: 0.5rem !important;
+  margin: 1rem !important;
 }
