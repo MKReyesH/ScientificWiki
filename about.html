@@ -69,15 +69,29 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 <style>
-
-  /* Line and extra spacing after page title */
   
   header#title-block-header::after {
     content: "";
     display: block;
-    margin-top: 1rem;
-    border-bottom: 3px solid #cccccc;
-    margin-bottom: 1rem;
+    margin-bottom: 2rem;
+  }
+  
+  section h1 {
+    font-size: 2.8rem;
+    font-weight: 800;
+    color: #111111;
+  }
+
+  section h2 {
+    font-size: 2.0rem;
+    font-weight: 600;
+    color: #333333;
+  }
+
+  section h3 {
+    font-size: 1.4rem;
+    font-weight: 500;
+    color: #555555;
   }
   
 </style>
@@ -182,12 +196,29 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./doc/Examples/example1.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">How to write a page</span></a>
+ <span class="menu-text">How to write a page in Markdown</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./doc/Examples/example2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">How to write a page using LaTeX-like format</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false">
+ <span class="menu-text">Physics</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./doc/Physics/example3.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Friedmann equations</span></a>
   </div>
 </li>

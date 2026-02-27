@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Friedmann equations – Scientific Wiki Template</title>
+<title>How to write a page using LaTeX-like format – Scientific Wiki Template</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,26 +20,7 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for citations */
-div.csl-bib-body { }
-div.csl-entry {
-  clear: both;
-}
-.hanging-indent div.csl-entry {
-  margin-left:2em;
-  text-indent:-2em;
-}
-div.csl-left-margin {
-  min-width:2em;
-  float:left;
-}
-div.csl-right-inline {
-  margin-left:2em;
-  padding-left:1em;
-}
-div.csl-indent {
-  margin-left: 2em;
-}</style>
+</style>
 
 
 <script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
@@ -88,15 +69,29 @@ div.csl-indent {
   }
 }</script>
 <style>
-
-  /* Line and extra spacing after page title */
   
   header#title-block-header::after {
     content: "";
     display: block;
-    margin-top: 1rem;
-    border-bottom: 3px solid #cccccc;
-    margin-bottom: 1rem;
+    margin-bottom: 2rem;
+  }
+  
+  section h1 {
+    font-size: 2.8rem;
+    font-weight: 800;
+    color: #111111;
+  }
+
+  section h2 {
+    font-size: 2.0rem;
+    font-weight: 600;
+    color: #333333;
+  }
+
+  section h3 {
+    font-size: 1.4rem;
+    font-weight: 500;
+    color: #555555;
   }
   
 </style>
@@ -149,7 +144,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Topics</li><li class="breadcrumb-item"><a href="../../doc/Examples/example1.html">Examples</a></li><li class="breadcrumb-item"><a href="../../doc/Examples/example2.html">Friedmann equations</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Topics</li><li class="breadcrumb-item"><a href="../../doc/Examples/example1.html">Examples</a></li><li class="breadcrumb-item"><a href="../../doc/Examples/example2.html">How to write a page using LaTeX-like format</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -201,12 +196,29 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../doc/Examples/example1.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">How to write a page</span></a>
+ <span class="menu-text">How to write a page in Markdown</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../doc/Examples/example2.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">How to write a page using LaTeX-like format</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false">
+ <span class="menu-text">Physics</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../doc/Physics/example3.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Friedmann equations</span></a>
   </div>
 </li>
@@ -235,9 +247,9 @@ window.Quarto = {
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Topics</li><li class="breadcrumb-item"><a href="../../doc/Examples/example1.html">Examples</a></li><li class="breadcrumb-item"><a href="../../doc/Examples/example2.html">Friedmann equations</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Topics</li><li class="breadcrumb-item"><a href="../../doc/Examples/example1.html">Examples</a></li><li class="breadcrumb-item"><a href="../../doc/Examples/example2.html">How to write a page using LaTeX-like format</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">Friedmann equations</h1>
+<h1 class="title">How to write a page using LaTeX-like format</h1>
 </div>
 
 
@@ -254,27 +266,12 @@ window.Quarto = {
 </header>
 
 
-<p>In order to describe an homogeneous and isotropic universe like in the framework of GR, one should solve the Einstein field equations using a homogeneous, isotropic, and expanding metric (the FLRW metric), <span class="math display">\[\begin{equation}
-    ds^2 = dt^2 - a^2(t) \left(\frac{dr^2}{1-k r^2}+r^2 d\Omega\right) \,,
-    \label{eq:FLRW}
-\end{equation}\]</span> where <span class="math inline">\(k\)</span> is the curvature and <span class="math inline">\(a(t)\)</span> the scale factor of the universe, which is closely related to the redshift, <span class="math inline">\(a(t)=1/(1+z(t))\)</span>. We can use this relation to also connect the temporal coordinate to the redshift variable, <span class="math display">\[\begin{equation}
-    a(t)=\frac{1}{1+z(t)} \;\to\; \frac{\dot a(t)}{a(t)} dt = -\frac{dz}{1+z(t)} \;\to\; dt = -\frac{dz}{H(z)(1+z)} \,,
-    \label{eq:dtdz}
-\end{equation}\]</span> where we have defined the Hubble parameter as <span class="math inline">\(H=\dot a/a\)</span>.</p>
-<p>Using the FLRW metric, Eq. <span class="math inline">\(\eqref{eq:FLRW}\)</span>, to solve the Einstein equations leads to the Friedmann equations, which are the basis of the standard cosmology. The first Friedmann equation can be written in terms of the cosmic density of radiation (<span class="math inline">\(\Omega_r\)</span>), matter (<span class="math inline">\(\Omega_m\)</span>), curvature (<span class="math inline">\(\Omega_k\)</span>), and dark energy (<span class="math inline">\(\Omega_\Lambda\)</span>), <span class="math display">\[\begin{equation}
-    H(z) = H_0 \sqrt{\Omega_r (1+z)^4 + \Omega_m (1+z)^3 + \Omega_k (1+z)^2 + \Omega_\Lambda} \,.
-    \label{eq:Hz_full}
-\end{equation}\]</span> The model does not predict the values of these cosmic densities, so they should be adjusted using cosmological observations and measurements. For more information see <span class="citation" data-cites="ReyesHung:2023udr">[<a href="#ref-ReyesHung:2023udr" role="doc-biblioref">1</a>]</span></p>
+<p>Bla</p>
 
 
 
 
-
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body" role="list">
-<div id="ref-ReyesHung:2023udr" class="csl-entry" role="listitem">
-<div class="csl-left-margin">[1] </div><div class="csl-right-inline">Reyes Hung M A 2023 <em><a href="https://arxiv.org/abs/2307.03462"><span class="nocase">Exploration of possible signals beyond special relativity using high-energy astroparticle physics</span></a></em> PhD thesis (U. Zaragoza (main))</div>
-</div>
-</div></section></div></main> <!-- /main -->
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
