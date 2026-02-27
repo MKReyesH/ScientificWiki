@@ -2,15 +2,17 @@
 title: "How to write a page in Markdown"
 ---
 
-## This is a section
+# This is a section
 
 With some text inside the section
 
-### This is a subsection
+## This is a subsection
 
 One can use in-line LaTeX equations, like $x^2+y^2=r^2$, or in their own line, like
 
 $$x=\frac{-b\pm \sqrt{b^2-4ac}}{2a}$$
+
+### This is a subsubsection
 
 This is an *italic text* and **bold text**. One can also insert an unsorted list
 
@@ -63,6 +65,6 @@ Finally, one can also insert HTML code directly:
 
 <iframe width="448" height="252" src="https://www.youtube.com/embed/..." frameborder="0" allowfullscreen></iframe>
 
-## This is another section
+# This is another section
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non dolor maximus, volutpat metus et, vehicula sem. Proin nisi tellus, fermentum et ullamcorper at, efficitur nec mauris. Nulla sodales pellentesque nibh, at pellentesque velit scelerisque a. Nulla ac neque sed ipsum mattis congue. Vivamus id lobortis sapien, hendrerit bibendum mi. Nullam magna mauris, vehicula sed dignissim eu, pulvinar et lacus. Sed vitae mollis mi. Aliquam magna ex, consequat quis pharetra sit amet, tristique nec arcu. Morbi purus odio, fermentum sit amet tincidunt eu, finibus egestas enim. Aliquam erat volutpat. Pellentesque at lacus vitae sem posuere convallis vitae et augue. Donec sit amet cursus sem.
