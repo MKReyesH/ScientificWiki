@@ -336,20 +336,20 @@ x=\frac{-b\pm \sqrt{b^2-4ac}}{2a} \,
 <div id="fig-frog" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-frog-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="../../img/Examples/frog.png" class="img-fluid figure-img" style="width:80.0%">
+<img src="../../img/Examples/frog.jpg" class="img-fluid figure-img" style="width:80.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-frog-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;1: Default frog picture.
 </figcaption>
 </figure>
 </div>
-<p>Markdown tables are built using vertical pipes <code>|</code> to separate columns, and hyphens <code>-</code> to create the header divider. You can also align the text by adding colons <code>:</code> to the divider:</p>
+<p>Markdown tables are built using vertical pipes <code>|</code> to separate columns, and hyphens <code>-</code> to create the header divider. You can also align the text by adding colons <code>:</code> to the divider. One can also add a caption and label adding them at the very bottom:</p>
 <pre class="text"><code>| Column 1 | Column 2 | Column 3 |
 |:---------|:---------|:---------|
 | a        | b        | c        |
 | d        | e        | f        |
 : Table caption {#tbl-example}</code></pre>
-<p>To add a caption and a label, are added at the very bottom, but they are rendered before the table:</p>
+<p>The caption will be rendered, however, before the table:</p>
 <div id="tbl-example" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-example-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -405,13 +405,14 @@ Note
 <section id="code-snippets" class="level1">
 <h1>Code Snippets</h1>
 <p>To format short <code>inline code</code> within a sentence, enclose the text in single backticks <code>`</code>. To insert multi-line blocks of code with syntax highlighting, enclose the block in triple backticks <code>```</code> and specify the programming language on the first line:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode cpp code-with-copy"><code class="sourceCode cpp"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="dt">float</span> sum<span class="op">(</span><span class="dt">float</span> a<span class="op">,</span> <span class="dt">float</span> b<span class="op">)</span> <span class="op">{</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode cpp code-with-copy"><code class="sourceCode cpp"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="dt">float</span> sum <span class="op">(</span><span class="dt">float</span> a<span class="op">,</span> <span class="dt">float</span> b<span class="op">)</span> <span class="op">{</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> a <span class="op">+</span> b<span class="op">;</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="links-and-citations" class="level1">
 <h1>Links and Citations</h1>
-<p>To insert a hyperlink, place the text in square brackets and the URL in parentheses, like <code>[GitHub Repository](https://github.com/MKReyesH/ScientificWiki)</code>, which produces a clickable link: <a href="https://github.com/MKReyesH/ScientificWiki">GitHub Repository</a>`.</p>
+<p>To insert a hyperlink, place the text in square brackets and the URL in parentheses, like <code>[GitHub Repository](https://github.com/MKReyesH/ScientificWiki)</code>, which produces a clickable link: <a href="https://github.com/MKReyesH/ScientificWiki">GitHub Repository</a>.</p>
+<p>To create an internal link to a specific section on the same page, use the exact same syntax but replace the URL with the section’s heading in lowercase, using hyphens instead of spaces and starting with a #. For instance, typing `<a href="#sections-and-subsections">first section</a> will create a link that takes you to the <a href="#sections-and-subsections">first section</a>.</p>
 <p>To cite a paper from our bibliography file, place both the @ symbol and the citation key entirely inside square brackets, like <code>[@ReyesHung:2023udr]</code>. Multiple citations inside the same brackets are separated by semicolons. A list of references will be automatically added at the end of the file <span class="citation" data-cites="ReyesHung:2023udr">[<a href="#ref-ReyesHung:2023udr" role="doc-biblioref">1</a>]</span>.</p>
 
 
