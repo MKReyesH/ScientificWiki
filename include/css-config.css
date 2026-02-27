@@ -2,18 +2,14 @@
   font-size: 2.2rem;
   font-weight: 700;
   color: #111111;
-  border-bottom: 3px solid #cccccc;
-}
-
-#title-block-header {
-  padding-bottom: 2.5rem;
+  border-bottom: none;
 }
 
 #quarto-document-content h1:not(.title) {
   font-size: 1.8rem;
   font-weight: 600;
   color: #111111;
-  border-bottom: 1px solid #cccccc;
+  border-bottom: none;
 }
 
 #quarto-document-content h2 {
