@@ -36,7 +36,7 @@
     "href": "doc/Examples/example1.html",
     "title": "How to write a page in Markdown",
     "section": "",
-    "text": "With some text inside the section\n\n\nOne can use in-line LaTeX equations, like \\(x^2+y^2=r^2\\), or in their own line, like\n\\[x=\\frac{-b\\pm \\sqrt{b^2-4ac}}{2a}\\]\nThis is an italic text and bold text. One can also insert an unsorted list\n\nElement\nElement\nElement\n\nAnd a sorted list:\n\nElement 1\nElement 2\nElement 3\n\nAnd a nested list:\n\nlevel 1 item\n\nlevel 2 item\nlevel 2 item\n\nlevel 3 item\nlevel 3 item\n\n\n\nThis is a table:\n\n\n\nHead 1\nHead 2\nHead 3\n\n\n\n\na\nb\nc\n\n\nd\ne\nf\n\n\n\nThis is a quote:\n\n“If it is on the internet… it must be true.” - Abraham Lincoln\n\nThis is a picture\n\n\n\nOctocat\n\n\nOne can also insert in-line code. But one can also insert code with highlighted syntax\nint suma (){\n  int a, b;\n  return a+b;\n}\nThis is an internal link to a section in the same page. This is an external link to a section in another page.\nFinally, one can also insert HTML code directly:",
+    "text": "With some text inside the section\n\n\nOne can use in-line LaTeX equations, like \\(x^2+y^2=r^2\\), or in their own line, like\n\\[x=\\frac{-b\\pm \\sqrt{b^2-4ac}}{2a}\\]\n\n\nThis is an italic text and bold text. One can also insert an unsorted list\n\nElement\nElement\nElement\n\nAnd a sorted list:\n\nElement 1\nElement 2\nElement 3\n\nAnd a nested list:\n\nlevel 1 item\n\nlevel 2 item\nlevel 2 item\n\nlevel 3 item\nlevel 3 item\n\n\n\nThis is a table:\n\n\n\nHead 1\nHead 2\nHead 3\n\n\n\n\na\nb\nc\n\n\nd\ne\nf\n\n\n\nThis is a quote:\n\n“If it is on the internet… it must be true.” - Abraham Lincoln\n\nThis is a picture\n\n\n\nOctocat\n\n\nOne can also insert in-line code. But one can also insert code with highlighted syntax\nint suma (){\n  int a, b;\n  return a+b;\n}\nThis is an internal link to a section in the same page. This is an external link to a section in another page.\nFinally, one can also insert HTML code directly:",
     "crumbs": [
       "Topics",
       "Examples",
@@ -44,23 +44,11 @@
     ]
   },
   {
-    "objectID": "doc/Examples/example1.html#this-is-a-section",
-    "href": "doc/Examples/example1.html#this-is-a-section",
+    "objectID": "doc/Examples/example1.html#this-is-a-subsection",
+    "href": "doc/Examples/example1.html#this-is-a-subsection",
     "title": "How to write a page in Markdown",
     "section": "",
-    "text": "With some text inside the section\n\n\nOne can use in-line LaTeX equations, like \\(x^2+y^2=r^2\\), or in their own line, like\n\\[x=\\frac{-b\\pm \\sqrt{b^2-4ac}}{2a}\\]\nThis is an italic text and bold text. One can also insert an unsorted list\n\nElement\nElement\nElement\n\nAnd a sorted list:\n\nElement 1\nElement 2\nElement 3\n\nAnd a nested list:\n\nlevel 1 item\n\nlevel 2 item\nlevel 2 item\n\nlevel 3 item\nlevel 3 item\n\n\n\nThis is a table:\n\n\n\nHead 1\nHead 2\nHead 3\n\n\n\n\na\nb\nc\n\n\nd\ne\nf\n\n\n\nThis is a quote:\n\n“If it is on the internet… it must be true.” - Abraham Lincoln\n\nThis is a picture\n\n\n\nOctocat\n\n\nOne can also insert in-line code. But one can also insert code with highlighted syntax\nint suma (){\n  int a, b;\n  return a+b;\n}\nThis is an internal link to a section in the same page. This is an external link to a section in another page.\nFinally, one can also insert HTML code directly:",
-    "crumbs": [
-      "Topics",
-      "Examples",
-      "How to write a page in Markdown"
-    ]
-  },
-  {
-    "objectID": "doc/Examples/example1.html#this-is-another-section",
-    "href": "doc/Examples/example1.html#this-is-another-section",
-    "title": "How to write a page in Markdown",
-    "section": "This is another section",
-    "text": "This is another section\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non dolor maximus, volutpat metus et, vehicula sem. Proin nisi tellus, fermentum et ullamcorper at, efficitur nec mauris. Nulla sodales pellentesque nibh, at pellentesque velit scelerisque a. Nulla ac neque sed ipsum mattis congue. Vivamus id lobortis sapien, hendrerit bibendum mi. Nullam magna mauris, vehicula sed dignissim eu, pulvinar et lacus. Sed vitae mollis mi. Aliquam magna ex, consequat quis pharetra sit amet, tristique nec arcu. Morbi purus odio, fermentum sit amet tincidunt eu, finibus egestas enim. Aliquam erat volutpat. Pellentesque at lacus vitae sem posuere convallis vitae et augue. Donec sit amet cursus sem.",
+    "text": "One can use in-line LaTeX equations, like \\(x^2+y^2=r^2\\), or in their own line, like\n\\[x=\\frac{-b\\pm \\sqrt{b^2-4ac}}{2a}\\]\n\n\nThis is an italic text and bold text. One can also insert an unsorted list\n\nElement\nElement\nElement\n\nAnd a sorted list:\n\nElement 1\nElement 2\nElement 3\n\nAnd a nested list:\n\nlevel 1 item\n\nlevel 2 item\nlevel 2 item\n\nlevel 3 item\nlevel 3 item\n\n\n\nThis is a table:\n\n\n\nHead 1\nHead 2\nHead 3\n\n\n\n\na\nb\nc\n\n\nd\ne\nf\n\n\n\nThis is a quote:\n\n“If it is on the internet… it must be true.” - Abraham Lincoln\n\nThis is a picture\n\n\n\nOctocat\n\n\nOne can also insert in-line code. But one can also insert code with highlighted syntax\nint suma (){\n  int a, b;\n  return a+b;\n}\nThis is an internal link to a section in the same page. This is an external link to a section in another page.\nFinally, one can also insert HTML code directly:",
     "crumbs": [
       "Topics",
       "Examples",
