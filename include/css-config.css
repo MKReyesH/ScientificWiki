@@ -37,3 +37,11 @@
   padding-top: 1rem;
   padding-bottom: 1rem;
 }
+
+#quarto-document-content p {
+  margin-top: 1rem !important; 
+  margin-bottom: 1rem !important;
+  line-height: 1.6;
+  padding-left: 0;
+  padding-right: 0;
+}
