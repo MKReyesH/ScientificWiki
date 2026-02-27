@@ -20,41 +20,6 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for syntax highlighting */
-html { -webkit-text-size-adjust: 100%; }
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
 </style>
 
 
@@ -268,17 +233,10 @@ window.Quarto = {
 </header>
 
 
-<p>Standard GitHub Pages can transform simple Markdown files (plain text files with a <code>.md</code> extension) into HTML webpages. For this wiki, our setup goes a step further, allowing Markdown to seamlessly handle complex equations, cross-referencing, and bibliography management.</p>
-<p>Markdown syntax is highly intuitive. Below are examples of the formatting you will use most often, showing the literal syntax you need to use followed by the final rendered version.</p>
-<section id="headers" class="level3">
-<h3 class="anchored" data-anchor-id="headers">Headers</h3>
+<p>GitHub Pages can transform simple plain text files into HTML webpages. For this template the files have <code>.qmd</code> extension and follow the Quarto Markdown syntax. Below are examples of the formatting you will use most often.</p>
+<section id="sections-and-subsections" class="level1">
+<h1>Sections and subsections</h1>
 <p>Section names are created by adding one or more <code>#</code> symbols followed by a space. Use <code>##</code> or <code>###</code> for subsections and sub-subsections, respectively.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># This is a section</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">## This is a subsection</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">### This is a sub-subsection</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</section>
-<section id="this-is-a-section" class="level1">
-<h1>This is a section</h1>
 <section id="this-is-a-subsection" class="level2">
 <h2 class="anchored" data-anchor-id="this-is-a-subsection">This is a subsection</h2>
 <section id="this-is-a-sub-subsection" class="level3">
@@ -286,36 +244,20 @@ window.Quarto = {
 </section>
 <section id="mathematical-equations" class="level3">
 <h3 class="anchored" data-anchor-id="mathematical-equations">Mathematical Equations</h3>
-<p>You can write inline equations by enclosing the formula in single <code>$</code> symbols. To write a standalone (unnumbered) equation on its own line, enclose it in double <code>$$</code> symbols.</p>
-<p>If you want to create a labeled equation that you can reference later, append <code>{#eq-yourlabel}</code> to the closing <code>$$</code>. You can then reference it seamlessly using <code>@eq-yourlabel</code>.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>The area of a circle is $A = \pi r^2$.</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>Here is the quadratic formula:</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>x=\frac{-b\pm \sqrt{b^2-4ac}}{2a} \,</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>$$ {#eq-quadratic}</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>As seen in @eq-quadratic, there are two solutions.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>The area of a circle is <span class="math inline">\(A = \pi r^2\)</span>.</p>
-<p>Here is the quadratic formula: <span id="eq-quadratic"><span class="math display">\[
+<p>You can write inline equations, such as <span class="math inline">\(x^2+y^2=r^2\)</span>, by enclosing the formula in single <code>$</code> symbols. To write a standalone (unnumbered) equation on its own line, enclose it in double <code>$$</code> symbols:</p>
+<p><span class="math display">\[
+x=\frac{-b\pm \sqrt{b^2-4ac}}{2a} \,
+\]</span></p>
+<p>If you want to create a labeled equation that you can reference later, simply append <code>{#eq-yourlabel}</code> to the closing <code>$$</code>:</p>
+<p><span id="eq-secondorder"><span class="math display">\[
 x=\frac{-b\pm \sqrt{b^2-4ac}}{2a} \,
 \tag{1}\]</span></span></p>
-<p>As seen in <a href="#eq-quadratic" class="quarto-xref">Equation&nbsp;1</a>, there are two solutions.</p>
+<p>You can then easily reference this equation in your text by typing <code>@eq-secondorder</code>, which will automatically render as a clickable link (e.g., <a href="#eq-secondorder" class="quarto-xref">Equation&nbsp;1</a>).</p>
 </section>
 <section id="text-formatting-lists" class="level3">
 <h3 class="anchored" data-anchor-id="text-formatting-lists">Text Formatting &amp; Lists</h3>
-<p>You can make text italic or bold by enclosing it in single <code>*</code> or double <code>**</code> asterisks.</p>
-<p>Create an unordered list using the <code>-</code> symbol. For ordered lists, use numbers. You can actually just write <code>1.</code> for every item, and it will automatically order them correctly when the page renders.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>Make text *italic* or **bold**.</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Level 1 item</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>Level 2 item</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="ss">    - </span>Level 3 item</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>First element</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Second element</span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Third element</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Make text <em>italic</em> or <strong>bold</strong>.</p>
+<p>You can make text <em>italic</em> or <strong>bold</strong> by enclosing it in single <code>*</code> or double <code>**</code> asterisks, respectively.</p>
+<p>Create an unordered list using the <code>-</code> symbol. The level of indentation determines the hierarchy of the list:</p>
 <ul>
 <li>Level 1 item
 <ul>
@@ -325,59 +267,27 @@ x=\frac{-b\pm \sqrt{b^2-4ac}}{2a} \,
 </ul></li>
 </ul></li>
 </ul>
+<p>For ordered lists, use numbers. You can actually just write <code>1.</code> for every item, and it will be automatically ordered correctly when the page renders:</p>
 <ol type="1">
 <li>First element</li>
 <li>Second element</li>
 <li>Third element</li>
 </ol>
 </section>
-<section id="code-snippets" class="level3">
-<h3 class="anchored" data-anchor-id="code-snippets">Code Snippets</h3>
-<p>To format short inline code within a sentence, enclose the text in single backticks (`). To insert multi-line blocks of code with syntax highlighting, enclose the block in triple backticks and specify the programming language on the first line.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>Use the <span class="in">`print()`</span> function.</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="in">```cpp</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> sum<span class="op">()</span> <span class="op">{</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span> a <span class="op">=</span> <span class="dv">5</span><span class="op">;</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span> b <span class="op">=</span> <span class="dv">10</span><span class="op">;</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> a <span class="op">+</span> b<span class="op">;</span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Use the <code>print()</code> function.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode cpp code-with-copy"><code class="sourceCode cpp"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> sum<span class="op">()</span> <span class="op">{</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span> a <span class="op">=</span> <span class="dv">5</span><span class="op">;</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span> b <span class="op">=</span> <span class="dv">10</span><span class="op">;</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> a <span class="op">+</span> b<span class="op">;</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</section>
-<section id="figures-and-images" class="level3">
-<h3 class="anchored" data-anchor-id="figures-and-images">Figures and Images</h3>
-<p>To insert an image, place the caption in square brackets and the file path in parentheses. You can also add cross-reference labels (<code>#fig-label</code>) and size controls (<code>width</code>) inside curly braces at the end of the image code.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="al">![Default frog picture.](/img/Examples/frog.png)</span>{#fig-frog width="80%"}</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>Look at @fig-frog for an example.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="figures-and-tables" class="level3">
+<h3 class="anchored" data-anchor-id="figures-and-tables">Figures and Tables</h3>
+<p>To insert a cross-referenced image with a controlled width, use the syntax <code>![Your caption text here](path_to_file.png){#fig-label width="80%"}</code>. This will render the image directly on the page, like so:</p>
 <div id="fig-frog" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-frog-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="../../img/Examples/frog.png" class="img-fluid figure-img" style="width:80.0%">
+<img src="img/Examples/frog.png" class="img-fluid figure-img" style="width:80.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-frog-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;1: Default frog picture.
 </figcaption>
 </figure>
 </div>
-<p>Look at <a href="#fig-frog" class="quarto-xref">Figure&nbsp;1</a> for an example.</p>
-</section>
-<section id="tables" class="level3">
-<h3 class="anchored" data-anchor-id="tables">Tables</h3>
-<p>Markdown tables require a header row and a divider (<code>|---|</code>). You can easily add a caption and a cross-reference label (<code>#tbl-label</code>) at the very bottom.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Column 1 <span class="pp">|</span> Column 2 <span class="pp">|</span> Column 3 <span class="pp">|</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="pp">|:---------|:---------|:---------|</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> a        <span class="pp">|</span> b        <span class="pp">|</span> c        <span class="pp">|</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> d        <span class="pp">|</span> e        <span class="pp">|</span> f        <span class="pp">|</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>: Table caption {#tbl-example}</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>Data is shown in @tbl-example.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Markdown tables require a header row and a divider (<code>|---|</code>). You can easily add a caption and a label at the bottom using <code>: Table caption {#tbl-label}</code>. The final result resembles the text structure you use to build it:</p>
 <div id="tbl-example" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-example-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -408,19 +318,14 @@ Table&nbsp;1: Table caption
 </div>
 </figure>
 </div>
-<p>Data is shown in <a href="#tbl-example" class="quarto-xref">Table&nbsp;1</a>.</p>
 </section>
-<section id="blockquotes-and-callouts" class="level3">
-<h3 class="anchored" data-anchor-id="blockquotes-and-callouts">Blockquotes and Callouts</h3>
-<p>To emphasize a standard quote, use the <code>&gt;</code> symbol at the start of the line. You can also use special callout blocks to draw attention to notes or warnings, created by opening and closing a block with three colons (<code>:::</code>).</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; "If it is on the internet... it must be true." - Abraham Lincoln</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>:::{.callout-note}</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>This is a helpful note! You can also use <span class="in">`.callout-warning`</span> or <span class="in">`.callout-important`</span>.</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>:::</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="blockquotes" class="level3">
+<h3 class="anchored" data-anchor-id="blockquotes">Blockquotes</h3>
+<p>To emphasize a quote or important note, use the <code>&gt;</code> symbol at the start of the line:</p>
 <blockquote class="blockquote">
 <p>“If it is on the internet… it must be true.” - Abraham Lincoln</p>
 </blockquote>
+<p>Quarto Markdown also includes special Callout Blocks to draw attention to notes, warnings, or tips. You create them by opening and closing a block with three colons <code>:::</code> and specifying the type, like <code>:::{.callout-note}</code>:</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -431,18 +336,14 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>This is a helpful note! You can also use <code>.callout-warning</code> or <code>.callout-important</code>.</p>
+<p>This is a helpful note! You can also use <code>.callout-warning</code>, <code>.callout-tip</code>, <code>.callout-caution</code>, or <code>.callout-important</code> to change the color and icon of the box.</p>
 </div>
 </div>
 </section>
-<section id="links-and-citations" class="level3">
-<h3 class="anchored" data-anchor-id="links-and-citations">Links and Citations</h3>
-<p>To insert a standard hyperlink, place the text in square brackets and the URL in parentheses. To cite a paper from our bibliography file, use the <code>@</code> symbol followed by the citation key inside square brackets.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">GitHub Repository</span><span class="co">](https://github.com/MKReyesH/ScientificWiki)</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>The expansion of the universe is accelerating <span class="co">[</span><span class="ot">@riess1998; @perlmutter1999</span><span class="co">]</span>.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p><a href="https://github.com/MKReyesH/ScientificWiki">GitHub Repository</a></p>
-<p>The expansion of the universe is accelerating <span class="citation" data-cites="riess1998 perlmutter1999">[<a href="#ref-riess1998" role="doc-biblioref"><strong>riess1998?</strong></a>,<a href="#ref-perlmutter1999" role="doc-biblioref"><strong>perlmutter1999?</strong></a>]</span>.</p>
+<section id="code-snippets" class="level3">
+<h3 class="anchored" data-anchor-id="code-snippets">Code Snippets</h3>
+<p>To format short <code>inline code</code> within a sentence, enclose the text in single backticks <code>`</code>. To insert multi-line blocks of code with syntax highlighting, enclose the block in triple backticks <code>```</code> and specify the programming language on the first line:</p>
+<p>```cpp int sum() { int a = 5; int b = 10; return a + b; }</p>
 
 
 
