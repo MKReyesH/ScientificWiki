@@ -103,6 +103,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
+<script>
+  window.MathJax = {
+    tex: {
+      tags: 'ams'
+    }
+  };
+</script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
@@ -319,16 +326,6 @@ window.Quarto = {
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span> a<span class="op">,</span> b<span class="op">;</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> a<span class="op">+</span>b<span class="op">;</span></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>One can make Top-Down flowcharts</p>
-<pre class="mermaid"><code>graph TD;
-    A--&gt;B;
-    A--&gt;C;</code></pre>
-<p>and Left-Right flowcharts</p>
-<pre class="mermaid"><code>graph LR;
-    A--&gt;B;
-    C--&gt;D;
-    B--&gt;E;
-    D--&gt;E;</code></pre>
 <p>This is an internal link to <a href="#this-is-a-section">a section in the same page</a>. This is an external link to <a href="https://mkreyesh.github.io/DocTemplate/docs/page3.html#amazing-section">a section in another page</a>.</p>
 <p>Finally, one can also insert HTML code directly:</p>
 <iframe width="448" height="252" src="https://www.youtube.com/embed/..." frameborder="0" allowfullscreen="">
