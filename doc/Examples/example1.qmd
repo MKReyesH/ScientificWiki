@@ -17,13 +17,13 @@ Section names are created by adding one or more `#` symbols followed by a space.
 You can write inline equations, such as $x^2+y^2=r^2$, by enclosing the formula in single `$` symbols. To write a standalone (unnumbered) equation on its own line, enclose it in double `$$` symbols:
 
 $$
-x=\frac{-b\pm \sqrt{b^2-4ac}}{2a} \,
+  x=\frac{-b\pm \sqrt{b^2-4ac}}{2a} \,,
 $$
 
 If you want to create a labeled equation that you can reference later, simply append `{#eq-yourlabel}` to the closing `$$`:
 
 $$
-x=\frac{-b\pm \sqrt{b^2-4ac}}{2a} \,
+  x=\frac{-b\pm \sqrt{b^2-4ac}}{2a} \,,
 $$ {#eq-secondorder}
 
 You can then easily reference this equation in your text by typing `@eq-secondorder`, which will automatically render as a clickable link (e.g., @eq-secondorder).
