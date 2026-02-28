@@ -300,20 +300,20 @@ window.Quarto = {
 </section>
 <section id="mathematical-equations" class="level1">
 <h1>Mathematical Equations</h1>
-<p>You can write inline equations, such as <span class="math inline">\(x^2+y^2=r^2\)</span>, by enclosing the formula in single <code>$</code> symbols. To write a standalone (unnumbered) equation on its own line, enclose it in double <code>$$</code> symbols:</p>
+<p>Inline equations, such as <span class="math inline">\(x^2+y^2=r^2\)</span>, can be written by enclosing the formula in single <code>$</code> symbols. To write a standalone (unnumbered) equation on its own line, it should be enclosed in double <code>$$</code> symbols:</p>
 <p><span class="math display">\[
   x=\frac{-b\pm \sqrt{b^2-4ac}}{2a} \,,
 \]</span></p>
-<p>If you want to create a labeled equation that you can reference later, simply append <code>{#eq-yourlabel}</code> to the closing <code>$$</code>:</p>
+<p>To create a labeled equation that can be referenced later, <code>{#eq-yourlabel}</code> is simply appended to the closing <code>$$</code>:</p>
 <p><span id="eq-secondorder"><span class="math display">\[
   x=\frac{-b\pm \sqrt{b^2-4ac}}{2a} \,,
 \tag{1}\]</span></span></p>
-<p>You can then easily reference this equation in your text by typing <code>@eq-secondorder</code>, which will automatically render as a clickable link (e.g., <a href="#eq-secondorder" class="quarto-xref">Equation&nbsp;1</a>).</p>
+<p>This equation can then be easily referenced in the text by typing <code>@eq-secondorder</code>, which will automatically render as a clickable link (e.g., <a href="#eq-secondorder" class="quarto-xref">Equation&nbsp;1</a>).</p>
 </section>
 <section id="text-formatting-and-lists" class="level1">
 <h1>Text Formatting and Lists</h1>
-<p>You can make text <em>italic</em> or <strong>bold</strong> by enclosing it in single <code>*</code> or double <code>**</code> asterisks, respectively.</p>
-<p>Create an unordered list using the <code>-</code> symbol. The level of indentation determines the hierarchy of the list:</p>
+<p>Text can be made <em>italic</em> or <strong>bold</strong> by enclosing it in single <code>*</code> or double <code>**</code> asterisks, respectively.</p>
+<p>An unordered list is created using the <code>-</code> symbol. The level of indentation determines the hierarchy of the list:</p>
 <ul>
 <li>Level 1 item
 <ul>
@@ -323,7 +323,7 @@ window.Quarto = {
 </ul></li>
 </ul></li>
 </ul>
-<p>For ordered lists, use numbers. You can actually just write <code>1.</code> for every item, and it will be automatically ordered correctly when the page renders:</p>
+<p>For ordered lists, numbers are used. Writing <code>1.</code> for every item is sufficient, as it will be automatically ordered correctly when the page renders:</p>
 <ol type="1">
 <li>First element</li>
 <li>Second element</li>
@@ -387,7 +387,7 @@ Table&nbsp;1: Table caption
 <blockquote class="blockquote">
 <p>“If it is on the internet… it must be true.” - Abraham Lincoln</p>
 </blockquote>
-<p>Quarto Markdown also includes special Callout Blocks to draw attention to notes, warnings, or tips. You create them by opening and closing a block with three colons <code>:::</code> and specifying the type, like <code>:::{.callout-note}</code>:</p>
+<p>Quarto Markdown also includes special Callout Blocks to draw attention to notes, warnings, or tips. They are created by opening and closing a block with three colons <code>:::</code> and specifying the type, like <code>:::{.callout-note}</code>:</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -398,7 +398,7 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>This is a helpful note! You can also use <code>.callout-warning</code>, <code>.callout-tip</code>, <code>.callout-caution</code>, or <code>.callout-important</code> to change the color and icon of the box.</p>
+<p>This is a helpful note! The options <code>.callout-warning</code>, <code>.callout-tip</code>, <code>.callout-caution</code>, or <code>.callout-important</code> can also be used to change the color and icon of the box.</p>
 </div>
 </div>
 </section>
