@@ -42,7 +42,10 @@ def convert_latex_to_quarto(text):
     # References
     def ref_repl(match):
         label = match.group(1).replace(':', '-')
-        return f"@{label}"
+        if is_eqref:
+            return f"(-@{label})"
+        else:
+            return f"-@{label}"
     text = re.sub(r'\\(?:eq)?ref\{([^}]+)\}', ref_repl, text)
 
     # Equations
