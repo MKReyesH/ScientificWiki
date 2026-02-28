@@ -20,7 +20,26 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
@@ -291,13 +310,19 @@ Figure&nbsp;1: Default frog picture.
 </section>
 <section id="links-and-citations" class="level1">
 <h1>Links and Citations</h1>
-<p>Hyperlinks created with the hyperref package are easily converted. When the script sees <code>\href{https://github.com/MKReyesH/ScientificWiki}{GitHub Repository}</code>, it rearranges the URL and the text into the Quarto Markdown format</p>
+<p>Hyperlinks created with the hyperref package are easily converted. When the script sees <code>\href{https://github.com/MKReyesH/ScientificWiki}{GitHub Repository}</code>, it rearranges the URL and the text into the Quarto Markdown format: <code>[GitHub Repository](https://github.com/MKReyesH/ScientificWiki)</code>.</p>
+<p>For bibliography management, the standard cite command can continue to be used, like <span class="citation" data-cites="ReyesHung:2023udr">[<a href="#ref-ReyesHung:2023udr" role="doc-biblioref">1</a>]</span>. A command like <code>\cite{ReyesHung:2023udr}</code> will be directly converted into Quarto’s <code>[@ReyesHung:2023udr]</code> syntax. If multiple papers are cited inside the same command, the script will separate them properly inside the brackets.</p>
+
 
 
 
 </section>
 
-</main> <!-- /main -->
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body" role="list">
+<div id="ref-ReyesHung:2023udr" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[1] </div><div class="csl-right-inline">Reyes Hung M A 2023 <em><a href="https://arxiv.org/abs/2307.03462"><span class="nocase">Exploration of possible signals beyond special relativity using high-energy astroparticle physics</span></a></em> PhD thesis (U. Zaragoza (main))</div>
+</div>
+</div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
