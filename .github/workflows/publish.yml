@@ -15,6 +15,9 @@ jobs:
 
       - name: Set up Quarto
         uses: quarto-dev/quarto-actions/setup@v2
+        
+      - name: Debug Pandoc AST
+        run: quarto pandoc doc/Examples/example2.qmd -t native
 
       - name: Publish to GitHub Pages
         uses: quarto-dev/quarto-actions/publish@v2
