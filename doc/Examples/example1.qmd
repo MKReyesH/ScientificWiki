@@ -2,43 +2,67 @@
 title: 'How to write a page using Markdown'
 ---
 
-GitHub Pages can transform simple plain text files into HTML webpages. For this template the files have `.qmd` extension and follow the Quarto Markdown syntax. Below are examples of the formatting you will use most often.
+GitHub Pages transforms plain text files into HTML webpages. In this template, files use the `.qmd` extension and follow Quarto Markdown syntax. Below are examples of the most commonly used formatting structures.
 
-# Sections and subsections
+# Sections and Subsections
 
-Section names are created by adding one or more `#` symbols followed by a space. Use `##` or `###` for subsections and sub-subsections, respectively.
+Section headers are created by adding one or more `#` symbols followed by a space. Typing a single `#` creates a main section header. Adding more symbols creates deeper hierarchies; for example, typing `## This is a subsection` generates a secondary heading:
 
 ## This is a subsection
+
+Similarly, using three symbols like `### This is a sub-subsection` produces a tertiary heading:
 
 ### This is a sub-subsection
 
 # Mathematical Equations
 
-Inline equations, such as $x^2+y^2=r^2$, can be written by enclosing the formula in single `$` symbols. To write a standalone (unnumbered) equation on its own line, it should be enclosed in double `$$` symbols:
+Inline equations, such as $x^2+y^2=r^2$, are written by enclosing the formula in single `$` symbols directly within the text. 
 
+To write a standalone equation on its own line, enclose the formula in double `$$` symbols. To make the equation cross-referenceable, append an identifier starting with `#eq-` to the closing `$$`:
+
+```text
 $$
   x=\frac{-b\pm \sqrt{b^2-4ac}}{2a} \,,
-$$
+$$ {#eq-secondorder}
+```
 
-To create a labeled equation that can be referenced later, `{#eq-yourlabel}` is simply appended to the closing `$$`:
+Once processed, the equation is displayed and numbered automatically:
 
 $$
   x=\frac{-b\pm \sqrt{b^2-4ac}}{2a} \,,
 $$ {#eq-secondorder}
 
-This equation number can then be easily referenced in the text by typing `[-@eq-secondorder]`, which will automatically render as a clickable link (e.g., Eq. [-@eq-secondorder]).
+This equation can then be referenced in the text using `@eq-secondorder`, which automatically renders a clickable link with the appropriate prefix, such as Equation 1. 
+
+If the automatic prefix needs to be suppressed, place the reference inside square brackets with a minus sign and wrap it in parentheses. For instance, typing `Eq. ([-@eq-secondorder])` will suppress the word "Equation" and render just the number in-between parentheses, resulting in Eq. (1).
 
 # Text Formatting and Lists
 
-Text can be made *italic* or **bold** by enclosing it in single `*` or double `**` asterisks, respectively. 
+Text formatting is achieved by enclosing words in asterisks. Using single asterisks produces *italic* text (e.g., `*italic*`), while double asterisks produce **bold** text (e.g., `**bold**`).
 
-An unordered list is created using the `-` symbol. The level of indentation determines the hierarchy of the list:
+Unordered lists are created using the `-` symbol, where the level of indentation determines the hierarchy of the items:
+
+```text
+- Level 1 item
+  - Level 2 item
+    - Level 3 item
+```
+
+This syntax generates the following bulleted list:
 
 - Level 1 item
   - Level 2 item
     - Level 3 item
 
-For ordered lists, numbers are used. Writing `1.` for every item is sufficient, as it will be automatically ordered correctly when the page renders:
+Ordered lists use numbers instead of dashes. Typing `1.` for every item is sufficient, as the list will automatically number itself correctly upon rendering:
+
+```text
+1. First element
+1. Second element
+1. Third element
+```
+
+The compiled list appears as:
 
 1. First element
 1. Second element
@@ -46,11 +70,17 @@ For ordered lists, numbers are used. Writing `1.` for every item is sufficient, 
 
 # Figures and Tables
 
-To insert a cross-referenced image with a controlled width, use the syntax `![Your caption text here](path_to_file.png){#fig-label width="4cm"}`. This will render the image directly on the page, like so:
+To insert an image, provide a caption inside square brackets and the file path inside parentheses. A label and display attributes, such as width, can be appended in curly braces:
+
+```text
+![Default frog picture.](/img/Examples/frog.jpg){#fig-frog width="4cm"}
+```
+
+This places the image in the document, allowing it to be referenced anywhere in the text using `@fig-frog`:
 
 ![Default frog picture.](/img/Examples/frog.jpg){#fig-frog width="4cm"}
 
-Markdown tables are built using vertical pipes `|` to separate columns, and hyphens `-` to create the header divider. You can also align the text by adding colons `:` to the divider. One can also add a caption and label adding them at the very bottom:
+Tables are constructed using vertical pipes (`|`) to separate columns and hyphens (`-`) to divide the header from the content. Colons (`:`) are added to the divider to control text alignment. A caption and a reference label can be placed at the bottom:
 
 ```text
 | Column 1 | Column 2 | Column 3 |
@@ -60,7 +90,7 @@ Markdown tables are built using vertical pipes `|` to separate columns, and hyph
 : Table caption {#tbl-example}
 ```
 
-The caption will be rendered before the table:
+The resulting formatted table can then be referenced using `@tbl-example`:
 
 | Column 1 | Column 2 | Column 3 |
 |:---------|:---------|:---------|
@@ -68,21 +98,47 @@ The caption will be rendered before the table:
 | d        | e        | f        |
 : Table caption {#tbl-example}
 
-# Blockquotes
+# Blockquotes and Callouts
 
-To emphasize a quote or important note, use the `>` symbol at the start of the line:
+To emphasize a quote, start the line with a `>` symbol:
 
-> "If it is on the internet... it must be true." - Abraham Lincoln
+```text
+> "If it is on the internet... it must be true."
+> - Abraham Lincoln
+```
 
-Quarto Markdown also includes special Callout Blocks to draw attention to notes, warnings, or tips. They are created by opening and closing a block with three colons `:::` and specifying the type, like `:::{.callout-note}`:
+The text is then visually set apart as a blockquote:
+
+> "If it is on the internet... it must be true."
+> - Abraham Lincoln
+
+Quarto Markdown also features Callout Blocks to draw attention to notes, warnings, or tips. These are created by wrapping the text in three colons (`:::`) and specifying the desired callout type:
+
+```text
+:::{.callout-note}
+This is a helpful note! The options `.callout-warning`, `.callout-tip`, `.callout-caution`, and `.callout-important` change the color and icon of the box.
+:::
+```
+
+The rendered callout box provides a distinct visual element:
 
 :::{.callout-note}
-This is a helpful note! The options `.callout-warning`, `.callout-tip`, `.callout-caution`, or `.callout-important` can also be used to change the color and icon of the box.
+This is a helpful note! The options `.callout-warning`, `.callout-tip`, `.callout-caution`, and `.callout-important` change the color and icon of the box.
 :::
 
 # Code Snippets
 
-To format short `inline code` within a sentence, enclose the text in single backticks `` ` ``. To insert multi-line blocks of code with syntax highlighting, enclose the block in triple backticks ```` ``` ```` and specify the programming language on the first line:
+Short, inline code within a sentence is formatted by enclosing the text in single backticks (`` ` ``). For multi-line code blocks with syntax highlighting, enclose the block in triple backticks and specify the programming language on the first line:
+
+````text
+```cpp
+float sum (float a, float b) {
+  return a + b;
+}
+```
+````
+
+This displays the code block with the appropriate language-specific coloring:
 
 ```cpp
 float sum (float a, float b) {
@@ -90,11 +146,24 @@ float sum (float a, float b) {
 }
 ```
 
-# Links and Citations
+# Links, Citations, and Footnotes
 
-To insert a hyperlink, place the text in square brackets and the URL in parentheses, like `[GitHub Repository](https://github.com/MKReyesH/ScientificWiki)`, which produces a clickable link: [GitHub Repository](https://github.com/MKReyesH/ScientificWiki).
+Hyperlinks are created by placing the link text in square brackets followed by the URL in parentheses. For example, typing `[GitHub Repository](https://github.com/MKReyesH/ScientificWiki)` renders as a clickable link: [GitHub Repository](https://github.com/MKReyesH/ScientificWiki).
 
-To create an internal link to a specific section on the same page, use the exact same syntax but replace the URL with the section's heading in lowercase, using hyphens instead of spaces and starting with a #. For instance, typing `[first section](#sections-and-subsections)` will create a link that takes you to the [first section](#sections-and-subsections).
+Internal links to a specific section on the same page follow the exact same syntax, replacing the URL with the section's heading. The heading must be written in lowercase, using hyphens instead of spaces, and prefixed with a `#`. For example, `[first section](#sections-and-subsections)` creates a link that navigates back to the [first section](#sections-and-subsections).
 
-To cite a paper from our bibliography file, place both the @ symbol and the citation key entirely inside square brackets, like `[@ReyesHung:2023udr]`. Multiple citations inside the same brackets are separated by semicolons. A list of references will be automatically added at the end of the file [@ReyesHung:2023udr].
+To cite references from a bibliography file, place the `@` symbol and the citation key inside square brackets. Typing `[@ReyesHung:2023udr]` produces a formatted citation in the text. Multiple citations within the same brackets are separated by semicolons, and a reference list is automatically appended to the end of the document.
 
+Footnotes are added using a caret and an identifier inside square brackets. The actual content of the footnote is defined anywhere else in the document by matching the identifier, followed by a colon and the text:
+
+```text
+This is a sentence with a footnote[^1].
+
+[^1]: This is the text of the footnote.
+```
+
+When rendered, a superscript number is inserted into the text, and the note is placed at the bottom of the page:
+
+This is a sentence with a footnote[^1].
+
+[^1]: This is the text of the footnote.
