@@ -34,7 +34,7 @@ If the automatic prefix needs to be suppressed, place the reference with a minus
 
 # Text Formatting and Lists
 
-Text formatting is achieved by enclosing words in asterisks. Using single asterisks produces *italic* text (e.g., `*italic*`), while double asterisks produce **bold** text (e.g., `**bold**`).
+Text formatting is achieved by enclosing words in asterisks. Using single asterisks produces *italic* text (e.g. `*italic*`), while double asterisks produce **bold** text (e.g. `**bold**`).
 
 Unordered lists are created using the `-` symbol, where the level of indentation determines the hierarchy of the items:
 
@@ -86,7 +86,7 @@ Tables are constructed using vertical pipes (`|`) to separate columns and hyphen
 : Table caption {#tbl-example}
 ```
 
-The resulting formatted table can then be referenced using `@tbl-example` (e.g., @tbl-example):
+The resulting formatted table can then be referenced using `@tbl-example` (e.g. @tbl-example):
 
 | Column 1 | Column 2 | Column 3 |
 |:---------|:---------|:---------|
@@ -144,11 +144,11 @@ float sum (float a, float b) {
 
 # Links, Footnotes, and Citations
 
-Hyperlinks to external websites are created by placing the link text in square brackets followed by the URL in parentheses. Typing `[GitHub Repository](https://github.com/MKReyesH/ScientificWiki)` renders as a clickable link: [GitHub Repository](https://github.com/MKReyesH/ScientificWiki).
+Hyperlinks to external websites are created by placing the link text in square brackets followed by the URL in parentheses. Typing `[GitHub Repository](https://github.com/MKReyesH/ScientificWiki)` renders as a clickable link (e.g. [GitHub Repository](https://github.com/MKReyesH/ScientificWiki)).
 
-To link to another page within the same wiki or project, use the exact same syntax but replace the URL with the relative path to the target `.qmd` file. Typing `[second page](example2.qmd)` creates a link to the [second page](example2.qmd).
+To link to another page within the same wiki or project, use the exact same syntax but replace the URL with the relative path to the target `.qmd` file. Typing `[second page](doc/Examples/example2.qmd)` creates a link to the [second page](doc/Examples/example2.qmd).
 
-To link to a specific section, append a `#` followed by the section's heading identifier (the heading name in lowercase, using hyphens instead of spaces). This can be used to navigate to sections on the same page or on a different page. Typing `[first section](#sections-and-subsections)` links to the [first section](#sections-and-subsections) on this page. Typing `[other section](example2.qmd#target-section)` links to a specific section on another page.
+To link to a specific section, append a `#` followed by the section's heading identifier (the heading name in lowercase, using hyphens instead of spaces). This can be used to navigate to sections on the same page or on a different page. Typing `[first section](#sections-and-subsections)` links to the [first section](#sections-and-subsections) on this page. Typing `[other section](doc/Examples/example2.qmd#target-section)` links to a specific section on another page.
 
 Footnotes are added using a caret and an identifier inside square brackets. The actual content of the footnote is defined anywhere else in the document by matching the identifier, followed by a colon and the text:
 
@@ -162,4 +162,4 @@ When rendered, a superscript number is inserted into the text, and the note is p
 
 [^1]: For example, this is a footnote.
 
-To cite references from a bibliography file, place the `@` symbol and the citation key inside square brackets. Typing `[@ReyesHung:2023udr]` produces a formatted citation in the text (e.g. [@ReyesHung:2023udr]). Multiple citations within the same brackets are separated by semicolons (e.g., `[@ReyesHung:2023udr; @AnotherCitation]`).
+To cite references from a bibliography file, place the `@` symbol and the citation key inside square brackets. Typing `[@ReyesHung:2023udr]` produces a formatted citation in the text (e.g. [@ReyesHung:2023udr]). Multiple citations within the same brackets are separated by semicolons (e.g. `[@ReyesHung:2023udr; @AnotherCitation]`).

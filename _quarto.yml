@@ -26,5 +26,4 @@ format:
     theme: cosmo
     math: mathjax
     css: include/css-config.css
-    reference-location: margin
     
