@@ -283,12 +283,6 @@ x=\frac{-b\pm \sqrt{b^2-4ac}}{2a} \,,
 <section id="figures" class="level1">
 <h1>Figures</h1>
 <p>Inserting images in LaTeX usually requires a full figure block. The script is designed to read the standard figure environment, extract the crucial pieces of information (the image path, width, caption, and label), and compress them into the single-line Quarto syntax:</p>
-<div id="fig-frog" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="../../img/Examples/frog.jpg" class="img-fluid figure-img" style="width:4cm"></p>
-<figcaption>Default frog picture.</figcaption>
-</figure>
-</div>
 <p>The script will strip away the extra LaTeX wrappers and output <code>![Default frog picture.](img/Examples/frog.jpg){#fig-frog width="4cm"}</code>, ensuring images load and cross-reference perfectly in the wiki <strong>?@fig-frog</strong>.</p>
 </section>
 <section id="links-and-citations" class="level1">
