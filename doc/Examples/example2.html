@@ -255,23 +255,25 @@ window.Quarto = {
 
 <p>In the scientific community, it is very common to have texts, equations, and full documents already written in LaTeX. Instead of manually rewriting these documents using Quarto Markdown syntax, this template provides an automatic script that replaces the most common LaTeX environments and commands with their Quarto Markdown equivalents. To distinguish these hybrid files from standard LaTeX documents, a custom <code>.qtex</code> extension is used.</p>
 <p>This document serves as both a guide and a test file for the script. It is written using the supported LaTeX commands to explain exactly how the transformation works. Because this script is a simple text replacer and not a full LaTeX compiler, any LaTeX environment or command that is not explicitly demonstrated on this page (such as <code>\begin{table}</code> or complex macros) is not supported and will not be automatically replaced. For those unsupported elements, native Quarto Markdown syntax must be used. Additionally, all the standard Quarto Markdown commands explained in the <a href="https://mkreyesh.github.io/ScientificWiki/doc/Examples/example1.html">Markdown guide</a> can be used.</p>
-<section class="level1">
+<section id="sections-and-subsections" class="level1">
 <h1>Sections and subsections</h1>
 <p>When structuring a document using standard LaTeX sectioning, the script will translate those commands into Markdown headers. For example, <code>\section{Sections and subsections}</code> is transformed into <code># Sections and subsections</code>. This works similarly for subsections and sub-subsections.</p>
-<section class="level2">
-<h2 class="anchored" data-anchor-id="">This is a subsection</h2>
-<section class="level3">
-<h3 class="anchored" data-anchor-id="">This is a sub-subsection</h3>
+<section id="this-is-a-subsection" class="level2">
+<h2 class="anchored" data-anchor-id="this-is-a-subsection">This is a subsection</h2>
+<section id="this-is-a-sub-subsection" class="level3">
+<h3 class="anchored" data-anchor-id="this-is-a-sub-subsection">This is a sub-subsection</h3>
 </section>
 </section>
 </section>
-<section class="level1">
+<section id="mathematical-equations" class="level1">
 <h1>Mathematical Equations</h1>
 <p>The native Quarto Markdown syntax for inline and unnumbered formulas (using single and double <code>$</code> symbols) is the same as in LaTeX, so no translation is needed. For numbered equations, like those produced by the <code>\begin{equation}</code> or <code>\begin{align}</code> environments, the script finds the block, extracts the math and the label, and converts them into the Quarto double <code>$$</code> syntax:</p>
-<p><span id="eq-secondorder"><span class="math display">\[x=\frac{-b\pm \sqrt{b^2-4ac}}{2a} \,, \tag{1}\]</span></span></p>
+<p><span id="eq-secondorder"><span class="math display">\[
+x=\frac{-b\pm \sqrt{b^2-4ac}}{2a} \,,
+\tag{1}\]</span></span></p>
 <p>Thanks to this, the equation can now be referenced anywhere using the native Quarto Markdown format, or even by using the standard LaTeX <code>\ref{eq:secondorder}</code> or <code>\eqref{eq:secondorder}</code> commands, which the script also translates into <code>@eq-secondorder</code>, like it has been done for Eq. (<a href="#eq-secondorder" class="quarto-xref">1</a>) and <a href="#eq-secondorder" class="quarto-xref">Equation&nbsp;1</a>.</p>
 </section>
-<section class="level1">
+<section id="text-formatting-and-lists" class="level1">
 <h1>Text Formatting and Lists</h1>
 <p><em>Italics</em> and <strong>bold</strong> text are supported. If text is wrapped in <code>\textit{italic}</code> or <code>\textbf{bold}</code> commands, the script will replace the LaTeX tags with the single <code>*</code> and double <code>**</code> asterisks used in Markdown.</p>
 <p>List environments are also converted. For example, the <code>\begin{itemize}</code> environment:</p>
@@ -292,7 +294,7 @@ window.Quarto = {
 </ol>
 <p>will be transformed into a numbered list using <code>1.</code>.</p>
 </section>
-<section class="level1">
+<section id="figures" class="level1">
 <h1>Figures</h1>
 <p>Inserting images in LaTeX usually requires a full figure block. The script is designed to read the standard figure environment, extract the crucial pieces of information (the image path, width, caption, and label), and compress them into the single-line Quarto syntax:</p>
 <div id="fig-frog" class="quarto-figure quarto-figure-center anchored">
@@ -303,7 +305,7 @@ window.Quarto = {
 </div>
 <p>The script will strip away the extra LaTeX wrappers and output <code>![Default frog picture.](img/Examples/frog.jpg){#fig-frog width="4cm"}</code>, ensuring images load and cross-reference perfectly in the wiki <strong>?@fig-frog</strong>.</p>
 </section>
-<section class="level1">
+<section id="links-and-citations" class="level1">
 <h1>Links and Citations</h1>
 <p>Hyperlinks created with the hyperref package are easily converted. When the script sees <code>\href{https://github.com/MKReyesH/ScientificWiki}{GitHub Repository}</code>, it rearranges the URL and the text into the Quarto Markdown format: <code>[GitHub Repository](https://github.com/MKReyesH/ScientificWiki)</code>.</p>
 <p>For bibliography management, the standard cite command can continue to be used, like <span class="citation" data-cites="ReyesHung:2023udr">[<a href="#ref-ReyesHung:2023udr" role="doc-biblioref">1</a>]</span>. A command like <code>\cite{ReyesHung:2023udr}</code> will be directly converted into Quarto’s <code>[@ReyesHung:2023udr]</code> syntax. If multiple papers are cited inside the same command, the script will separate them properly inside the brackets.</p>
