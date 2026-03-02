@@ -55,7 +55,26 @@ div.sourceCode
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
@@ -272,10 +291,9 @@ window.Quarto = {
 <p>GitHub Pages transforms plain text files into HTML webpages. In this template, files use the <code>.qmd</code> extension and follow Quarto Markdown syntax. Below are examples of the most commonly used formatting structures.</p>
 <section id="sections-and-subsections" class="level1">
 <h1>Sections and Subsections</h1>
-<p>Section headers are created by adding one or more <code>#</code> symbols followed by a space. Typing a single <code>#</code> creates a main section header. Adding more symbols creates deeper hierarchies; for example, typing <code>## This is a subsection</code> generates a secondary heading:</p>
+<p>Section headers are created by adding one or more <code>#</code> symbols followed by a space. Typing a single <code>#</code> creates a main section header. Adding more symbols creates deeper hierarchies; for example, typing <code>## This is a subsection</code> generates a secondary heading. Similarly, using three symbols like <code>### This is a sub-subsection</code> produces a tertiary heading.</p>
 <section id="this-is-a-subsection" class="level2">
 <h2 class="anchored" data-anchor-id="this-is-a-subsection">This is a subsection</h2>
-<p>Similarly, using three symbols like <code>### This is a sub-subsection</code> produces a tertiary heading:</p>
 <section id="this-is-a-sub-subsection" class="level3">
 <h3 class="anchored" data-anchor-id="this-is-a-sub-subsection">This is a sub-subsection</h3>
 </section>
@@ -283,25 +301,24 @@ window.Quarto = {
 </section>
 <section id="mathematical-equations" class="level1">
 <h1>Mathematical Equations</h1>
-<p>Inline equations, such as <span class="math inline">\(x^2+y^2=r^2\)</span>, are written by enclosing the formula in single <code>$</code> symbols directly within the text.</p>
-<p>To write a standalone equation on its own line, enclose the formula in double <code>$$</code> symbols. To make the equation cross-referenceable, append an identifier starting with <code>#eq-</code> to the closing <code>$$</code>:</p>
-<pre class="text"><code>$$
-  x=\frac{-b\pm \sqrt{b^2-4ac}}{2a} \,,
-$$ {#eq-secondorder}</code></pre>
+<p>Inline equations, such as <span class="math inline">\(x^2+y^2=r^2\)</span>, are written by enclosing the formula in single <code>$</code> symbols directly within the text. To write a standalone equation on its own line, enclose the formula in double <code>$$</code> symbols. To make the equation cross-referenceable, append an identifier starting with <code>#eq-</code> to the closing <code>$$</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode latex code-with-copy"><code class="sourceCode latex"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ss">$$</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ss">  x=</span><span class="sc">\frac</span><span class="ss">{-b</span><span class="sc">\pm</span><span class="ss"> </span><span class="sc">\sqrt</span><span class="ss">{b^2-4ac}}{2a} </span><span class="sc">\,</span><span class="ss">,</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ss">$$</span> {#eq-secondorder}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Once processed, the equation is displayed and numbered automatically:</p>
 <p><span id="eq-secondorder"><span class="math display">\[
   x=\frac{-b\pm \sqrt{b^2-4ac}}{2a} \,,
 \tag{1}\]</span></span></p>
-<p>This equation can then be referenced in the text using <code>@eq-secondorder</code>, which automatically renders a clickable link with the appropriate prefix, such as Equation 1.</p>
-<p>If the automatic prefix needs to be suppressed, place the reference inside square brackets with a minus sign and wrap it in parentheses. For instance, typing <code>Eq. ([-@eq-secondorder])</code> will suppress the word “Equation” and render just the number in-between parentheses, resulting in Eq. (1).</p>
+<p>This equation can then be referenced in the text using <code>@eq-secondorder</code>, which automatically renders a clickable link with the appropriate prefix, such as <a href="#eq-secondorder" class="quarto-xref">Equation&nbsp;1</a>.</p>
+<p>If the automatic prefix needs to be suppressed, place the reference inside square brackets with a minus sign and wrap it in parentheses. For instance, typing <code>Eq. (-@eq-secondorder)</code> will suppress the word “Equation” and render just the number in-between parentheses, resulting in (<a href="#eq-secondorder" class="quarto-xref">1</a>).</p>
 </section>
 <section id="text-formatting-and-lists" class="level1">
 <h1>Text Formatting and Lists</h1>
 <p>Text formatting is achieved by enclosing words in asterisks. Using single asterisks produces <em>italic</em> text (e.g., <code>*italic*</code>), while double asterisks produce <strong>bold</strong> text (e.g., <code>**bold**</code>).</p>
 <p>Unordered lists are created using the <code>-</code> symbol, where the level of indentation determines the hierarchy of the items:</p>
-<pre class="text"><code>- Level 1 item
-  - Level 2 item
-    - Level 3 item</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Level 1 item</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>Level 2 item</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="ss">    - </span>Level 3 item</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>This syntax generates the following bulleted list:</p>
 <ul>
 <li>Level 1 item
@@ -313,9 +330,9 @@ $$ {#eq-secondorder}</code></pre>
 </ul></li>
 </ul>
 <p>Ordered lists use numbers instead of dashes. Typing <code>1.</code> for every item is sufficient, as the list will automatically number itself correctly upon rendering:</p>
-<pre class="text"><code>1. First element
-1. Second element
-1. Third element</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>First element</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Second element</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Third element</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The compiled list appears as:</p>
 <ol type="1">
 <li>First element</li>
@@ -326,8 +343,8 @@ $$ {#eq-secondorder}</code></pre>
 <section id="figures-and-tables" class="level1">
 <h1>Figures and Tables</h1>
 <p>To insert an image, provide a caption inside square brackets and the file path inside parentheses. A label and display attributes, such as width, can be appended in curly braces:</p>
-<pre class="text"><code>![Default frog picture.](/img/Examples/frog.jpg){#fig-frog width="4cm"}</code></pre>
-<p>This places the image in the document, allowing it to be referenced anywhere in the text using <code>@fig-frog</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="al">![Default frog picture.](/img/Examples/frog.jpg)</span>{#fig-frog width="4cm"}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>This places the image in the document, allowing it to be referenced anywhere in the text using <code>@fig-frog</code> (e.g. <a href="#fig-frog" class="quarto-xref">Figure&nbsp;1</a>):</p>
 <div id="fig-frog" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-frog-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -344,7 +361,7 @@ Figure&nbsp;1: Default frog picture.
 | a        | b        | c        |
 | d        | e        | f        |
 : Table caption {#tbl-example}</code></pre>
-<p>The resulting formatted table can then be referenced using <code>@tbl-example</code>:</p>
+<p>The resulting formatted table can then be referenced using <code>@tbl-example</code> (e.g., <a href="#tbl-example" class="quarto-xref">Table&nbsp;1</a>):</p>
 <div id="tbl-example" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-example-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -379,16 +396,16 @@ Table&nbsp;1: Table caption
 <section id="blockquotes-and-callouts" class="level1">
 <h1>Blockquotes and Callouts</h1>
 <p>To emphasize a quote, start the line with a <code>&gt;</code> symbol:</p>
-<pre class="text"><code>&gt; "If it is on the internet... it must be true."
-&gt; - Abraham Lincoln</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; "If it is on the internet... it must be true."</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; - Abraham Lincoln</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The text is then visually set apart as a blockquote:</p>
 <blockquote class="blockquote">
 <p>“If it is on the internet… it must be true.” - Abraham Lincoln</p>
 </blockquote>
 <p>Quarto Markdown also features Callout Blocks to draw attention to notes, warnings, or tips. These are created by wrapping the text in three colons (<code>:::</code>) and specifying the desired callout type:</p>
-<pre class="text"><code>:::{.callout-note}
-This is a helpful note! The options `.callout-warning`, `.callout-tip`, `.callout-caution`, and `.callout-important` change the color and icon of the box.
-:::</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>:::{.callout-note}</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>This is a helpful note! The options <span class="in">`.callout-warning`</span>, <span class="in">`.callout-tip`</span>, <span class="in">`.callout-caution`</span>, and <span class="in">`.callout-important`</span> change the color and icon of the box.</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>:::</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The rendered callout box provides a distinct visual element:</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -407,37 +424,41 @@ Note
 <section id="code-snippets" class="level1">
 <h1>Code Snippets</h1>
 <p>Short, inline code within a sentence is formatted by enclosing the text in single backticks (<code>`</code>). For multi-line code blocks with syntax highlighting, enclose the block in triple backticks and specify the programming language on the first line:</p>
-<pre class="text"><code>```cpp
-float sum (float a, float b) {
-  return a + b;
-}
-```</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="in">```cpp</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="dt">float</span> sum <span class="op">(</span><span class="dt">float</span> a<span class="op">,</span> <span class="dt">float</span> b<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> a <span class="op">+</span> b<span class="op">;</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>This displays the code block with the appropriate language-specific coloring:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode cpp code-with-copy"><code class="sourceCode cpp"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="dt">float</span> sum <span class="op">(</span><span class="dt">float</span> a<span class="op">,</span> <span class="dt">float</span> b<span class="op">)</span> <span class="op">{</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> a <span class="op">+</span> b<span class="op">;</span></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-<section id="links-citations-and-footnotes" class="level1">
-<h1>Links, Citations, and Footnotes</h1>
+<section id="links-footnotes-and-citations" class="level1">
+<h1>Links, Footnotes and Citations</h1>
 <p>Hyperlinks are created by placing the link text in square brackets followed by the URL in parentheses. For example, typing <code>[GitHub Repository](https://github.com/MKReyesH/ScientificWiki)</code> renders as a clickable link: <a href="https://github.com/MKReyesH/ScientificWiki">GitHub Repository</a>.</p>
 <p>Internal links to a specific section on the same page follow the exact same syntax, replacing the URL with the section’s heading. The heading must be written in lowercase, using hyphens instead of spaces, and prefixed with a <code>#</code>. For example, <code>[first section](#sections-and-subsections)</code> creates a link that navigates back to the <a href="#sections-and-subsections">first section</a>.</p>
-<p>To cite references from a bibliography file, place the <code>@</code> symbol and the citation key inside square brackets. Typing <code>[@ReyesHung:2023udr]</code> produces a formatted citation in the text. Multiple citations within the same brackets are separated by semicolons, and a reference list is automatically appended to the end of the document.</p>
 <p>Footnotes are added using a caret and an identifier inside square brackets. The actual content of the footnote is defined anywhere else in the document by matching the identifier, followed by a colon and the text:</p>
-<pre class="text"><code>This is a sentence with a footnote[^1].
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>This is a sentence with a footnote<span class="ot">[^1]</span>.</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="ot">[^1]: </span>This is the text of the footnote.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>When rendered, a superscript number is inserted into the text, and the note is placed at the bottom of the page<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
+<p>To cite references from a bibliography file, place the <code>@</code> symbol and the citation key inside square brackets. Typing <code>[@ReyesHung:2023udr]</code> produces a formatted citation in the text. Multiple citations within the same brackets are separated by semicolons, and a reference list is automatically appended to the end of the document (e.g, <span class="citation" data-cites="ReyesHung:2023udr">[<a href="#ref-ReyesHung:2023udr" role="doc-biblioref">1</a>]</span>).</p>
 
-[^1]: This is the text of the footnote.</code></pre>
-<p>When rendered, a superscript number is inserted into the text, and the note is placed at the bottom of the page:</p>
-<p>This is a sentence with a footnote<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
 
 
 
 </section>
 
 
-<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body" role="list">
+<div id="ref-ReyesHung:2023udr" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[1] </div><div class="csl-right-inline">Reyes Hung M A 2023 <em><a href="https://arxiv.org/abs/2307.03462"><span class="nocase">Exploration of possible signals beyond special relativity using high-energy astroparticle physics</span></a></em> PhD thesis (U. Zaragoza (main))</div>
+</div>
+</div></section><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
 
 <ol>
-<li id="fn1"><p>This is the text of the footnote.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn1"><p>For example, this is a footnote.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

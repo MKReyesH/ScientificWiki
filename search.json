@@ -60,7 +60,7 @@
     "href": "doc/Examples/example1.html#this-is-a-subsection",
     "title": "How to write a page using Markdown",
     "section": "This is a subsection",
-    "text": "This is a subsection\nSimilarly, using three symbols like ### This is a sub-subsection produces a tertiary heading:\n\nThis is a sub-subsection",
+    "text": "This is a subsection\n\nThis is a sub-subsection",
     "crumbs": [
       "Topics",
       "Examples",
@@ -72,7 +72,7 @@
     "href": "doc/Examples/example1.html#footnotes",
     "title": "How to write a page using Markdown",
     "section": "Footnotes",
-    "text": "Footnotes\n\n\nThis is the text of the footnote.↩︎",
+    "text": "Footnotes\n\n\nFor example, this is a footnote.↩︎",
     "crumbs": [
       "Topics",
       "Examples",
