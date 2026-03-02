@@ -48,7 +48,7 @@
     "href": "doc/Examples/example1.html",
     "title": "How to write a page using Markdown",
     "section": "",
-    "text": "GitHub Pages can transform simple plain text files into HTML webpages. For this template the files have .qmd extension and follow the Quarto Markdown syntax. Below are examples of the formatting you will use most often.",
+    "text": "GitHub Pages transforms plain text files into HTML webpages. In this template, files use the .qmd extension and follow Quarto Markdown syntax. Below are examples of the most commonly used formatting structures.",
     "crumbs": [
       "Topics",
       "Examples",
@@ -60,7 +60,19 @@
     "href": "doc/Examples/example1.html#this-is-a-subsection",
     "title": "How to write a page using Markdown",
     "section": "This is a subsection",
-    "text": "This is a subsection\n\nThis is a sub-subsection",
+    "text": "This is a subsection\nSimilarly, using three symbols like ### This is a sub-subsection produces a tertiary heading:\n\nThis is a sub-subsection",
+    "crumbs": [
+      "Topics",
+      "Examples",
+      "How to write a page using Markdown"
+    ]
+  },
+  {
+    "objectID": "doc/Examples/example1.html#footnotes",
+    "href": "doc/Examples/example1.html#footnotes",
+    "title": "How to write a page using Markdown",
+    "section": "Footnotes",
+    "text": "Footnotes\n\n\nThis is the text of the footnote.↩︎",
     "crumbs": [
       "Topics",
       "Examples",
