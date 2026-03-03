@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>How to write a page using Markdown – Scientific Wiki Template</title>
+<title>How to write a page using Quarto Markdown – Scientific Wiki Template</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -165,7 +165,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Topics</li><li class="breadcrumb-item"><a href="../../doc/Examples/example1.html">Examples</a></li><li class="breadcrumb-item"><a href="../../doc/Examples/example1.html">How to write a page using Markdown</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Topics</li><li class="breadcrumb-item"><a href="../../doc/Examples/example1.html">Examples</a></li><li class="breadcrumb-item"><a href="../../doc/Examples/example1.html">How to write a page using Quarto Markdown</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -218,13 +218,13 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../doc/Examples/example1.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">How to write a page using Markdown</span></a>
+ <span class="menu-text">How to write a page using Quarto Markdown</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../doc/Examples/example2.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">How to write a page using LaTeX</span></a>
+ <span class="menu-text">Allowed LaTeX syntax for page writing</span></a>
   </div>
 </li>
       </ul>
@@ -269,9 +269,9 @@ window.Quarto = {
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Topics</li><li class="breadcrumb-item"><a href="../../doc/Examples/example1.html">Examples</a></li><li class="breadcrumb-item"><a href="../../doc/Examples/example1.html">How to write a page using Markdown</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Topics</li><li class="breadcrumb-item"><a href="../../doc/Examples/example1.html">Examples</a></li><li class="breadcrumb-item"><a href="../../doc/Examples/example1.html">How to write a page using Quarto Markdown</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">How to write a page using Markdown</h1>
+<h1 class="title">How to write a page using Quarto Markdown</h1>
 </div>
 
 
@@ -296,12 +296,13 @@ window.Quarto = {
 <h2 class="anchored" data-anchor-id="this-is-a-subsection">This is a subsection</h2>
 <section id="this-is-a-sub-subsection" class="level3">
 <h3 class="anchored" data-anchor-id="this-is-a-sub-subsection">This is a sub-subsection</h3>
+<p>To make a section cross-referenceable, append an identifier starting with <code>#sec-</code> to the header. For example, typing <code>## Mathematical Equations {#sec-maths}</code> allows the section to be referenced anywhere in the document using <code>@sec-maths</code>.</p>
 </section>
 </section>
 </section>
 <section id="mathematical-equations" class="level1">
 <h1>Mathematical Equations</h1>
-<p>Inline equations, such as <span class="math inline">\(x^2+y^2=r^2\)</span>, are written by enclosing the formula in single <code>$</code> symbols directly within the text. To write a standalone equation on its own line, enclose the formula in double <code>$$</code> symbols. To make the equation cross-referenceable, append an identifier starting with <code>#eq-</code> to the closing <code>$$</code>:</p>
+<p>Inline equations, such as <span class="math inline">\(x^2+y^2=r^2\)</span>, are written by enclosing the formula in single <code>$</code> symbols directly within the text. To write a standalone equation on its own line, enclose the formula in double <code>$$</code> symbols. To make the equation cross-referenceable, append an identifier to the closing <code>$$</code>. This identifier must strictly begin with the <code>#eq-</code> prefix for Quarto to recognize it as an equation:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode latex code-with-copy"><code class="sourceCode latex"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ss">$$</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ss">  x=</span><span class="sc">\frac</span><span class="ss">{-b</span><span class="sc">\pm</span><span class="ss"> </span><span class="sc">\sqrt</span><span class="ss">{b^2-4ac}}{2a} </span><span class="sc">\,</span><span class="ss">,</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ss">$$</span> {#eq-secondorder}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -342,7 +343,7 @@ window.Quarto = {
 </section>
 <section id="figures-and-tables" class="level1">
 <h1>Figures and Tables</h1>
-<p>To insert an image, provide a caption inside square brackets and the file path inside parentheses. A label and display attributes, such as width, can be appended in curly braces:</p>
+<p>To insert an image, provide a caption inside square brackets and the file path inside parentheses. A label and display attributes, such as width, can be appended inside curly braces. The label must strictly begin with the <code>#fig-</code> prefix for Quarto to recognize and number the image correctly:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="al">![Default frog picture.](/img/Examples/frog.jpg)</span>{#fig-frog width="4cm"}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>This places the image in the document, allowing it to be referenced anywhere in the text using <code>@fig-frog</code> (e.g. <a href="#fig-frog" class="quarto-xref">Figure&nbsp;1</a>):</p>
 <div id="fig-frog" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -355,7 +356,7 @@ Figure&nbsp;1: Default frog picture.
 </figcaption>
 </figure>
 </div>
-<p>Tables are constructed using vertical pipes (<code>|</code>) to separate columns and hyphens (<code>-</code>) to divide the header from the content. Colons (<code>:</code>) are added to the divider to control text alignment. A caption and a reference label can be placed at the bottom:</p>
+<p>Tables are constructed using vertical pipes (<code>|</code>) to separate columns and hyphens (<code>-</code>) to divide the header from the content. Colons (<code>:</code>) are added to the divider to control text alignment. A caption and a reference label can be placed at the bottom. The label must strictly begin with the <code>#tbl-</code> prefix for Quarto to recognize and number the table correctly:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Column 1 <span class="pp">|</span> Column 2 <span class="pp">|</span> Column 3 <span class="pp">|</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="pp">|:---------|:---------|:---------|</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> a        <span class="pp">|</span> b        <span class="pp">|</span> c        <span class="pp">|</span></span>

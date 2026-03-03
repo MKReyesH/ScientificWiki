@@ -12,25 +12,25 @@
   {
     "objectID": "doc/Examples/example2.html",
     "href": "doc/Examples/example2.html",
-    "title": "How to write a page using LaTeX",
+    "title": "Allowed LaTeX syntax for page writing",
     "section": "",
-    "text": "In the scientific community, it is very common to have texts, equations, and full documents already written in LaTeX. Instead of manually rewriting these documents using Quarto Markdown syntax, this template provides an automatic script that replaces the most common LaTeX environments and commands with their Quarto Markdown equivalents. To distinguish these hybrid files from standard LaTeX documents, a custom .qtex extension is used.\nThis document serves as both a guide and a test file for the script. It is written using the supported LaTeX commands to explain exactly how the transformation works. Because this script is a simple text replacer and not a full LaTeX compiler, any LaTeX environment or command that is not explicitly demonstrated on this page (such as \\begin{table} or complex macros) is not supported and will not be automatically replaced. For those unsupported elements, native Quarto Markdown syntax must be used. Additionally, all the standard Quarto Markdown commands explained in the Markdown guide can be used.",
+    "text": "In the scientific community, it is very common to have texts, equations, and full documents already written in LaTeX. This implies that one needs to translate such a content to the quarto markdown syntax explained in the prevous guide. However, this template allows for the use of some simple LaTeX syntax (in combination with native syntax), which is converted on the fly to the correct quarto markdown syntax. This document serves as both a guide and a test file for the script. It is written using the supported LaTeX commands to explain exactly how the transformation works.",
     "crumbs": [
       "Topics",
       "Examples",
-      "How to write a page using LaTeX"
+      "Allowed LaTeX syntax for page writing"
     ]
   },
   {
     "objectID": "doc/Examples/example2.html#this-is-a-subsection",
     "href": "doc/Examples/example2.html#this-is-a-subsection",
-    "title": "How to write a page using LaTeX",
+    "title": "Allowed LaTeX syntax for page writing",
     "section": "This is a subsection",
     "text": "This is a subsection\n\nThis is a sub-subsection",
     "crumbs": [
       "Topics",
       "Examples",
-      "How to write a page using LaTeX"
+      "Allowed LaTeX syntax for page writing"
     ]
   },
   {
@@ -46,37 +46,37 @@
   {
     "objectID": "doc/Examples/example1.html",
     "href": "doc/Examples/example1.html",
-    "title": "How to write a page using Markdown",
+    "title": "How to write a page using Quarto Markdown",
     "section": "",
     "text": "GitHub Pages transforms plain text files into HTML webpages. In this template, files use the .qmd extension and follow Quarto Markdown syntax. Below are examples of the most commonly used formatting structures.",
     "crumbs": [
       "Topics",
       "Examples",
-      "How to write a page using Markdown"
+      "How to write a page using Quarto Markdown"
     ]
   },
   {
     "objectID": "doc/Examples/example1.html#this-is-a-subsection",
     "href": "doc/Examples/example1.html#this-is-a-subsection",
-    "title": "How to write a page using Markdown",
+    "title": "How to write a page using Quarto Markdown",
     "section": "This is a subsection",
-    "text": "This is a subsection\n\nThis is a sub-subsection",
+    "text": "This is a subsection\n\nThis is a sub-subsection\nTo make a section cross-referenceable, append an identifier starting with #sec- to the header. For example, typing ## Mathematical Equations {#sec-maths} allows the section to be referenced anywhere in the document using @sec-maths.",
     "crumbs": [
       "Topics",
       "Examples",
-      "How to write a page using Markdown"
+      "How to write a page using Quarto Markdown"
     ]
   },
   {
     "objectID": "doc/Examples/example1.html#footnotes",
     "href": "doc/Examples/example1.html#footnotes",
-    "title": "How to write a page using Markdown",
+    "title": "How to write a page using Quarto Markdown",
     "section": "Footnotes",
     "text": "Footnotes\n\n\nFor example, this is a footnote.↩︎",
     "crumbs": [
       "Topics",
       "Examples",
-      "How to write a page using Markdown"
+      "How to write a page using Quarto Markdown"
     ]
   },
   {
