@@ -20,6 +20,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 /* CSS for citations */
 div.csl-bib-body { }
 div.csl-entry {
@@ -253,7 +288,7 @@ window.Quarto = {
 </header>
 
 
-<p>In the scientific community, it is very common to have texts, equations, and full documents already written in LaTeX. This implies that one needs to translate such a content to the quarto markdown syntax explained in the <a href="../../doc/Examples/example1.html">prevous guide</a>. However, this template allows for the use of some simple LaTeX syntax (in combination with native syntax), which is converted on the fly to the correct quarto markdown syntax. This document serves as both a guide and a test file for the script. It is written using the supported LaTeX commands to explain exactly how the transformation works.</p>
+<p>In the scientific community, it is very common to have texts, equations, and full documents already written in LaTeX. This implies that one needs to translate such content to the Quarto Markdown syntax explained in the <a href="../../doc/Examples/example1.html">previous guide</a>. However, this template allows for the use of some simple LaTeX syntax (in combination with native syntax), which is converted on the fly to the correct Quarto Markdown format. This document serves as both a guide and a test file for the translation rules. It is written using the supported LaTeX commands to explain exactly how the transformation works.</p>
 <div class="callout callout-style-default callout-warning callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -268,8 +303,8 @@ Warning
 </div>
 </div>
 <section id="sections-and-subsections" class="level1">
-<h1>Sections and subsections</h1>
-<p>When structuring a document using standard LaTeX sectioning, the script will translate those commands into Markdown headers. For example, <code>\section{Section}</code> is transformed into <code># Section</code>. This works similarly for subsections and sub-subsections.</p>
+<h1>Sections and Subsections</h1>
+<p>When structuring a document using standard LaTeX sectioning, the script will translate those commands into Markdown headers. For example, typing <code>\section{Sections and Subsections}</code> generates a main section header. Similarly, using the <code>\subsection{This is a subsection}</code> command produces a secondary heading, and <code>\subsubsection{This is a sub-subsection}</code> creates a tertiary heading.</p>
 <section id="this-is-a-subsection" class="level2">
 <h2 class="anchored" data-anchor-id="this-is-a-subsection">This is a subsection</h2>
 <section id="this-is-a-sub-subsection" class="level3">
@@ -279,25 +314,30 @@ Warning
 </section>
 <section id="mathematical-equations" class="level1">
 <h1>Mathematical Equations</h1>
-<p>The native Quarto Markdown syntax for inline and unnumbered formulas (using single and double <code>$</code> symbols) is the same as in LaTeX, so no translation is needed. For numbered equations produced by the <code>\begin{equation}</code> environments, the script finds the block, extracts the math and the label, and converts them into the Quarto double <code>$$</code> syntax:</p>
-<p><span id="eq-secondorder"><span class="math display">\[
+<p>The native Quarto Markdown syntax for inline and unnumbered formulas (using single and double <code>$</code> symbols) is the exact same as in LaTeX, so no translation is needed. For numbered equations produced by the <code>equation</code> environment, the script finds the block, extracts the math alongside its label, and converts them into the native Quarto syntax:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode latex code-with-copy"><code class="sourceCode latex"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">\begin</span>{<span class="ex">equation</span>}</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ss">  x=</span><span class="sc">\frac</span><span class="ss">{-b</span><span class="sc">\pm</span><span class="ss"> </span><span class="sc">\sqrt</span><span class="ss">{b^2-4ac}}{2a} </span><span class="sc">\,</span><span class="ss">,</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ss">  </span><span class="sc">\label</span><span class="ss">{eq:secondorder_latex}</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="kw">\end</span>{<span class="ex">equation</span>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Once processed, the equation is displayed and numbered automatically:</p>
+<p><span id="eq-secondorder_latex"><span class="math display">\[
 x=\frac{-b\pm \sqrt{b^2-4ac}}{2a} \,,
 \tag{1}\]</span></span></p>
-<p>Thanks to this, the equation can now be referenced anywhere using the native Quarto Markdown format, or even by using the standard LaTeX <code>\ref{eq:secondorder}</code> (for just the number) or <code>\eqref{eq:secondorder}</code> (for the number in parentheses), like it has been done for Eq. (<a href="#eq-secondorder" class="quarto-xref">1</a>).</p>
+<p>Thanks to this automated translation, the equation can now be referenced anywhere using the standard LaTeX <code>\ref{eq:secondorder_latex}</code> to output just the number, or <code>\eqref{eq:secondorder_latex}</code> to automatically wrap the number in parentheses, like it has been done for Eq. (<a href="#eq-secondorder_latex" class="quarto-xref">1</a>).</p>
 </section>
 <section id="text-formatting" class="level1">
 <h1>Text Formatting</h1>
-<p> and text are supported. If text is wrapped in <code>\textit{italic}</code> or <code>\textbf{bold}</code> commands, the script will replace the LaTeX tags with the single <code>*</code> and double <code>**</code> asterisks used in Markdown.</p>
+<p>Standard LaTeX text formatting commands are fully supported. If text is wrapped in the <code>\textit{italic}</code> command, it will be rendered as . Likewise, using the <code>\textbf{bold}</code> command ensures the text is rendered as . Behind the scenes, the script simply replaces these LaTeX tags with the single (<code>*</code>) and double (<code>**</code>) asterisks used in Markdown.</p>
 </section>
-<section id="links-footnotes-and-citations" class="level1">
-<h1>Links, Footnotes and Citations</h1>
-<p>Hyperlinks created with the hyperref package are easily converted. When the script sees <code>\href{https://github.com/MKReyesH/ScientificWiki}{GitHub Repository}</code>, it rearranges the URL and the text into the Quarto Markdown format: <code>[GitHub Repository](https://github.com/MKReyesH/ScientificWiki)</code> (e.g.&nbsp;).</p>
-<p>Footnotes…</p>
-<p>For bibliography management, the standard cite command can continue to be used, like <span class="citation" data-cites="ReyesHung:2023udr">[<a href="#ref-ReyesHung:2023udr" role="doc-biblioref">1</a>]</span>. A command like <code>\cite{ReyesHung:2023udr}</code> will be directly converted into Quarto’s <code>[@ReyesHung:2023udr]</code> syntax. If multiple papers are cited inside the same command, the script will separate them properly inside the brackets.</p>
+<section id="links-and-citations" class="level1">
+<h1>Links and Citations</h1>
+<p>Hyperlinks created with the standard <code>href</code> command are easily converted. When the script sees a command like <code>\href{https://github.com/MKReyesH/ScientificWiki}{GitHub Repository}</code>, it rearranges the URL and the text into the correct Markdown format, rendering a clickable link (e.g.&nbsp;).</p>
+<p>For bibliography management, the standard citation commands continue to function perfectly. A command like <code>\cite{ReyesHung:2023udr}</code> is directly converted, producing a formatted citation like <code>[@ReyesHung:2023udr]</code> in the text (e.g.&nbsp;<span class="citation" data-cites="ReyesHung:2023udr">[<a href="#ref-ReyesHung:2023udr" role="doc-biblioref">1</a>]</span>). If multiple papers are cited inside the exact same command, such as <code>\cite{ReyesHung:2023udr, AnotherCitation}</code>, the script will properly separate them and display a combined citation.</p>
 </section>
-<section id="lists-figures-tables-and-everything-else" class="level1">
-<h1>Lists, Figures, Tables and everything else</h1>
-<p>Inserting lists, figures and tables in LaTeX usually requires the use of much more complicated syntax than doing it directly in markdown. Additionally, the translation of this environments can be complicated due to nested and possible mixing of this enviroments. Then, these enviroments, and in general any other LaTeX syntax, is not supported for automatic translation and will removed from the final webpage. If some of this environments are needed, please use the much easier quarto markdown native syntax, as shown in <a href="../../doc/Examples/example1.html">Quarto Markdown Guide</a>.</p>
+<section id="lists-figures-tables-footnotes-and-everything-else" class="level1">
+<h1>Lists, Figures, Tables, Footnotes and Everything Else</h1>
+<p>Inserting footnotes, lists, figures, and tables in LaTeX usually requires the use of much more complicated syntax than doing it directly in Markdown. Translating these elements using a simple script is incredibly fragile due to decoupled structures, nested elements, and the possible mixing of different environments.</p>
+<p>Therefore, these elements (and in general, any other LaTeX syntax not explicitly mentioned on this page) are not supported for automatic translation. If the script encounters them, they will likely be broken or removed from the final webpage. If any of these elements are needed for your document, please use the much easier, native Quarto Markdown syntax, as shown in the <a href="../../doc/Examples/example1.html">Quarto Markdown Guide</a>.</p>
 
 
 

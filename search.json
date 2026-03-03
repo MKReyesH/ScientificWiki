@@ -14,7 +14,7 @@
     "href": "doc/Examples/example2.html",
     "title": "Allowed LaTeX syntax for page writing",
     "section": "",
-    "text": "In the scientific community, it is very common to have texts, equations, and full documents already written in LaTeX. This implies that one needs to translate such a content to the quarto markdown syntax explained in the prevous guide. However, this template allows for the use of some simple LaTeX syntax (in combination with native syntax), which is converted on the fly to the correct quarto markdown syntax. This document serves as both a guide and a test file for the script. It is written using the supported LaTeX commands to explain exactly how the transformation works.",
+    "text": "In the scientific community, it is very common to have texts, equations, and full documents already written in LaTeX. This implies that one needs to translate such content to the Quarto Markdown syntax explained in the previous guide. However, this template allows for the use of some simple LaTeX syntax (in combination with native syntax), which is converted on the fly to the correct Quarto Markdown format. This document serves as both a guide and a test file for the translation rules. It is written using the supported LaTeX commands to explain exactly how the transformation works.",
     "crumbs": [
       "Topics",
       "Examples",
