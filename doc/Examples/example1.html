@@ -307,9 +307,11 @@ window.Quarto = {
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ss">  x=</span><span class="sc">\frac</span><span class="ss">{-b</span><span class="sc">\pm</span><span class="ss"> </span><span class="sc">\sqrt</span><span class="ss">{b^2-4ac}}{2a} </span><span class="sc">\,</span><span class="ss">,</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ss">$$</span> {#eq-secondorder}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Once processed, the equation is displayed and numbered automatically:</p>
-<p> {#eq-secondorder}</p>
-<p>This equation can then be referenced in the text using <code>@eq-secondorder</code>, which automatically renders a clickable link with the appropriate prefix, such as <strong>?@eq-secondorder</strong>.</p>
-<p>If the automatic prefix needs to be suppressed, place the reference with a minus sign inside parentheses. For instance, typing <code>(-@eq-secondorder)</code> will suppress the word “Equation” and render just the number in-between parentheses, resulting in (<strong>?@eq-secondorder</strong>).</p>
+<p><span id="eq-secondorder"><span class="math display">\[
+  x=\frac{-b\pm \sqrt{b^2-4ac}}{2a} \,,
+\tag{1}\]</span></span></p>
+<p>This equation can then be referenced in the text using <code>@eq-secondorder</code>, which automatically renders a clickable link with the appropriate prefix, such as <a href="#eq-secondorder" class="quarto-xref">Equation&nbsp;1</a>.</p>
+<p>If the automatic prefix needs to be suppressed, place the reference with a minus sign inside parentheses. For instance, typing <code>(-@eq-secondorder)</code> will suppress the word “Equation” and render just the number in-between parentheses, resulting in (<a href="#eq-secondorder" class="quarto-xref">1</a>).</p>
 </section>
 <section id="text-formatting-and-lists" class="level1">
 <h1>Text Formatting and Lists</h1>
@@ -320,11 +322,11 @@ window.Quarto = {
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="ss">    - </span>Level 3 item</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>This syntax generates the following bulleted list:</p>
 <ul>
-<li>Level 1 item
+<li><p>Level 1 item</p>
 <ul>
-<li>Level 2 item
+<li><p>Level 2 item</p>
 <ul>
-<li>Level 3 item</li>
+<li><p>Level 3 item</p></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -334,9 +336,9 @@ window.Quarto = {
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Third element</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The compiled list appears as:</p>
 <ol type="1">
-<li>First element</li>
-<li>Second element</li>
-<li>Third element</li>
+<li><p>First element</p></li>
+<li><p>Second element</p></li>
+<li><p>Third element</p></li>
 </ol>
 </section>
 <section id="figures-and-tables" class="level1">
@@ -347,10 +349,10 @@ window.Quarto = {
 <div id="fig-frog" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-frog-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="../../img/Examples/frog.jpg" class="img-fluid figure-img" style="width:4cm">
+<p><img src="../../img/Examples/frog.jpg" class="img-fluid figure-img" style="width:4cm"></p>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-frog-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1: Default frog picture.
+<p>Figure&nbsp;1: Default frog picture.</p>
 </figcaption>
 </figure>
 </div>
@@ -370,21 +372,21 @@ Table&nbsp;1: Table caption
 <table class="caption-top table">
 <thead>
 <tr class="header">
-<th style="text-align: left;">Column 1</th>
-<th style="text-align: left;">Column 2</th>
-<th style="text-align: left;">Column 3</th>
+<th style="text-align: left;"><p>Column 1</p></th>
+<th style="text-align: left;"><p>Column 2</p></th>
+<th style="text-align: left;"><p>Column 3</p></th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">a</td>
-<td style="text-align: left;">b</td>
-<td style="text-align: left;">c</td>
+<td style="text-align: left;"><p>a</p></td>
+<td style="text-align: left;"><p>b</p></td>
+<td style="text-align: left;"><p>c</p></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">d</td>
-<td style="text-align: left;">e</td>
-<td style="text-align: left;">f</td>
+<td style="text-align: left;"><p>d</p></td>
+<td style="text-align: left;"><p>e</p></td>
+<td style="text-align: left;"><p>f</p></td>
 </tr>
 </tbody>
 </table>
