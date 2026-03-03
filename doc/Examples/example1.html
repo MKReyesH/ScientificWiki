@@ -312,14 +312,28 @@ window.Quarto = {
 \tag{1}\]</span></span></p>
 <p>This equation can then be referenced in the text using <code>@eq-secondorder</code>, which automatically renders a clickable link with the appropriate prefix, such as <a href="#eq-secondorder" class="quarto-xref">Equation&nbsp;1</a>.</p>
 <p>If the automatic prefix needs to be suppressed, place the reference with a minus sign inside parentheses. For instance, typing <code>(-@eq-secondorder)</code> will suppress the word “Equation” and render just the number in-between parentheses, resulting in (<a href="#eq-secondorder" class="quarto-xref">1</a>).</p>
+<p>For complex mathematical structures such as systems of equations or multi-line formulas, Quarto supports standard LaTeX inner environments like <code>aligned</code>, <code>split</code>, and <code>gathered</code> within the double <code>$$</code> blocks. These allow for precise vertical alignment and grouping while sharing a single reference number:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode latex code-with-copy"><code class="sourceCode latex"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ss">$$</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">\begin</span>{<span class="ex">aligned</span>}</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="ss">  A &amp;= B + C </span><span class="sc">\\</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="ss">  X &amp;= Y - Z</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="kw">\end</span>{<span class="ex">aligned</span>}</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="ss">$$</span> {#eq-systems}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><span id="eq-systems"><span class="math display">\[
+\begin{aligned}
+  A &amp;= B + C \\
+  X &amp;= Y - Z
+\end{aligned}
+\tag{2}\]</span></span></p>
+<p>Multi-labeled equations, like the standard LaTeX <code>align</code> environment, are not supported.</p>
 </section>
 <section id="text-formatting-and-lists" class="level1">
 <h1>Text Formatting and Lists</h1>
 <p>Text formatting is achieved by enclosing words in asterisks. Using single asterisks produces <em>italic</em> text (e.g.&nbsp;<code>*italic*</code>), while double asterisks produce <strong>bold</strong> text (e.g.&nbsp;<code>**bold**</code>).</p>
 <p>Unordered lists are created using the <code>-</code> symbol, where the level of indentation determines the hierarchy of the items:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Level 1 item</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>Level 2 item</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="ss">    - </span>Level 3 item</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Level 1 item</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>Level 2 item</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="ss">    - </span>Level 3 item</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>This syntax generates the following bulleted list:</p>
 <ul>
 <li><p>Level 1 item</p>
@@ -331,9 +345,9 @@ window.Quarto = {
 </ul></li>
 </ul>
 <p>Ordered lists use numbers instead of dashes. Typing <code>1.</code> for every item is sufficient, as the list will automatically number itself correctly upon rendering:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>First element</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Second element</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Third element</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>First element</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Second element</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Third element</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The compiled list appears as:</p>
 <ol type="1">
 <li><p>First element</p></li>
@@ -344,7 +358,7 @@ window.Quarto = {
 <section id="figures-and-tables" class="level1">
 <h1>Figures and Tables</h1>
 <p>To insert an image, provide a caption inside square brackets and the file path inside parentheses. A label and display attributes, such as width, can be appended inside curly braces. The label must strictly begin with the <code>#fig-</code> prefix for Quarto to recognize and number the image correctly:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="al">![Default frog picture.](/img/Examples/frog.jpg)</span>{#fig-frog width="4cm"}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="al">![Default frog picture.](/img/Examples/frog.jpg)</span>{#fig-frog width="4cm"}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>This places the image in the document, allowing it to be referenced anywhere in the text using <code>@fig-frog</code> (e.g. <a href="#fig-frog" class="quarto-xref">Figure&nbsp;1</a>):</p>
 <div id="fig-frog" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -357,11 +371,11 @@ window.Quarto = {
 </figure>
 </div>
 <p>Tables are constructed using vertical pipes (<code>|</code>) to separate columns and hyphens (<code>-</code>) to divide the header from the content. Colons (<code>:</code>) are added to the divider to control text alignment. A caption and a reference label can be placed at the bottom. The label must strictly begin with the <code>#tbl-</code> prefix for Quarto to recognize and number the table correctly:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Column 1 <span class="pp">|</span> Column 2 <span class="pp">|</span> Column 3 <span class="pp">|</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="pp">|:---------|:---------|:---------|</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> a        <span class="pp">|</span> b        <span class="pp">|</span> c        <span class="pp">|</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> d        <span class="pp">|</span> e        <span class="pp">|</span> f        <span class="pp">|</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>: Table caption {#tbl-example}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Column 1 <span class="pp">|</span> Column 2 <span class="pp">|</span> Column 3 <span class="pp">|</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="pp">|:---------|:---------|:---------|</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> a        <span class="pp">|</span> b        <span class="pp">|</span> c        <span class="pp">|</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> d        <span class="pp">|</span> e        <span class="pp">|</span> f        <span class="pp">|</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>: Table caption {#tbl-example}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The resulting formatted table can then be referenced using <code>@tbl-example</code> (e.g. <a href="#tbl-example" class="quarto-xref">Table&nbsp;1</a>):</p>
 <div id="tbl-example" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
@@ -397,16 +411,16 @@ Table&nbsp;1: Table caption
 <section id="blockquotes-and-callouts" class="level1">
 <h1>Blockquotes and Callouts</h1>
 <p>To emphasize a quote, start the line with a <code>&gt;</code> symbol:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; "If it is on the internet... it must be true."</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; - Abraham Lincoln</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; "If it is on the internet... it must be true."</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; - Abraham Lincoln</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The text is then visually set apart as a blockquote:</p>
 <blockquote class="blockquote">
 <p>“If it is on the internet… it must be true.” - Abraham Lincoln</p>
 </blockquote>
 <p>Quarto Markdown also features Callout Blocks to draw attention to notes, warnings, or tips. These are created by wrapping the text in three colons (<code>:::</code>) and specifying the desired callout type:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>:::{.callout-note}</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>This is a helpful note! The options <span class="in">`.callout-warning`</span>, <span class="in">`.callout-tip`</span>, <span class="in">`.callout-caution`</span>, and <span class="in">`.callout-important`</span> change the color and icon of the box.</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>:::</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>:::{.callout-note}</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>This is a helpful note! The options <span class="in">`.callout-warning`</span>, <span class="in">`.callout-tip`</span>, <span class="in">`.callout-caution`</span>, and <span class="in">`.callout-important`</span> change the color and icon of the box.</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>:::</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The rendered callout box provides a distinct visual element:</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -425,15 +439,15 @@ Note
 <section id="code-snippets" class="level1">
 <h1>Code Snippets</h1>
 <p>Short, inline code within a sentence is formatted by enclosing the text in single backticks (<code>`</code>). For multi-line code blocks with syntax highlighting, enclose the block in triple backticks and specify the programming language on the first line:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="in">```cpp</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="dt">float</span> sum <span class="op">(</span><span class="dt">float</span> a<span class="op">,</span> <span class="dt">float</span> b<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> a <span class="op">+</span> b<span class="op">;</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="in">```cpp</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="dt">float</span> sum <span class="op">(</span><span class="dt">float</span> a<span class="op">,</span> <span class="dt">float</span> b<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> a <span class="op">+</span> b<span class="op">;</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>This displays the code block with the appropriate language-specific coloring:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode cpp code-with-copy"><code class="sourceCode cpp"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="dt">float</span> sum <span class="op">(</span><span class="dt">float</span> a<span class="op">,</span> <span class="dt">float</span> b<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> a <span class="op">+</span> b<span class="op">;</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode cpp code-with-copy"><code class="sourceCode cpp"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="dt">float</span> sum <span class="op">(</span><span class="dt">float</span> a<span class="op">,</span> <span class="dt">float</span> b<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> a <span class="op">+</span> b<span class="op">;</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="links-footnotes-and-citations" class="level1">
 <h1>Links, Footnotes, and Citations</h1>
@@ -441,9 +455,9 @@ Note
 <p>To link to another page within the same wiki or project, use the exact same syntax but replace the URL with the relative path to the target <code>.qmd</code> file. Typing <code>[second page](/doc/Examples/example2.qmd)</code> creates a link to the <a href="../../doc/Examples/example2.html">second page</a>.</p>
 <p>To link to a specific section, append a <code>#</code> followed by the section’s heading identifier (the heading name in lowercase, using hyphens instead of spaces). This can be used to navigate to sections on the same page or on a different page. Typing <code>[first section](#sections-and-subsections)</code> links to the <a href="#sections-and-subsections">first section</a> on this page. Typing <code>[other section](/doc/Examples/example2.qmd#target-section)</code> links to a specific section on another page.</p>
 <p>Footnotes are added using a caret and an identifier inside square brackets. The actual content of the footnote is defined anywhere else in the document by matching the identifier, followed by a colon and the text:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>This is a sentence with a footnote<span class="ot">[^1]</span>.</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="ot">[^1]: </span>This is the text of the footnote.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>This is a sentence with a footnote<span class="ot">[^1]</span>.</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="ot">[^1]: </span>This is the text of the footnote.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>When rendered, a superscript number is inserted into the text, and the note is placed at the bottom of the page<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
 <p>To cite references from a bibliography file, place the <code>@</code> symbol and the citation key inside square brackets. Typing <code>[@ReyesHung:2023udr]</code> produces a formatted citation in the text (e.g. <span class="citation" data-cites="ReyesHung:2023udr">[<a href="#ref-ReyesHung:2023udr" role="doc-biblioref">1</a>]</span>). Multiple citations within the same brackets are separated by semicolons (e.g.&nbsp;<code>[@ReyesHung:2023udr; @AnotherCitation]</code>).</p>
 
