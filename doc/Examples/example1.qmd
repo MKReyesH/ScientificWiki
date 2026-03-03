@@ -34,6 +34,26 @@ This equation can then be referenced in the text using `@eq-secondorder`, which 
 
 If the automatic prefix needs to be suppressed, place the reference with a minus sign inside parentheses. For instance, typing `(-@eq-secondorder)` will suppress the word "Equation" and render just the number in-between parentheses, resulting in (-@eq-secondorder).
 
+For complex mathematical structures such as systems of equations or multi-line formulas, Quarto supports standard LaTeX inner environments like `aligned`, `split`, and `gathered` within the double `$$` blocks. These allow for precise vertical alignment and grouping while sharing a single reference number:
+
+```latex
+$$
+\begin{aligned}
+  A &= B + C \\
+  X &= Y - Z
+\end{aligned}
+$$ {#eq-systems}
+```
+
+$$
+\begin{aligned}
+  A &= B + C \\
+  X &= Y - Z
+\end{aligned}
+$$ {#eq-systems}
+
+Multi-labeled equations, like the standard LaTeX `align` environment, are not supported.
+
 # Text Formatting and Lists
 
 Text formatting is achieved by enclosing words in asterisks. Using single asterisks produces *italic* text (e.g. `*italic*`), while double asterisks produce **bold** text (e.g. `**bold**`).

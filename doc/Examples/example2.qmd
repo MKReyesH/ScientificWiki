@@ -38,6 +38,24 @@ Once processed, the equation is displayed and numbered automatically:
 
 Thanks to this automated translation, the equation can now be referenced anywhere using the standard LaTeX `\ref{eq:secondorder_latex}` to output just the number, or `\eqref{eq:secondorder_latex}` to automatically wrap the number in parentheses, like it has been done for Eq. \eqref{eq:secondorder_latex}.
 
+Beyond the standard `equation` environment, the translation script also supports automatic translation of `align`, `gather`, and `split` environments. For example,
+
+```latex
+\begin{align}
+  A &= B + C \label{eq:systems_latex_1} \\
+  X &= Y - Z \label{eq:systems_latex_2}
+\end{align}
+```
+
+will automatically render as an aligned block:
+
+\begin{align}
+  A &= B + C \label{eq:systems_latex_1} \\
+  X &= Y - Z \label{eq:systems_latex_2}
+\end{align}
+
+However, to ensure compatibility with Quarto's cross-referencing engine, these environments are translated into Quarto's inner environments (`aligned`, `gathered`, and `split`) wrapped inside a single display math block with a single label (`$$...$$ {#eq-ref}`). This means that the whole block can only have a single shared label (the first one), which can then be used for referencing, such as in Eq. \eqref{eq:systems_latex_1}.
+
 \section{Text Formatting}
 
 Standard LaTeX text formatting commands are fully supported. If text is wrapped in the `\textit{italic}` command, it will be rendered as \textit{italic}. Likewise, using the `\textbf{bold}` command ensures the text is rendered as \textbf{bold}. Behind the scenes, the script simply replaces these LaTeX tags with the single (`*`) and double (`**`) asterisks used in Markdown.
