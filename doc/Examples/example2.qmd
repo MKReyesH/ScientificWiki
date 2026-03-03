@@ -7,7 +7,7 @@ In the scientific community, it is very common to have texts, equations, and ful
 
 :::{.callout-warning}
 The compatibility is implemented as a simple text replacer and not a full LaTeX compiler. This means that any LaTeX environment or command that is not explicitly demonstrated on this page is not supported and will not be automatically replaced. For those unsupported elements, native Quarto Markdown syntax must be used.
-:::{.callout-warning}
+:::
 
 \section{Sections and subsections}
 
