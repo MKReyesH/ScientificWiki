@@ -307,11 +307,9 @@ window.Quarto = {
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ss">  x=</span><span class="sc">\frac</span><span class="ss">{-b</span><span class="sc">\pm</span><span class="ss"> </span><span class="sc">\sqrt</span><span class="ss">{b^2-4ac}}{2a} </span><span class="sc">\,</span><span class="ss">,</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ss">$$</span> {#eq-secondorder}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Once processed, the equation is displayed and numbered automatically:</p>
-<p><span id="eq-secondorder"><span class="math display">\[
-  x=\frac{-b\pm \sqrt{b^2-4ac}}{2a} \,,
-\tag{1}\]</span></span></p>
-<p>This equation can then be referenced in the text using <code>@eq-secondorder</code>, which automatically renders a clickable link with the appropriate prefix, such as <a href="#eq-secondorder" class="quarto-xref">Equation&nbsp;1</a>.</p>
-<p>If the automatic prefix needs to be suppressed, place the reference with a minus sign inside parentheses. For instance, typing <code>(-@eq-secondorder)</code> will suppress the word “Equation” and render just the number in-between parentheses, resulting in (<a href="#eq-secondorder" class="quarto-xref">1</a>).</p>
+<p> {#eq-secondorder}</p>
+<p>This equation can then be referenced in the text using <code>@eq-secondorder</code>, which automatically renders a clickable link with the appropriate prefix, such as <strong>?@eq-secondorder</strong>.</p>
+<p>If the automatic prefix needs to be suppressed, place the reference with a minus sign inside parentheses. For instance, typing <code>(-@eq-secondorder)</code> will suppress the word “Equation” and render just the number in-between parentheses, resulting in (<strong>?@eq-secondorder</strong>).</p>
 </section>
 <section id="text-formatting-and-lists" class="level1">
 <h1>Text Formatting and Lists</h1>
