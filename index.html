@@ -277,14 +277,14 @@ window.Quarto = {
 <p>First, fork this repository to your own GitHub account. Once this is done, you will have the base template files in your new repository:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="./img/Examples/files_index.png" class="img-fluid figure-img"></p>
+<p><img src="./img/Examples/files_index.png" class="img-fluid figure-img" style="width:8cm"></p>
 <figcaption>Initial repository files</figcaption>
 </figure>
 </div>
 <p>To enable website hosting, you need to create an empty (orphan) branch called <code>gh-pages</code>. Then, navigate to your repository settings, go to the GitHub Pages section, and select the <code>gh-pages</code> branch as your build and deployment source:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="./img/Examples/gh_pages.png" class="img-fluid figure-img"></p>
+<p><img src="./img/Examples/gh_pages.png" class="img-fluid figure-img" style="width:8cm"></p>
 <figcaption>GitHub Pages setup</figcaption>
 </figure>
 </div>
@@ -311,7 +311,7 @@ window.Quarto = {
 <p>You can manage references by adding <code>.bib</code> files to the <code>bib/</code> folder. You can also change the citation style by updating the <code>csl</code> file path. Quarto supports many Zotero styles, which can be found at the <a href="https://www.zotero.org/styles">Zotero Style Repository</a>.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="./img/Examples/files_bib.png" class="img-fluid figure-img"></p>
+<p><img src="./img/Examples/files_bib.png" class="img-fluid figure-img" style="width:8cm"></p>
 <figcaption>Bibliography files</figcaption>
 </figure>
 </div>
@@ -321,14 +321,14 @@ window.Quarto = {
 <p>To add new pages to the wiki, simply create a new file inside the <code>doc/</code> folder. The system will automatically recognize the file and add it to the sidebar navigation. The sidebar reproduces your exact directory structure, so you can create drop-down menus simply by placing files inside sub-folders:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="./img/Examples/files_doc.png" class="img-fluid figure-img"></p>
+<p><img src="./img/Examples/files_doc.png" class="img-fluid figure-img" style="width:8cm"></p>
 <figcaption>Documentation folder structure</figcaption>
 </figure>
 </div>
 <p>All content files must use the <code>.qmd</code> extension and be written using Quarto Markdown syntax. For a detailed guide on native formatting, please see the <a href="./doc/Examples/example1.html">Quarto Markdown Guide</a>. Anticipating that a lot of scientific content is already written in LaTeX, this template also includes custom compatibility for common LaTeX structures. The commands that are safe to use in the <code>.qmd</code> files are explained in the <a href="./doc/Examples/example2.html">Allowed LaTeX Syntax Guide</a>. For more complex structures like figures or tables, native Markdown syntax must be used.</p>
 </section>
-<section id="commit-and-deploy" class="level2">
-<h2 class="anchored" data-anchor-id="commit-and-deploy">4. Commit and Deploy</h2>
+<section id="commit-changes-and-deploy" class="level2">
+<h2 class="anchored" data-anchor-id="commit-changes-and-deploy">4. Commit changes and Deploy</h2>
 <p>Every time you commit changes to your repository, GitHub Actions will automatically take care of the deployment phase. The updated webpage will be built and pushed to the <code>gh-pages</code> branch, going live online in just a few minutes.</p>
 
 

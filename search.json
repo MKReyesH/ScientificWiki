@@ -74,8 +74,8 @@
     ]
   },
   {
-    "objectID": "index.html#commit-and-deploy",
-    "href": "index.html#commit-and-deploy",
+    "objectID": "index.html#commit-changes-and-deploy",
+    "href": "index.html#commit-changes-and-deploy",
     "title": "Scientific Wiki Template",
     "section": "",
     "text": "Every time you commit changes to your repository, GitHub Actions will automatically take care of the deployment phase. The updated webpage will be built and pushed to the gh-pages branch, going live online in just a few minutes.",
