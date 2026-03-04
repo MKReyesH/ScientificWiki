@@ -2,11 +2,11 @@
   {
     "objectID": "about.html",
     "href": "about.html",
-    "title": "About us",
+    "title": "About this Wiki",
     "section": "",
-    "text": "COST Action 23130 BridgeQG\n\nSite information\n\nSite generated with Github Pages.",
+    "text": "About us\n MKReyesH\n\n\nPowered By\n\nGitHub Pages: Hosting and deployment infrastructure.\nQuarto: Markdown rendering, cross-referencing, and website generation.\nPandoc: Document format translation.\nBootstrap and Bootswatch: CSS support and user interface.\nMathJax: Mathematical notation rendering.\nGemini: Lua filter generation assistance.\n\n\n\nContributing\nIf you would like to contribute to the core template, add new LaTeX translation rules, or fix a bug, do not hesitate to open a Pull Request at the GitHub Repository.",
     "crumbs": [
-      "About us"
+      "About this Wiki"
     ]
   },
   {
