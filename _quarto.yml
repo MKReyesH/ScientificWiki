@@ -9,8 +9,8 @@ website:
         text: "Home"
       - section: "Topics"
         contents:
-        - auto: "doc/Physics/General Relativity/"
-        - auto: "doc/Physics/Special Relativity/"
+        - auto: "doc/Physics/Folder 1/"
+        - auto: "doc/Physics/Folder 2/"
 #      - auto: "doc/"
 #      - href: https://github.com/MKReyesH/ScientificWiki
 #        text: "GitHub Project"
