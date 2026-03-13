@@ -9,10 +9,10 @@ website:
         text: "Home"
       - section: "Topics"
         contents:
-        - section: "Menu 1"
+        - section: "First level topics"
           contents:
           - auto: "doc/Physics/Folder 1/*.qmd"
-        - section: "Menu 2"
+        - section: "Second level topics"
           contents:
           - auto: "doc/Physics/Folder 2/*.qmd"
 #      - auto: "doc/"
