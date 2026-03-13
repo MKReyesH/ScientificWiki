@@ -7,10 +7,14 @@ website:
     contents:
       - href: index.qmd
         text: "Home"
-      - auto: "doc/"
-      - href: https://github.com/MKReyesH/ScientificWiki
-        text: "GitHub Project"
-      - href: about.qmd
+      - section: "Topics"
+        contents:
+        - auto: "doc/General Relativity"
+        - auto: "doc/Special Relativity"
+#      - auto: "doc/"
+#      - href: https://github.com/MKReyesH/ScientificWiki
+#        text: "GitHub Project"
+#      - href: about.qmd
 
 bibliography: bib/references.bib
 csl: bib/journal-of-cosmology-and-astroparticle-physics.csl
