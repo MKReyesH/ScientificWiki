@@ -42,11 +42,6 @@
 
 /*Appendices style*/
 
-div#quarto-appendix section {
-  margin-top: 0.5rem;
-  margin-bottom: 0.5rem; 
-}
-
 div#quarto-appendix section h2 {
   font-size: 1.5rem;
   font-weight: 550;
@@ -55,7 +50,7 @@ div#quarto-appendix section h2 {
   margin: 0;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
-} 
+}
 
 /*Text style*/
 
