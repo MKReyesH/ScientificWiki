@@ -18,7 +18,9 @@ where $k$ is the curvature and $a(t)$ the scale factor of the universe, which is
     dt &= -\frac{dz}{H(z)(1+z)} \,,
     \label{eq:dtdz}
 \end{align}
-where we have defined the Hubble parameter as $H=\dot a/a$.
+where we have defined the Hubble parameter[^1] as $H=\dot a/a$.
+
+[^1]: We will not discuss here the Hubble tension problem.
 
 \section{Friedman equations}
 
