@@ -43,8 +43,8 @@
 /*Appendices style*/
 
 div#quarto-appendix section {
-  margin-top: 1rem;
-  margin-bottom: 1rem; 
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem; 
 }
 
 div#quarto-appendix section h2 {
@@ -55,27 +55,6 @@ div#quarto-appendix section h2 {
   margin: 0;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
-}
-
-section#list-of-authors ul {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;                       /* Switched to rem */
-  list-style-type: none; 
-  padding-left: 0;
-  margin-top: 0.5rem;              /* Matches your standard <p> spacing */
-  margin-bottom: 0.5rem;
-}
-
-section#list-of-authors ul li {
-  background-color: #f0f4f8;      
-  color: #111111;
-  padding: 0.4rem 1rem;
-  border-radius: 20px;
-  font-size: 0.9rem;
-  font-weight: 550;
-  border: 1px solid #d1dce5;
-  margin: 0;
 }
 
 /*Text style*/
