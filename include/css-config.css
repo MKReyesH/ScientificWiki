@@ -46,6 +46,10 @@ div#quarto-appendix section {
   margin: 0;
 }
 
+div#quarto-appendix section div.hanging-indent {
+  margin-bottom: 0; 
+}
+
 div#quarto-appendix section h2 {
   font-size: 1.5rem;
   font-weight: 550;
@@ -68,6 +72,16 @@ section#list-of-authors ul {
 }
 
 section#list-of-authors ul li {
+  margin: 0;
+  padding: 0;
+  font-weight: 600;
+  color: #666666;
+}
+
+section#list-of-authors ul li,
+section#list-of-authors ul li p {
+  display: inline-flex;
+  align-items: center;
   margin: 0;
   padding: 0;
   font-weight: 600;
