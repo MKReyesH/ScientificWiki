@@ -1,5 +1,8 @@
 ---
 title: '$\Lambda$CDM Cosmological Model'
+bibliography: bib/references.bib
+nocite: |
+  @Carmona:2022pro
 ---
 
 \section{Field equations}
