@@ -42,6 +42,10 @@
 
 /*Appendices style*/
 
+div#quarto-appendix section {
+  margin: 0;
+}
+
 div#quarto-appendix section h2 {
   font-size: 1.5rem;
   font-weight: 550;
@@ -50,6 +54,22 @@ div#quarto-appendix section h2 {
   margin: 0;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
+}
+
+/*List of authors style*/
+
+section#list-of-authors ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  list-style-type: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+section#list-of-authors ul li {
+  margin: 0;
+  padding: 0;
 }
 
 /*Text style*/
