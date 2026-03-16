@@ -34,8 +34,15 @@ website:
     contents:
       - href: index.qmd
         text: "Home"
-      - auto: "doc/"
-      - href: [https://github.com/MKReyesH/ScientificWiki](https://github.com/MKReyesH/ScientificWiki)
+      - section: "Topics"
+        contents:
+        - section: "Examples"
+          contents:
+          - auto: "doc/Examples/*.qmd"
+        - section: "Physics"
+          contents:
+          - auto: "doc/Physics/*.qmd"
+      - href: https://github.com/MKReyesH/ScientificWiki
         text: "GitHub Project"
       - href: about.qmd
 
