@@ -43,11 +43,8 @@
 /*Appendices style*/
 
 div#quarto-appendix section {
-  margin: 0;
-}
-
-div#quarto-appendix section div.hanging-indent {
-  margin-bottom: 0; 
+  margin-top:0;
+  margin-bottom: 1.5rem; 
 }
 
 div#quarto-appendix section h2 {
@@ -58,6 +55,12 @@ div#quarto-appendix section h2 {
   margin: 0;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
+}
+
+div#quarto-appendix section ul,
+div#quarto-appendix section ol,
+div#quarto-appendix section div#refs {
+  margin-bottom: 0; 
 }
 
 /*List of authors style*/
