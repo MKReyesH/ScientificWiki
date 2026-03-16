@@ -124,7 +124,7 @@
     "href": "doc/Physics/example3.html",
     "title": "\\(\\Lambda\\)CDM Cosmological Model",
     "section": "",
-    "text": "In order to describe an homogeneous and isotropic universe like in the framework of GR, one should solve the Einstein field equations using a homogeneous, isotropic, and expanding metric (the FLRW metric), \n\\[\nds^2 = dt^2 - a^2(t) \\left(\\frac{dr^2}{1-k r^2}+r^2 d\\Omega\\right) \\,,\n\\tag{1}\\]\n where \\(k\\) is the curvature and \\(a(t)\\) the scale factor of the universe, which is closely related to the redshift, \\(a(t)=1/(1+z(t))\\). We can use this relation to also connect the temporal coordinate to the redshift variable, \n\\[\n\\begin{aligned}\na(t) &=\\frac{1}{1+z(t)} \\\\\n    \\frac{\\dot a(t)}{a(t)} dt &= -\\frac{dz}{1+z(t)} \\\\\n    dt &= -\\frac{dz}{H(z)(1+z)} \\,,\n\\end{aligned}\n\\tag{2}\\]\n where we have defined the Hubble parameter as \\(H=\\dot a/a\\).",
+    "text": "In order to describe an homogeneous and isotropic universe like in the framework of GR, one should solve the Einstein field equations using a homogeneous, isotropic, and expanding metric (the FLRW metric), \n\\[\nds^2 = dt^2 - a^2(t) \\left(\\frac{dr^2}{1-k r^2}+r^2 d\\Omega\\right) \\,,\n\\tag{1}\\]\n where \\(k\\) is the curvature and \\(a(t)\\) the scale factor of the universe, which is closely related to the redshift, \\(a(t)=1/(1+z(t))\\). We can use this relation to also connect the temporal coordinate to the redshift variable, \n\\[\n\\begin{aligned}\na(t) &=\\frac{1}{1+z(t)} \\\\\n    \\frac{\\dot a(t)}{a(t)} dt &= -\\frac{dz}{1+z(t)} \\\\\n    dt &= -\\frac{dz}{H(z)(1+z)} \\,,\n\\end{aligned}\n\\tag{2}\\]\n where we have defined the Hubble parameter1 as \\(H=\\dot a/a\\).",
     "crumbs": [
       "Topics",
       "Physics",
@@ -137,6 +137,18 @@
     "title": "\\(\\Lambda\\)CDM Cosmological Model",
     "section": "List of Authors",
     "text": "List of Authors\n\n\nAlbert Einstein\nIsaac Newton",
+    "crumbs": [
+      "Topics",
+      "Physics",
+      "$\\Lambda$CDM Cosmological Model"
+    ]
+  },
+  {
+    "objectID": "doc/Physics/example3.html#footnotes",
+    "href": "doc/Physics/example3.html#footnotes",
+    "title": "\\(\\Lambda\\)CDM Cosmological Model",
+    "section": "Footnotes",
+    "text": "Footnotes\n\n\nWe will not discuss here the Hubble tension problem.↩︎",
     "crumbs": [
       "Topics",
       "Physics",
