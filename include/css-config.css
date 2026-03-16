@@ -61,7 +61,7 @@ div#quarto-appendix section h2 {
 section#list-of-authors ul {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: 0.4rem;
   list-style-type: none;
   padding-left: 0;
   margin: 0;
@@ -70,6 +70,14 @@ section#list-of-authors ul {
 section#list-of-authors ul li {
   margin: 0;
   padding: 0;
+  font-weight: 600;
+  color: #666666;
+}
+
+section#list-of-authors ul li:not(:last-child)::after {
+  content: ",";
+  font-weight: 600;
+  color: #666666;
 }
 
 /*Text style*/
