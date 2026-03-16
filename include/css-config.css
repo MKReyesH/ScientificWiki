@@ -1,3 +1,5 @@
+/*Sections style*/
+
 #title-block-header h1.title {
   font-size: 2.2rem;
   font-weight: 700;
@@ -38,12 +40,54 @@
   padding-bottom: 0.5rem;
 }
 
+/*Appendices style*/
+
+div#quarto-appendix section {
+  margin-top: 1rem;
+  margin-bottom: 1rem; 
+}
+
+div#quarto-appendix section h2 {
+  font-size: 1.5rem;
+  font-weight: 550;
+  color: #111111;
+  border-bottom: none;
+  margin: 0;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+section#list-of-authors ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;                       /* Switched to rem */
+  list-style-type: none; 
+  padding-left: 0;
+  margin-top: 0.5rem;              /* Matches your standard <p> spacing */
+  margin-bottom: 0.5rem;
+}
+
+section#list-of-authors ul li {
+  background-color: #f0f4f8;      
+  color: #111111;
+  padding: 0.4rem 1rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 550;
+  border: 1px solid #d1dce5;
+  margin: 0;
+}
+
+/*Text style*/
+
 #quarto-document-content p {
   margin-top: 0.5rem; 
   margin-bottom: 0.5rem;
   padding-left: 0;
   padding-right: 0;
 }
+
+/*Center figure caption*/
 
 figcaption {
   text-align: center;
