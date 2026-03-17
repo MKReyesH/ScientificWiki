@@ -32,7 +32,7 @@ format:
   html:
     theme:
       light: cosmo
-      dark: cosmo
+      dark: darkly
     darkmode: auto
     math: mathjax
     css: include/css-config.css
