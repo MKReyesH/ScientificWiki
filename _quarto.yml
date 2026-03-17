@@ -30,9 +30,8 @@ filters:
 
 format:
   html:
-    theme:
-        light: cosmo
-        dark: darkly
+    theme: cosmo
+    darkmode: auto
     math: mathjax
     css: include/css-config.css
     
