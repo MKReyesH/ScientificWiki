@@ -31,6 +31,20 @@ Using the FLRW metric, Eq. \eqref{eq:FLRW}, to solve the Einstein equations lead
 \end{gather}
 The model does not predict the values of these cosmic densities, so they should be adjusted using cosmological observations and measurements. For more information see \cite{ReyesHung:2023udr}.
 
+\section{Mermaid map}
+
+```mermaid
+#| column: page
+#| fig-cap: "Interactive Conceptual Map of the Wiki"
+#| classes: lightbox
+
+graph TD
+    A[Wiki] --> B(Math)
+    A --> C(Physics)
+    click B "math.qmd" "Go to Math"
+    click C "physics.qmd" "Go to Physics"
+```
+
 ## List of Authors {id="authors" .appendix}
 
 - Albert Einstein
