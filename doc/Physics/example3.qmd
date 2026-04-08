@@ -68,17 +68,16 @@ mindmap
   #mindmap-container {
     width: 100%;
     height: 600px;
-    cursor: move;
     border: 1px solid #ccc;
     overflow: hidden;
     background: #fff;
+    position: relative;
   }
-  
-  /* This ensures the SVG doesn't try to stretch or shrink itself */
+  /* This prevents the SVG from squishing or stretching */
   #mindmap-container svg {
+    width: 100% !important;
+    height: 100% !important;
     max-width: none !important;
-    width: auto !important;
-    height: auto !important;
   }
 </style>
 
@@ -86,31 +85,31 @@ mindmap
 
 <script>
 document.addEventListener("DOMContentLoaded", function() {
-  let timer = setInterval(function() {
-    let svg = document.querySelector('#mindmap-container svg');
+  var timer = setInterval(function() {
+    var svg = document.querySelector('#mindmap-container svg');
     if (svg) {
       clearInterval(timer);
 
-      // 1. Strip Mermaid's hardcoded sizes that cause the "sinking"
+      // Clean the attributes that cause the "sinking" and blurring
       svg.removeAttribute("width");
       svg.removeAttribute("height");
 
-      // 2. Initialize WITHOUT 'fit'
-      // This keeps the diagram at its natural, readable size
       var panZoom = svgPanZoom(svg, {
         zoomEnabled: true,
         controlIconsEnabled: true,
-        fit: false,    
-        center: false, // We will handle centering manually to avoid the "void"
+        fit: true,    // Force it to fit the box initially
+        center: true, // Force it to center the actual content
         minZoom: 0.1,
         maxZoom: 20,
         mouseWheelZoomEnabled: true
       });
 
-      // 3. Manually move the map to the top-left of the window
-      // This fixes the "empty white space" issue from your last screenshot
-      panZoom.zoom(1.0);
-      panZoom.pan({x: 20, y: 20});
+      // Force a refresh to correct the alignment after Mermaid finishes
+      setTimeout(function() {
+        panZoom.resize();
+        panZoom.fit();
+        panZoom.center();
+      }, 500);
     }
   }, 200);
 });
