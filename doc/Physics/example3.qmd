@@ -33,6 +33,7 @@ The model does not predict the values of these cosmic densities, so they should 
 
 \section{Mermaid map}
 
+:::{#mindmap-container}
 ```{mermaid}
 mindmap
   root(("<a href='index.html'>Wiki Home</a>"))
@@ -61,37 +62,50 @@ mindmap
       evo("<a href='#'>Evolutionary Biology</a>")
       cell("<a href='#'>Cellular Biology</a>")
 ```
-
-<style>
-  .mermaid {
-    height: 700px; /* Adjust this to make your box taller or shorter */
+:::
+    
+    <style>
+  /* Force the container to be a specific "window" size */
+  #mindmap-container {
     width: 100%;
-    border: 1px solid #ddd; /* Optional: gives the box a clean border */
-    border-radius: 8px;
-    background-color: #fcfcfc; /* Optional: gives the box a slight background */
+    height: 600px;
+    border: 1px solid #ccc;
+    overflow: hidden; /* This stops the 'big static' overflow */
+    cursor: move;
+    background: #f9f9f9;
+  }
+  /* Ensure the SVG itself doesn't have a fixed width */
+  #mindmap-container svg {
+    max-width: none !important;
+    width: 100% !important;
+    height: 100% !important;
   }
 </style>
 
 <script src="https://cdn.jsdelivr.net/npm/svg-pan-zoom@3.6.1/dist/svg-pan-zoom.min.js"></script>
 
 <script>
-  // We use a small timer because Mermaid takes a fraction of a second to draw the SVG
-  let checkExist = setInterval(function() {
-     let svgElement = document.querySelector('.mermaid svg');
-     
-     if (svgElement) {
-        // Once the SVG exists, apply the pan and zoom controls!
-        svgPanZoom(svgElement, {
-          zoomEnabled: true,
-          controlIconsEnabled: true, // Adds little +/-/reset buttons in the corner
-          fit: true,
-          center: true,
-          minZoom: 0.1,
-          maxZoom: 10
-        });
-        clearInterval(checkExist); // Stop checking
-     }
-  }, 100); // Check every 100 milliseconds
+document.addEventListener("DOMContentLoaded", function() {
+  let timer = setInterval(function() {
+    // Look specifically inside our container for the Mermaid SVG
+    let svg = document.querySelector('#mindmap-container svg');
+    
+    if (svg) {
+      clearInterval(timer);
+      
+      // Initialize the Pan-Zoom library
+      svgPanZoom(svg, {
+        zoomEnabled: true,
+        controlIconsEnabled: true,
+        fit: true,
+        center: true,
+        minZoom: 0.1,
+        maxZoom: 20,
+        mouseWheelZoomEnabled: true
+      });
+    }
+  }, 200);
+});
 </script>
 
 ## List of Authors {id="authors" .appendix}
