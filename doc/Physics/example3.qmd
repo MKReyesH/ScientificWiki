@@ -71,10 +71,13 @@ mindmap
     cursor: move;
     border: 1px solid #ccc;
     overflow: hidden;
-    background: #fff;
+    background: #ffffff;
   }
+  /* Force the SVG to be visible and fill the container */
   #mindmap-container svg {
     max-width: none !important;
+    width: 100% !important;
+    height: 100% !important;
   }
 </style>
 
@@ -87,19 +90,28 @@ document.addEventListener("DOMContentLoaded", function() {
     if (svg) {
       clearInterval(timer);
 
+      // 1. Completely strip Mermaid's internal hardcoded sizes
       svg.removeAttribute("width");
       svg.removeAttribute("height");
-      svg.style.width = "100%";
-      svg.style.height = "100%";
-
-      svgPanZoom(svg, {
+      
+      // 2. Initialize the zoom library with "fit" and "center" enabled
+      // This forces the library to ignore Mermaid's bad math and 
+      // re-calculate the position so the map is visible and centered.
+      var panZoom = svgPanZoom(svg, {
         zoomEnabled: true,
         controlIconsEnabled: true,
-        fit: true,
+        fit: true,    
         center: true,
         minZoom: 0.1,
         maxZoom: 20,
         mouseWheelZoomEnabled: true
+      });
+
+      // 3. Force a resize event to make sure the "fit" sticks
+      window.addEventListener('resize', function() {
+        panZoom.resize();
+        panZoom.fit();
+        panZoom.center();
       });
     }
   }, 200);
