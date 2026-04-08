@@ -67,6 +67,7 @@ mindmap
 <style>
   #mindmap-container {
     width: 100%;
+    height: 800px;
     cursor: move;
   }
   #mindmap-container svg {
@@ -81,13 +82,9 @@ mindmap
 <script>
 document.addEventListener("DOMContentLoaded", function() {
   let timer = setInterval(function() {
-    // Look specifically inside our container for the Mermaid SVG
     let svg = document.querySelector('#mindmap-container svg');
-    
     if (svg) {
       clearInterval(timer);
-      
-      // Initialize the Pan-Zoom library
       svgPanZoom(svg, {
         zoomEnabled: true,
         controlIconsEnabled: true,
