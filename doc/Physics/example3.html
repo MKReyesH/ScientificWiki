@@ -293,19 +293,65 @@ H(z) = H_0 \sqrt{\Omega_r (1+z)^4 + \Omega_m (1+z)^3 + \Omega_k (1+z)^2 + \Omega
 <div>
 <pre class="mermaid mermaid-js">mindmap
   root(("&lt;a href='index.html'&gt;Wiki Home&lt;/a&gt;"))
-    math_node("&lt;a href='doc/Math/index.html'&gt;Math&lt;/a&gt;")
-      calc("&lt;a href='doc/Math/Calculus.html'&gt;Calculus&lt;/a&gt;")
-      linalg["&lt;a href='doc/Math/Linear_Algebra.html'&gt;Linear Algebra&lt;/a&gt;"]
+    math_node("&lt;a href='doc/Math/index.html'&gt;Mathematics&lt;/a&gt;")
+      calc("&lt;a href='#'&gt;Calculus&lt;/a&gt;")
+      linalg("&lt;a href='#'&gt;Linear Algebra&lt;/a&gt;")
+      stats("&lt;a href='#'&gt;Statistics &amp; Probability&lt;/a&gt;")
+      topology("&lt;a href='#'&gt;Topology&lt;/a&gt;")
+      algebra("&lt;a href='#'&gt;Abstract Algebra&lt;/a&gt;")
     phys_node("&lt;a href='doc/Physics/index.html'&gt;Physics&lt;/a&gt;")
-      cm["&lt;a href='doc/Physics/Classical_Mechanics.html'&gt;Classical Mechanics&lt;/a&gt;"]
-      qm["&lt;a href='doc/Physics/Quantum_Mechanics.html'&gt;Quantum Mechanics&lt;/a&gt;"]
-        seq)"&lt;a href='doc/Physics/Schrodinger.html'&gt;Schrödinger Eq&lt;/a&gt;"(
+      cm("&lt;a href='#'&gt;Classical Mechanics&lt;/a&gt;")
+      qm("&lt;a href='#'&gt;Quantum Mechanics&lt;/a&gt;")
+        seq("&lt;a href='#'&gt;Schrödinger Equation&lt;/a&gt;")
+        dirac("&lt;a href='#'&gt;Dirac Equation&lt;/a&gt;")
+      thermo("&lt;a href='#'&gt;Thermodynamics&lt;/a&gt;")
+      em("&lt;a href='#'&gt;Electromagnetism&lt;/a&gt;")
+    cs_node("&lt;a href='#'&gt;Computer Science&lt;/a&gt;")
+      algo("&lt;a href='#'&gt;Algorithms&lt;/a&gt;")
+      ds("&lt;a href='#'&gt;Data Structures&lt;/a&gt;")
+      ai("&lt;a href='#'&gt;Artificial Intelligence&lt;/a&gt;")
+        ml("&lt;a href='#'&gt;Machine Learning&lt;/a&gt;")
+        nn("&lt;a href='#'&gt;Neural Networks&lt;/a&gt;")
+      os("&lt;a href='#'&gt;Operating Systems&lt;/a&gt;")
+    bio_node("&lt;a href='#'&gt;Biology&lt;/a&gt;")
+      gen("&lt;a href='#'&gt;Genetics&lt;/a&gt;")
+      evo("&lt;a href='#'&gt;Evolutionary Biology&lt;/a&gt;")
+      cell("&lt;a href='#'&gt;Cellular Biology&lt;/a&gt;")
 </pre>
 </div>
 <p></p></figure><p></p>
 </div>
 </div>
 </div>
+<style>
+  .mermaid {
+    height: 700px; /* Adjust this to make your box taller or shorter */
+    width: 100%;
+    border: 1px solid #ddd; /* Optional: gives the box a clean border */
+    border-radius: 8px;
+    background-color: #fcfcfc; /* Optional: gives the box a slight background */
+  }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/svg-pan-zoom@3.6.1/dist/svg-pan-zoom.min.js"></script>
+<script>
+  // We use a small timer because Mermaid takes a fraction of a second to draw the SVG
+  let checkExist = setInterval(function() {
+     let svgElement = document.querySelector('.mermaid svg');
+     
+     if (svgElement) {
+        // Once the SVG exists, apply the pan and zoom controls!
+        svgPanZoom(svgElement, {
+          zoomEnabled: true,
+          controlIconsEnabled: true, // Adds little +/-/reset buttons in the corner
+          fit: true,
+          center: true,
+          minZoom: 0.1,
+          maxZoom: 10
+        });
+        clearInterval(checkExist); // Stop checking
+     }
+  }, 100); // Check every 100 milliseconds
+</script>
 
 </section>
 
