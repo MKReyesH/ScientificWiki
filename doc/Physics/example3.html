@@ -334,9 +334,10 @@ H(z) = H_0 \sqrt{\Omega_r (1+z)^4 + \Omega_m (1+z)^3 + \Omega_k (1+z)^2 + \Omega
     overflow: hidden;
     background: #fff;
   }
+  
+  /* This ensures the SVG doesn't try to stretch or shrink itself */
   #mindmap-container svg {
     max-width: none !important;
-    /* We remove the 100% width/height here to stop the shrinking */
     width: auto !important;
     height: auto !important;
   }
@@ -349,23 +350,26 @@ document.addEventListener("DOMContentLoaded", function() {
     if (svg) {
       clearInterval(timer);
 
-      // 1. Remove Mermaid's forced dimensions
+      // 1. Strip Mermaid's hardcoded sizes that cause the "sinking"
       svg.removeAttribute("width");
       svg.removeAttribute("height");
 
-      // 2. Initialize with fit: false to keep the "Normal" size
+      // 2. Initialize WITHOUT 'fit'
+      // This keeps the diagram at its natural, readable size
       var panZoom = svgPanZoom(svg, {
         zoomEnabled: true,
         controlIconsEnabled: true,
-        fit: false,    // Don't shrink it to fit the window
-        center: true,  // Keep it in the middle
+        fit: false,    
+        center: false, // We will handle centering manually to avoid the "void"
         minZoom: 0.1,
         maxZoom: 20,
         mouseWheelZoomEnabled: true
       });
 
-      // 3. Force the zoom level to 1 (Normal Scale)
-      panZoom.zoom(1);
+      // 3. Manually move the map to the top-left of the window
+      // This fixes the "empty white space" issue from your last screenshot
+      panZoom.zoom(1.0);
+      panZoom.pan({x: 20, y: 20});
     }
   }, 200);
 });
