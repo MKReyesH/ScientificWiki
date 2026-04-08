@@ -61,7 +61,7 @@ div.csl-indent {
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-bfc81c90a4e668f7cc6782dca231ae32.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-2a8600961620fb22bbdc41287d7e474a.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -328,13 +328,14 @@ H(z) = H_0 \sqrt{\Omega_r (1+z)^4 + \Omega_m (1+z)^3 + \Omega_k (1+z)^2 + \Omega
 <style>
   #mindmap-container {
     width: 100%;
-    height: 800px;
+    height: 600px;
     cursor: move;
+    border: 1px solid #ccc;
+    overflow: hidden; /* This hides the parts of the map outside the window */
   }
   #mindmap-container svg {
     max-width: none !important;
-    width: 100% !important;
-    height: 100% !important;
+    /* Do NOT set width or height to 100% here */
   }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/svg-pan-zoom@3.6.1/dist/svg-pan-zoom.min.js"></script>
@@ -347,7 +348,7 @@ document.addEventListener("DOMContentLoaded", function() {
       svgPanZoom(svg, {
         zoomEnabled: true,
         controlIconsEnabled: true,
-        fit: true,
+        fit: false,
         center: true,
         minZoom: 0.1,
         maxZoom: 20,
