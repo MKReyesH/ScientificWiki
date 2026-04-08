@@ -331,11 +331,11 @@ H(z) = H_0 \sqrt{\Omega_r (1+z)^4 + \Omega_m (1+z)^3 + \Omega_k (1+z)^2 + \Omega
     height: 600px;
     cursor: move;
     border: 1px solid #ccc;
-    overflow: hidden; /* This hides the parts of the map outside the window */
+    overflow: hidden;
+    background: #fff;
   }
   #mindmap-container svg {
     max-width: none !important;
-    /* Do NOT set width or height to 100% here */
   }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/svg-pan-zoom@3.6.1/dist/svg-pan-zoom.min.js"></script>
@@ -345,10 +345,16 @@ document.addEventListener("DOMContentLoaded", function() {
     let svg = document.querySelector('#mindmap-container svg');
     if (svg) {
       clearInterval(timer);
+
+      svg.removeAttribute("width");
+      svg.removeAttribute("height");
+      svg.style.width = "100%";
+      svg.style.height = "100%";
+
       svgPanZoom(svg, {
         zoomEnabled: true,
         controlIconsEnabled: true,
-        fit: false,
+        fit: true,
         center: true,
         minZoom: 0.1,
         maxZoom: 20,
