@@ -36,14 +36,63 @@ The model does not predict the values of these cosmic densities, so they should 
 ```{mermaid}
 mindmap
   root(("<a href='index.html'>Wiki Home</a>"))
-    math_node("<a href='doc/Math/index.html'>Math</a>")
-      calc("<a href='doc/Math/Calculus.html'>Calculus</a>")
-      linalg["<a href='doc/Math/Linear_Algebra.html'>Linear Algebra</a>"]
+    math_node("<a href='doc/Math/index.html'>Mathematics</a>")
+      calc("<a href='#'>Calculus</a>")
+      linalg("<a href='#'>Linear Algebra</a>")
+      stats("<a href='#'>Statistics & Probability</a>")
+      topology("<a href='#'>Topology</a>")
+      algebra("<a href='#'>Abstract Algebra</a>")
     phys_node("<a href='doc/Physics/index.html'>Physics</a>")
-      cm["<a href='doc/Physics/Classical_Mechanics.html'>Classical Mechanics</a>"]
-      qm["<a href='doc/Physics/Quantum_Mechanics.html'>Quantum Mechanics</a>"]
-        seq)"<a href='doc/Physics/Schrodinger.html'>Schrödinger Eq</a>"(
+      cm("<a href='#'>Classical Mechanics</a>")
+      qm("<a href='#'>Quantum Mechanics</a>")
+        seq("<a href='#'>Schrödinger Equation</a>")
+        dirac("<a href='#'>Dirac Equation</a>")
+      thermo("<a href='#'>Thermodynamics</a>")
+      em("<a href='#'>Electromagnetism</a>")
+    cs_node("<a href='#'>Computer Science</a>")
+      algo("<a href='#'>Algorithms</a>")
+      ds("<a href='#'>Data Structures</a>")
+      ai("<a href='#'>Artificial Intelligence</a>")
+        ml("<a href='#'>Machine Learning</a>")
+        nn("<a href='#'>Neural Networks</a>")
+      os("<a href='#'>Operating Systems</a>")
+    bio_node("<a href='#'>Biology</a>")
+      gen("<a href='#'>Genetics</a>")
+      evo("<a href='#'>Evolutionary Biology</a>")
+      cell("<a href='#'>Cellular Biology</a>")
 ```
+
+<style>
+  .mermaid {
+    height: 700px; /* Adjust this to make your box taller or shorter */
+    width: 100%;
+    border: 1px solid #ddd; /* Optional: gives the box a clean border */
+    border-radius: 8px;
+    background-color: #fcfcfc; /* Optional: gives the box a slight background */
+  }
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/svg-pan-zoom@3.6.1/dist/svg-pan-zoom.min.js"></script>
+
+<script>
+  // We use a small timer because Mermaid takes a fraction of a second to draw the SVG
+  let checkExist = setInterval(function() {
+     let svgElement = document.querySelector('.mermaid svg');
+     
+     if (svgElement) {
+        // Once the SVG exists, apply the pan and zoom controls!
+        svgPanZoom(svgElement, {
+          zoomEnabled: true,
+          controlIconsEnabled: true, // Adds little +/-/reset buttons in the corner
+          fit: true,
+          center: true,
+          minZoom: 0.1,
+          maxZoom: 10
+        });
+        clearInterval(checkExist); // Stop checking
+     }
+  }, 100); // Check every 100 milliseconds
+</script>
 
 ## List of Authors {id="authors" .appendix}
 
