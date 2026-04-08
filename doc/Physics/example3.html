@@ -291,26 +291,16 @@ H(z) = H_0 \sqrt{\Omega_r (1+z)^4 + \Omega_m (1+z)^3 + \Omega_k (1+z)^2 + \Omega
 <div>
 <p></p><figure class="figure"><p></p>
 <div>
-<pre class="mermaid mermaid-js">graph LR
-
-  %% Step 1: Define your topics and choose their shapes
-  home((Wiki Home)) 
-  math_node(Math)
-  calc[Calculus]
-  phys_node(Physics)
-  quantum[Quantum Mechanics]
-
-  %% Step 2: Connect them using --- (no arrows)
-  home --- math_node
-  home --- phys_node
-  
-  math_node --- calc
-  phys_node --- quantum
-
-  %% Step 3: Make them clickable by targeting their hidden ID!
-  click home "index.html"
-  click calc "doc/Math/Calculus.html"
-  click quantum "doc/Physics/Quantum_Mechanics.html"
+<pre class="mermaid mermaid-js">%%{init: {'securityLevel': 'loose'}}%%
+mindmap
+  root(("`[Wiki Home](index.html)`"))
+    math_node("`[Math](doc/Math/index.html)`")
+      calc("`[Calculus](doc/Math/Calculus.html)`")
+      linalg("`[Linear Algebra](doc/Math/Linear_Algebra.html)`")
+    phys_node("`[Physics](doc/Physics/index.html)`")
+      cm("`[Classical Mechanics](doc/Physics/Classical_Mechanics.html)`")
+      qm("`[Quantum Mechanics](doc/Physics/Quantum_Mechanics.html)`")
+        seq("`[Schrödinger Eq](doc/Physics/Schrodinger.html)`")
 </pre>
 </div>
 <p></p></figure><p></p>
