@@ -70,11 +70,11 @@ mindmap
     height: 600px;
     cursor: move;
     border: 1px solid #ccc;
-    overflow: hidden; /* This hides the parts of the map outside the window */
+    overflow: hidden;
+    background: #fff;
   }
   #mindmap-container svg {
     max-width: none !important;
-    /* Do NOT set width or height to 100% here */
   }
 </style>
 
@@ -86,10 +86,16 @@ document.addEventListener("DOMContentLoaded", function() {
     let svg = document.querySelector('#mindmap-container svg');
     if (svg) {
       clearInterval(timer);
+
+      svg.removeAttribute("width");
+      svg.removeAttribute("height");
+      svg.style.width = "100%";
+      svg.style.height = "100%";
+
       svgPanZoom(svg, {
         zoomEnabled: true,
         controlIconsEnabled: true,
-        fit: false,
+        fit: true,
         center: true,
         minZoom: 0.1,
         maxZoom: 20,
