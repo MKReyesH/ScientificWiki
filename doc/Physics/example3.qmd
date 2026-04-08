@@ -34,28 +34,15 @@ The model does not predict the values of these cosmic densities, so they should 
 \section{Mermaid map}
 
 ```{mermaid}
-%%{init: {'securityLevel': 'loose'}}%%
 mindmap
   root(("<a href='index.html'>Wiki Home</a>"))
     math_node("<a href='doc/Math/index.html'>Math</a>")
       calc("<a href='doc/Math/Calculus.html'>Calculus</a>")
-      linalg("<a href='doc/Math/Linear_Algebra.html'>Linear Algebra</a>")
+      linalg["<a href='doc/Math/Linear_Algebra.html'>Linear Algebra</a>"]
     phys_node("<a href='doc/Physics/index.html'>Physics</a>")
-      cm("<a href='doc/Physics/Classical_Mechanics.html'>Classical Mechanics</a>")
-      qm("<a href='doc/Physics/Quantum_Mechanics.html'>Quantum Mechanics</a>")
-        seq("<a href='doc/Physics/Schrodinger.html'>Schrödinger Eq</a>")
-```
-
-```{mermaid}
-mindmap
-  root(("<a href='index.html'>Wiki Home</a>"))
-    math_node("<a href='doc/Math/index.html'>Math</a>")
-      calc("<a href='doc/Math/Calculus.html'>Calculus</a>")
-      linalg("<a href='doc/Math/Linear_Algebra.html'>Linear Algebra</a>")
-    phys_node("<a href='doc/Physics/index.html'>Physics</a>")
-      cm("<a href='doc/Physics/Classical_Mechanics.html'>Classical Mechanics</a>")
-      qm("<a href='doc/Physics/Quantum_Mechanics.html'>Quantum Mechanics</a>")
-        seq("<a href='doc/Physics/Schrodinger.html'>Schrödinger Eq</a>")
+      cm["<a href='doc/Physics/Classical_Mechanics.html'>Classical Mechanics</a>"]
+      qm["<a href='doc/Physics/Quantum_Mechanics.html'>Quantum Mechanics</a>"]
+        seq)"<a href='doc/Physics/Schrodinger.html'>Schrödinger Eq</a>"(
 ```
 
 ## List of Authors {id="authors" .appendix}
