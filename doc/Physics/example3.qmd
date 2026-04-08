@@ -34,14 +34,16 @@ The model does not predict the values of these cosmic densities, so they should 
 \section{Mermaid map}
 
 ```{mermaid}
-#| column: page
-#| fig-cap: "Interactive Conceptual Map of the Wiki"
+%%| column: page
+%%| fig-cap: "Interactive Conceptual Map of the Wiki"
+%%| classes: lightbox
 
 graph TD
-    A[Wiki] --> B(Math)
+    A[Wiki Home] --> B(Math)
     A --> C(Physics)
-    click B "math.qmd" "Go to Math"
-    click C "physics.qmd" "Go to Physics"
+    
+    click B "doc/Math/index.html" "Go to Math"
+    click C "doc/Physics/index.html" "Go to Physics"
 ```
 
 ## List of Authors {id="authors" .appendix}
