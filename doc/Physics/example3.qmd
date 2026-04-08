@@ -76,6 +76,7 @@ mindmap
   #mindmap-container svg {
     width: 100% !important;
     height: auto !important; 
+    display: block; 
   }
 </style>
 
