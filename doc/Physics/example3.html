@@ -326,49 +326,39 @@ H(z) = H_0 \sqrt{\Omega_r (1+z)^4 + \Omega_m (1+z)^3 + \Omega_k (1+z)^2 + \Omega
 </div>
 </div>
 <style>
+  /* 1. Create a clean window. No crazy SVG overrides. */
   #mindmap-container {
     width: 100%;
-    height: 600px;
+    height: 700px;
     border: 1px solid #ccc;
     overflow: hidden;
-    background: #fff;
-    position: relative;
+    cursor: grab;
+    background: #fafafa;
   }
-  /* This prevents the SVG from squishing or stretching */
-  #mindmap-container svg {
-    width: 100% !important;
-    height: 100% !important;
-    max-width: none !important;
+  #mindmap-container:active {
+    cursor: grabbing;
   }
 </style>
-<script src="https://cdn.jsdelivr.net/npm/svg-pan-zoom@3.6.1/dist/svg-pan-zoom.min.js"></script>
+<script src="https://unpkg.com/@panzoom/panzoom@4.5.1/dist/panzoom.min.js"></script>
 <script>
 document.addEventListener("DOMContentLoaded", function() {
-  var timer = setInterval(function() {
-    var svg = document.querySelector('#mindmap-container svg');
+  let timer = setInterval(function() {
+    let svg = document.querySelector('#mindmap-container svg');
+    
     if (svg) {
       clearInterval(timer);
 
-      // Clean the attributes that cause the "sinking" and blurring
-      svg.removeAttribute("width");
-      svg.removeAttribute("height");
-
-      var panZoom = svgPanZoom(svg, {
-        zoomEnabled: true,
-        controlIconsEnabled: true,
-        fit: true,    // Force it to fit the box initially
-        center: true, // Force it to center the actual content
-        minZoom: 0.1,
-        maxZoom: 20,
-        mouseWheelZoomEnabled: true
+      // 3. Initialize Panzoom. This treats the Mermaid diagram exactly like 
+      // a normal image and just lets you move it around via CSS.
+      const panzoom = Panzoom(svg, {
+        maxScale: 20,
+        minScale: 0.1,
+        step: 0.1
       });
 
-      // Force a refresh to correct the alignment after Mermaid finishes
-      setTimeout(function() {
-        panZoom.resize();
-        panZoom.fit();
-        panZoom.center();
-      }, 500);
+      // 4. Bind the mouse wheel to the zoom function
+      const container = document.querySelector('#mindmap-container');
+      container.addEventListener('wheel', panzoom.zoomWithWheel);
     }
   }, 200);
 });
