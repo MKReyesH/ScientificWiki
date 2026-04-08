@@ -36,14 +36,26 @@ The model does not predict the values of these cosmic densities, so they should 
 ```{mermaid}
 %%{init: {'securityLevel': 'loose'}}%%
 mindmap
-  root(("`[Wiki Home](index.html)`"))
-    math_node("`[Math](doc/Math/index.html)`")
-      calc("`[Calculus](doc/Math/Calculus.html)`")
-      linalg("`[Linear Algebra](doc/Math/Linear_Algebra.html)`")
-    phys_node("`[Physics](doc/Physics/index.html)`")
-      cm("`[Classical Mechanics](doc/Physics/Classical_Mechanics.html)`")
-      qm("`[Quantum Mechanics](doc/Physics/Quantum_Mechanics.html)`")
-        seq("`[Schrödinger Eq](doc/Physics/Schrodinger.html)`")
+  root(("<a href='index.html'>Wiki Home</a>"))
+    math_node("<a href='doc/Math/index.html'>Math</a>")
+      calc("<a href='doc/Math/Calculus.html'>Calculus</a>")
+      linalg("<a href='doc/Math/Linear_Algebra.html'>Linear Algebra</a>")
+    phys_node("<a href='doc/Physics/index.html'>Physics</a>")
+      cm("<a href='doc/Physics/Classical_Mechanics.html'>Classical Mechanics</a>")
+      qm("<a href='doc/Physics/Quantum_Mechanics.html'>Quantum Mechanics</a>")
+        seq("<a href='doc/Physics/Schrodinger.html'>Schrödinger Eq</a>")
+```
+
+```{mermaid}
+mindmap
+  root(("<a href='index.html'>Wiki Home</a>"))
+    math_node("<a href='doc/Math/index.html'>Math</a>")
+      calc("<a href='doc/Math/Calculus.html'>Calculus</a>")
+      linalg("<a href='doc/Math/Linear_Algebra.html'>Linear Algebra</a>")
+    phys_node("<a href='doc/Physics/index.html'>Physics</a>")
+      cm("<a href='doc/Physics/Classical_Mechanics.html'>Classical Mechanics</a>")
+      qm("<a href='doc/Physics/Quantum_Mechanics.html'>Quantum Mechanics</a>")
+        seq("<a href='doc/Physics/Schrodinger.html'>Schrödinger Eq</a>")
 ```
 
 ## List of Authors {id="authors" .appendix}
