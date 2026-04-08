@@ -325,8 +325,17 @@ H(z) = H_0 \sqrt{\Omega_r (1+z)^4 + \Omega_m (1+z)^3 + \Omega_k (1+z)^2 + \Omega
 </div>
 </div>
 </div>
-<pre><code>&lt;style&gt;</code></pre>
-<p>/* Force the container to be a specific “window” size <em>/ #mindmap-container { width: 100%; height: 600px; border: 1px solid #ccc; overflow: hidden; /</em> This stops the ‘big static’ overflow <em>/ cursor: move; background: #f9f9f9; } /</em> Ensure the SVG itself doesn’t have a fixed width */ #mindmap-container svg { max-width: none !important; width: 100% !important; height: 100% !important; } </p>
+<style>
+  #mindmap-container {
+    width: 100%;
+    cursor: move;
+  }
+  #mindmap-container svg {
+    max-width: none !important;
+    width: 100% !important;
+    height: 100% !important;
+  }
+</style>
 <script src="https://cdn.jsdelivr.net/npm/svg-pan-zoom@3.6.1/dist/svg-pan-zoom.min.js"></script>
 <script>
 document.addEventListener("DOMContentLoaded", function() {
