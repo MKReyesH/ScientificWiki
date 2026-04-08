@@ -35,14 +35,9 @@ The model does not predict the values of these cosmic densities, so they should 
 
 ```{mermaid}
 mindmap
-  root(("<a href='index.html'>Wiki Home</a>"))
-    Math
-      calc("<a href='doc/Math/Calculus.html'>Calculus</a>")
-      linalg("<a href='doc/Math/Linear_Algebra.html'>Linear Algebra</a>")
-    Physics
-      cm("<a href='doc/Physics/Classical_Mechanics.html'>Classical Mechanics</a>")
-      qm("<a href='doc/Physics/Quantum_Mechanics.html'>Quantum Mechanics</a>")
-        seq("<a href='doc/Physics/Schrodinger.html'>Schrödinger Eq</a>")
+  root(("`[Wiki Home](index.html)`"))
+    math_node("`[Math](doc/Math/index.html)`")
+      calc("`[Calculus](doc/Math/Calculus.html)`")
 ```
 
 ## List of Authors {id="authors" .appendix}
