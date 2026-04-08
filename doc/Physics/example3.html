@@ -286,6 +286,7 @@ H(z) = H_0 \sqrt{\Omega_r (1+z)^4 + \Omega_m (1+z)^3 + \Omega_k (1+z)^2 + \Omega
 </section>
 <section id="mermaid-map" class="level1">
 <h1>Mermaid map</h1>
+<div id="mindmap-container">
 <div class="cell" data-layout-align="default">
 <div class="cell-output-display">
 <div>
@@ -323,34 +324,32 @@ H(z) = H_0 \sqrt{\Omega_r (1+z)^4 + \Omega_m (1+z)^3 + \Omega_k (1+z)^2 + \Omega
 </div>
 </div>
 </div>
-<style>
-  .mermaid {
-    height: 700px; /* Adjust this to make your box taller or shorter */
-    width: 100%;
-    border: 1px solid #ddd; /* Optional: gives the box a clean border */
-    border-radius: 8px;
-    background-color: #fcfcfc; /* Optional: gives the box a slight background */
-  }
-</style>
+</div>
+<pre><code>&lt;style&gt;</code></pre>
+<p>/* Force the container to be a specific “window” size <em>/ #mindmap-container { width: 100%; height: 600px; border: 1px solid #ccc; overflow: hidden; /</em> This stops the ‘big static’ overflow <em>/ cursor: move; background: #f9f9f9; } /</em> Ensure the SVG itself doesn’t have a fixed width */ #mindmap-container svg { max-width: none !important; width: 100% !important; height: 100% !important; } </p>
 <script src="https://cdn.jsdelivr.net/npm/svg-pan-zoom@3.6.1/dist/svg-pan-zoom.min.js"></script>
 <script>
-  // We use a small timer because Mermaid takes a fraction of a second to draw the SVG
-  let checkExist = setInterval(function() {
-     let svgElement = document.querySelector('.mermaid svg');
-     
-     if (svgElement) {
-        // Once the SVG exists, apply the pan and zoom controls!
-        svgPanZoom(svgElement, {
-          zoomEnabled: true,
-          controlIconsEnabled: true, // Adds little +/-/reset buttons in the corner
-          fit: true,
-          center: true,
-          minZoom: 0.1,
-          maxZoom: 10
-        });
-        clearInterval(checkExist); // Stop checking
-     }
-  }, 100); // Check every 100 milliseconds
+document.addEventListener("DOMContentLoaded", function() {
+  let timer = setInterval(function() {
+    // Look specifically inside our container for the Mermaid SVG
+    let svg = document.querySelector('#mindmap-container svg');
+    
+    if (svg) {
+      clearInterval(timer);
+      
+      // Initialize the Pan-Zoom library
+      svgPanZoom(svg, {
+        zoomEnabled: true,
+        controlIconsEnabled: true,
+        fit: true,
+        center: true,
+        minZoom: 0.1,
+        maxZoom: 20,
+        mouseWheelZoomEnabled: true
+      });
+    }
+  }, 200);
+});
 </script>
 
 </section>
