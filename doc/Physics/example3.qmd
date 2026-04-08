@@ -106,7 +106,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
   }, 200);
 });
-</script>
+</script> 
 
 ## List of Authors {id="authors" .appendix}
 
