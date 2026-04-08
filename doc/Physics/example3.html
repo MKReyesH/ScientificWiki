@@ -61,7 +61,7 @@ div.csl-indent {
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-bfc81c90a4e668f7cc6782dca231ae32.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-2a8600961620fb22bbdc41287d7e474a.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -332,13 +332,13 @@ H(z) = H_0 \sqrt{\Omega_r (1+z)^4 + \Omega_m (1+z)^3 + \Omega_k (1+z)^2 + \Omega
     cursor: move;
     border: 1px solid #ccc;
     overflow: hidden;
-    background: #ffffff;
+    background: #fff;
   }
-  /* Force the SVG to be visible and fill the container */
   #mindmap-container svg {
     max-width: none !important;
-    width: 100% !important;
-    height: 100% !important;
+    /* We remove the 100% width/height here to stop the shrinking */
+    width: auto !important;
+    height: auto !important;
   }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/svg-pan-zoom@3.6.1/dist/svg-pan-zoom.min.js"></script>
@@ -349,29 +349,23 @@ document.addEventListener("DOMContentLoaded", function() {
     if (svg) {
       clearInterval(timer);
 
-      // 1. Completely strip Mermaid's internal hardcoded sizes
+      // 1. Remove Mermaid's forced dimensions
       svg.removeAttribute("width");
       svg.removeAttribute("height");
-      
-      // 2. Initialize the zoom library with "fit" and "center" enabled
-      // This forces the library to ignore Mermaid's bad math and 
-      // re-calculate the position so the map is visible and centered.
+
+      // 2. Initialize with fit: false to keep the "Normal" size
       var panZoom = svgPanZoom(svg, {
         zoomEnabled: true,
         controlIconsEnabled: true,
-        fit: true,    
-        center: true,
+        fit: false,    // Don't shrink it to fit the window
+        center: true,  // Keep it in the middle
         minZoom: 0.1,
         maxZoom: 20,
         mouseWheelZoomEnabled: true
       });
 
-      // 3. Force a resize event to make sure the "fit" sticks
-      window.addEventListener('resize', function() {
-        panZoom.resize();
-        panZoom.fit();
-        panZoom.center();
-      });
+      // 3. Force the zoom level to 1 (Normal Scale)
+      panZoom.zoom(1);
     }
   }, 200);
 });
