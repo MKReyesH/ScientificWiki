@@ -327,46 +327,41 @@ H(z) = H_0 \sqrt{\Omega_r (1+z)^4 + \Omega_m (1+z)^3 + \Omega_k (1+z)^2 + \Omega
 </div>
 <style>
   #mindmap-container {
-    width: 100%;
-    /* HEIGHT REMOVED: The container will now automatically expand 
-       to fit the exact size of your Mermaid graph */
     border: 1px solid #ccc;
     overflow: hidden;
     cursor: grab;
-    background: #fafafa;
   }
   #mindmap-container:active {
     cursor: grabbing;
   }
   #mindmap-container svg {
     width: 100% !important;
-    height: auto !important; /* This tells the SVG to dictate the height */
-    display: block;
-    max-width: none !important;
+    height: auto !important; 
   }
 </style>
 <script src="https://unpkg.com/@panzoom/panzoom@4.5.1/dist/panzoom.min.js"></script>
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-  let timer = setInterval(function() {
-    let svg = document.querySelector('#mindmap-container svg');
-    
-    if (svg) {
-      clearInterval(timer);
+function initMindmap() {
+  const svg = document.querySelector('#mindmap-container svg');
+  
+  if (!svg) {
+    setTimeout(initMindmap, 100);
+    return;
+  }
 
-      // Initialize Panzoom. Because the container is now the exact same size 
-      // as the graph, there will be no cut-offs on load.
-      const panzoom = Panzoom(svg, {
-        maxScale: 20,
-        minScale: 0.1,
-        step: 0.1
-      });
+  const group = svg.querySelector('g');
 
-      const container = document.querySelector('#mindmap-container');
-      container.addEventListener('wheel', panzoom.zoomWithWheel);
-    }
-  }, 200);
-});
+  const panzoom = Panzoom(group, {
+    maxScale: 20,
+    minScale: 0.1,
+    step: 0.1,
+    canvas: true
+  });
+
+  document.querySelector('#mindmap-container').addEventListener('wheel', panzoom.zoomWithWheel);
+}
+
+window.addEventListener('load', initMindmap);
 </script>
 
 </section>
