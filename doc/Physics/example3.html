@@ -237,7 +237,7 @@ window.Quarto = {
 <!-- margin-sidebar -->
     
 <!-- main -->
-<main class="content page-columns page-full" id="quarto-document-content">
+<main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Topics</li><li class="breadcrumb-item"><a href="../../doc/Physics/example3.html">Physics</a></li><li class="breadcrumb-item"><a href="../../doc/Physics/example3.html"><span class="math inline">\(\Lambda\)</span>CDM Cosmological Model</a></li></ol></nav>
 <div class="quarto-title">
@@ -284,22 +284,28 @@ H(z) = H_0 \sqrt{\Omega_r (1+z)^4 + \Omega_m (1+z)^3 + \Omega_k (1+z)^2 + \Omega
 \tag{3}\]</span></span></p>
 <p> The model does not predict the values of these cosmic densities, so they should be adjusted using cosmological observations and measurements. For more information see <span class="citation" data-cites="ReyesHung:2023udr">[<a href="#ref-ReyesHung:2023udr" role="doc-biblioref">1</a>]</span>.</p>
 </section>
-<section id="mermaid-map" class="level1 page-columns page-full">
+<section id="mermaid-map" class="level1">
 <h1>Mermaid map</h1>
-<div class="cell lightbox page-columns page-full" data-layout-align="default">
-<div class="cell-output-display column-page">
+<div style="width: 100%; height: 400px; overflow: auto; border: 1px solid #333; padding: 10px;">
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
 <div>
 <p></p><figure class="figure"><p></p>
 <div>
 <pre class="mermaid mermaid-js">graph TD
     A[Wiki Home] --&gt; B(Math)
     A --&gt; C(Physics)
+    B --&gt; D(Calculus)
+    B --&gt; E(Algebra)
+    C --&gt; F(Classical)
+    C --&gt; G(Quantum)
     
     click B "doc/Math/index.html" "Go to Math"
     click C "doc/Physics/index.html" "Go to Physics"
 </pre>
 </div>
-<p></p><figcaption> Interactive Conceptual Map of the Wiki</figcaption> </figure><p></p>
+<p></p></figure><p></p>
+</div>
 </div>
 </div>
 </div>
