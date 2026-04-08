@@ -33,18 +33,20 @@ The model does not predict the values of these cosmic densities, so they should 
 
 \section{Mermaid map}
 
+::: {style="width: 100%; height: 400px; overflow: auto; border: 1px solid #333; padding: 10px;"}
 ```{mermaid}
-%%| column: page
-%%| fig-cap: "Interactive Conceptual Map of the Wiki"
-%%| classes: lightbox
-
 graph TD
     A[Wiki Home] --> B(Math)
     A --> C(Physics)
+    B --> D(Calculus)
+    B --> E(Algebra)
+    C --> F(Classical)
+    C --> G(Quantum)
     
     click B "doc/Math/index.html" "Go to Math"
     click C "doc/Physics/index.html" "Go to Physics"
 ```
+:::
 
 ## List of Authors {id="authors" .appendix}
 
