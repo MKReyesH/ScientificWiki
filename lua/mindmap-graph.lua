@@ -6,7 +6,6 @@ function CodeBlock(el)
     local links = {}
     local added_nodes = {}
     
-    -- Generate a unique ID for the graph container
     local graph_id = "graph_" .. tostring(math.random(100000, 999999))
     
     local function escape_js(str)
@@ -27,7 +26,6 @@ function CodeBlock(el)
       local source, target = string.match(line, "(.-)%s*->%s*(.*)")
       
       if source and target then
-        -- Clean up any invisible trailing spaces
         source = source:match("^%s*(.-)%s*$")
         target = target:match("^%s*(.-)%s*$")
         
@@ -37,14 +35,20 @@ function CodeBlock(el)
           local folder = string.match(target, "^auto:(.*)")
           folder = folder:match("^%s*(.-)%s*$")
           
-          -- Cross-Platform OS Detection (Fixes Windows/Mac/Linux crashes)
           local is_windows = package.config:sub(1,1) == '\\'
-          local cmd = 'ls "' .. folder .. '"/*.qmd 2>/dev/null'
+          local cmd
+          
+          -- Fix 3: Handle Windows slashes correctly for directory reading
           if is_windows then
-            cmd = 'dir "' .. folder .. '\\*.qmd" /b /s 2>nul'
+            local win_folder = folder:gsub("/", "\\")
+            cmd = 'dir /b /s "' .. win_folder .. '\\*.qmd" 2>nul'
+          else
+            cmd = 'ls -1 "' .. folder .. '"/*.qmd 2>/dev/null'
           end
           
           local handle = io.popen(cmd)
+          local files_found = false
+          
           if handle then
             local result = handle:read("*a")
             handle:close()
@@ -53,9 +57,9 @@ function CodeBlock(el)
               local filename = string.match(filepath, "([^/\\]+)%.qmd$")
               
               if filename then
+                files_found = true
                 local title = filename
                 
-                -- Attempt to read YAML safely
                 local f = io.open(filepath, "r")
                 if f then
                   local content = f:read("*a")
@@ -72,6 +76,14 @@ function CodeBlock(el)
               end
             end
           end
+          
+          -- Visual Debugger if folder read fails
+          if not files_found then
+            local err_node = "[Not Found: " .. folder .. "]"
+            add_node(err_node, nil, 3) 
+            table.insert(links, string.format("{ source: '%s', target: '%s' }", escape_js(source), escape_js(err_node)))
+          end
+          
         else
           add_node(target, nil, 1)
           table.insert(links, string.format("{ source: '%s', target: '%s' }", escape_js(source), escape_js(target)))
@@ -79,20 +91,18 @@ function CodeBlock(el)
       end
     end
     
-    -- Visual Error Handler: If Lua failed to parse anything, tell the user instead of showing a blank screen
     if #nodes == 0 then
-      return pandoc.RawBlock("html", "<div style='padding: 20px; border: 2px solid red; color: red; font-family: sans-serif; background: #ffe6e6; border-radius: 8px;'><strong>Graph Build Error:</strong> No nodes were found. Ensure you are using a Code Block with the <code>mindmap-graph</code> class and formatting lines as <code>Source -> Target</code>.</div>")
+      return pandoc.RawBlock("html", "<div style='padding: 20px; border: 2px solid red; color: red;'><strong>Graph Build Error:</strong> No nodes were found.</div>")
     end
     
     local nodes_js = table.concat(nodes, ",\n        ")
     local links_js = table.concat(links, ",\n        ")
     
     local html_code = [[
-<div id="]] .. graph_id .. [[" style="width: 100%; height: 600px; border: 1px solid #ddd; background: #fafafa; border-radius: 8px;"></div>
+<div id="]] .. graph_id .. [[" style="width: 100%; height: 600px; border: 1px solid #ddd; background: #ffffff; border-radius: 8px;"></div>
 
 <script src="https://unpkg.com/force-graph"></script>
 <script>
-  // Prevent JS Race Conditions: Wait until ForceGraph is fully loaded before drawing
   (function initGraph() {
     if (typeof ForceGraph === 'undefined') {
       setTimeout(initGraph, 50);
@@ -110,20 +120,56 @@ function CodeBlock(el)
     const Graph = ForceGraph()(container)
       .graphData(graphData)
       .linkDirectionalParticles(2)
+      .linkColor(() => '#cccccc')
       .nodeCanvasObject((node, ctx, globalScale) => {
         const label = node.id;
         const fontSize = 14 / globalScale;
-        ctx.font = `${fontSize}px Sans-Serif`;
+        ctx.font = `bold ${fontSize}px Sans-Serif`;
         
         const textWidth = ctx.measureText(label).width;
-        const bckgDimensions = [textWidth, fontSize].map(n => n + fontSize * 0.4);
+        // Fix 1: Calculate proper padding for the box
+        const bckgDimensions = [textWidth, fontSize].map(n => n + fontSize * 1.2);
 
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
-        ctx.fillRect(node.x - bckgDimensions[0] / 2, node.y - bckgDimensions[1] / 2, ...bckgDimensions);
+        // Determine colors based on group
+        let bgColor = '#f4f4f5';
+        let borderColor = '#d4d4d8';
+        let textColor = '#3f3f46';
 
+        if (node.group === 2) { // Auto-generated files (clickable links)
+            bgColor = '#e0f2fe';
+            borderColor = '#38bdf8';
+            textColor = '#0369a1';
+        } else if (node.group === 3) { // Error nodes
+            bgColor = '#fee2e2';
+            borderColor = '#f87171';
+            textColor = '#991b1b';
+        }
+
+        ctx.fillStyle = bgColor;
+        ctx.strokeStyle = borderColor;
+        ctx.lineWidth = 1.5 / globalScale;
+
+        // Fix 1: Draw a rounded rectangle for the node
+        ctx.beginPath();
+        const x = node.x - bckgDimensions[0] / 2;
+        const y = node.y - bckgDimensions[1] / 2;
+        const w = bckgDimensions[0];
+        const h = bckgDimensions[1];
+        const r = 6 / globalScale; // border radius
+        
+        if (ctx.roundRect) {
+            ctx.roundRect(x, y, w, h, r);
+        } else {
+            ctx.rect(x, y, w, h); // Fallback for very old browsers
+        }
+        
+        ctx.fill();
+        ctx.stroke();
+
+        // Draw text
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        ctx.fillStyle = node.group === 1 ? '#555' : '#4285F4'; 
+        ctx.fillStyle = textColor; 
         ctx.fillText(label, node.x, node.y);
 
         node.__bckgDimensions = bckgDimensions; 
@@ -131,10 +177,19 @@ function CodeBlock(el)
       .nodePointerAreaPaint((node, color, ctx) => {
         ctx.fillStyle = color;
         const bckgDimensions = node.__bckgDimensions;
-        bckgDimensions && ctx.fillRect(node.x - bckgDimensions[0] / 2, node.y - bckgDimensions[1] / 2, ...bckgDimensions);
+        if (bckgDimensions) {
+            ctx.fillRect(node.x - bckgDimensions[0] / 2, node.y - bckgDimensions[1] / 2, ...bckgDimensions);
+        }
       })
+      // Fix 2: Turn the mouse into a pointer hand when hovering over a clickable node
+      .onNodeHover(node => {
+        container.style.cursor = node && node.url ? 'pointer' : null;
+      })
+      // Fix 2: Actually navigate to the URL when clicked
       .onNodeClick(node => {
-        if (node.url) window.location.href = node.url;
+        if (node.url) {
+            window.location.href = node.url;
+        }
       });
   })();
 </script>
