@@ -27,6 +27,7 @@ project:
 
 filters:
   - lua/latex-to-quarto.lua
+  - lua/mindmap-graph.lua
 
 format:
   html:

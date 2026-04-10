@@ -31,115 +31,16 @@ Using the FLRW metric, Eq. \eqref{eq:FLRW}, to solve the Einstein equations lead
 \end{gather}
 The model does not predict the values of these cosmic densities, so they should be adjusted using cosmological observations and measurements. For more information see \cite{ReyesHung:2023udr}.
 
-\section{Mermaid map}
+\section{HTML5 map}
 
-:::{#mindmap-container}
-```{mermaid}
-mindmap
-  root(("<a href='index.html'>Wiki Home</a>"))
-    math_node("<a href='doc/Math/index.html'>Mathematics</a>")
-      calc("<a href='#'>Calculus</a>")
-      linalg("<a href='#'>Linear Algebra</a>")
-      stats("<a href='#'>Statistics & Probability</a>")
-      topology("<a href='#'>Topology</a>")
-      algebra("<a href='#'>Abstract Algebra</a>")
-    phys_node("<a href='doc/Physics/index.html'>Physics</a>")
-      cm("<a href='#'>Classical Mechanics</a>")
-      qm("<a href='#'>Quantum Mechanics</a>")
-        seq("<a href='#'>Schrödinger Equation</a>")
-        dirac("<a href='#'>Dirac Equation</a>")
-      thermo("<a href='#'>Thermodynamics</a>")
-      em("<a href='#'>Electromagnetism</a>")
-    cs_node("<a href='#'>Computer Science</a>")
-      algo("<a href='#'>Algorithms</a>")
-      ds("<a href='#'>Data Structures</a>")
-      ai("<a href='#'>Artificial Intelligence</a>")
-        ml("<a href='#'>Machine Learning</a>")
-        nn("<a href='#'>Neural Networks</a>")
-      os("<a href='#'>Operating Systems</a>")
-    bio_node("<a href='#'>Biology</a>")
-      gen("<a href='#'>Genetics</a>")
-      evo("<a href='#'>Evolutionary Biology</a>")
-      cell("<a href='#'>Cellular Biology</a>")
-```
+::: mindmap-graph
+Wiki Home -> Physics
+Wiki Home -> Mathematics
+Wiki Home -> Examples
+Mathematics -> Calculus
+Physics -> auto:doc/Physics
+Physics -> auto:doc/Examples
 :::
-    
-<style>
-  #mindmap-container {
-    border: 1px solid #ccc;
-    overflow: hidden;
-    cursor: grab;
-  }
-  #mindmap-container:active {
-    cursor: grabbing;
-  }
-  #mindmap-container svg {
-    width: 100% !important;
-    height: auto !important; 
-  }
-</style>
-
-<script src="https://unpkg.com/@panzoom/panzoom@4.5.1/dist/panzoom.min.js"></script>
-
-<script>
-function initMindmap() {
-  const svg = document.querySelector('#mindmap-container svg');
-  
-  if (!svg) {
-    setTimeout(initMindmap, 100);
-    return;
-  }
-
-  const group = svg.querySelector('g');
-
-  const panzoom = Panzoom(group, {
-    maxScale: 20,
-    minScale: 0.1,
-    step: 0.1,
-    canvas: true
-  });
-
-  document.querySelector('#mindmap-container').addEventListener('wheel', panzoom.zoomWithWheel);
-}
-
-window.addEventListener('load', initMindmap);
-</script>
-
-\section{HTML5 Map}
-
-<div id="obsidian-graph" style="width: 100%; height: 600px; border: 1px solid #ddd; background: #fafafa; border-radius: 8px;"></div>
-
-<script src="https://unpkg.com/force-graph"></script>
-
-<script>
-  // A. Define your data (Nodes and how they connect)
-  const graphData = {
-    nodes: [
-      { id: 'Wiki Home', group: 1, url: 'index.html' },
-      { id: 'Physics', group: 2, url: 'physics.html' },
-      { id: 'Mathematics', group: 2, url: 'math.html' },
-      { id: 'Calculus', group: 3, url: 'calculus.html' },
-      { id: 'Quantum Mechanics', group: 3, url: 'quantum.html' }
-    ],
-    links: [
-      { source: 'Wiki Home', target: 'Physics' },
-      { source: 'Wiki Home', target: 'Mathematics' },
-      { source: 'Mathematics', target: 'Calculus' },
-      { source: 'Physics', target: 'Quantum Mechanics' }
-    ]
-  };
-
-  // B. Initialize and format the graph
-  const Graph = ForceGraph()(document.getElementById('obsidian-graph'))
-    .graphData(graphData)
-    .nodeLabel('id')           // Shows the node name when you hover over it
-    .nodeAutoColorBy('group')  // Automatically assigns colors based on the "group" number
-    .linkDirectionalParticles(2) // Adds moving particles on the lines (optional, but very cool)
-    .onNodeClick(node => {
-      // C. Make the nodes act like actual links!
-      if (node.url) window.location.href = node.url;
-    });
-</script>
 
 ## List of Authors {id="authors" .appendix}
 
