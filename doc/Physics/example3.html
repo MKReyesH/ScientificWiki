@@ -283,7 +283,7 @@ H(z) = H_0 \sqrt{\Omega_r (1+z)^4 + \Omega_m (1+z)^3 + \Omega_k (1+z)^2 + \Omega
 </section>
 <section id="html5-map" class="level1">
 <h1>HTML5 map</h1>
-<div id="graph_875857" style="width: 100%; height: 600px; border: 1px solid #ddd; background: #ffffff; border-radius: 8px;"></div>
+<div id="graph_379255" style="width: 100%; height: 600px; border: 1px solid #ddd; background: #ffffff; border-radius: 8px;"></div>
 
 <script src="https://unpkg.com/force-graph"></script>
 <script>
@@ -299,17 +299,17 @@ H(z) = H_0 \sqrt{\Omega_r (1+z)^4 + \Omega_m (1+z)^3 + \Omega_k (1+z)^2 + \Omega
         { id: 'Mathematics', url: null, group: 1 },
         { id: 'Examples', url: null, group: 1 },
         { id: 'Calculus', url: null, group: 1 },
-        { id: '[Not Found: doc/Physics]', url: null, group: 3 },
-        { id: '[Not Found: doc/Examples]', url: null, group: 3 } ],
+        { id: '[Missing/Empty: doc/Physics]', url: null, group: 3 },
+        { id: '[Missing/Empty: doc/Examples]', url: null, group: 3 } ],
       links: [ { source: 'Wiki Home', target: 'Physics' },
         { source: 'Wiki Home', target: 'Mathematics' },
         { source: 'Wiki Home', target: 'Examples' },
         { source: 'Mathematics', target: 'Calculus' },
-        { source: 'Physics', target: '[Not Found: doc/Physics]' },
-        { source: 'Physics', target: '[Not Found: doc/Examples]' } ]
+        { source: 'Physics', target: '[Missing/Empty: doc/Physics]' },
+        { source: 'Physics', target: '[Missing/Empty: doc/Examples]' } ]
     };
 
-    const container = document.getElementById('graph_875857');
+    const container = document.getElementById('graph_379255');
     if (!container) return;
 
     const Graph = ForceGraph()(container)
@@ -322,19 +322,17 @@ H(z) = H_0 \sqrt{\Omega_r (1+z)^4 + \Omega_m (1+z)^3 + \Omega_k (1+z)^2 + \Omega
         ctx.font = `bold ${fontSize}px Sans-Serif`;
         
         const textWidth = ctx.measureText(label).width;
-        // Fix 1: Calculate proper padding for the box
         const bckgDimensions = [textWidth, fontSize].map(n => n + fontSize * 1.2);
 
-        // Determine colors based on group
         let bgColor = '#f4f4f5';
         let borderColor = '#d4d4d8';
         let textColor = '#3f3f46';
 
-        if (node.group === 2) { // Auto-generated files (clickable links)
+        if (node.group === 2) { 
             bgColor = '#e0f2fe';
             borderColor = '#38bdf8';
             textColor = '#0369a1';
-        } else if (node.group === 3) { // Error nodes
+        } else if (node.group === 3) { 
             bgColor = '#fee2e2';
             borderColor = '#f87171';
             textColor = '#991b1b';
@@ -344,24 +342,22 @@ H(z) = H_0 \sqrt{\Omega_r (1+z)^4 + \Omega_m (1+z)^3 + \Omega_k (1+z)^2 + \Omega
         ctx.strokeStyle = borderColor;
         ctx.lineWidth = 1.5 / globalScale;
 
-        // Fix 1: Draw a rounded rectangle for the node
         ctx.beginPath();
         const x = node.x - bckgDimensions[0] / 2;
         const y = node.y - bckgDimensions[1] / 2;
         const w = bckgDimensions[0];
         const h = bckgDimensions[1];
-        const r = 6 / globalScale; // border radius
+        const r = 6 / globalScale; 
         
         if (ctx.roundRect) {
             ctx.roundRect(x, y, w, h, r);
         } else {
-            ctx.rect(x, y, w, h); // Fallback for very old browsers
+            ctx.rect(x, y, w, h); 
         }
         
         ctx.fill();
         ctx.stroke();
 
-        // Draw text
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.fillStyle = textColor; 
@@ -376,11 +372,9 @@ H(z) = H_0 \sqrt{\Omega_r (1+z)^4 + \Omega_m (1+z)^3 + \Omega_k (1+z)^2 + \Omega
             ctx.fillRect(node.x - bckgDimensions[0] / 2, node.y - bckgDimensions[1] / 2, ...bckgDimensions);
         }
       })
-      // Fix 2: Turn the mouse into a pointer hand when hovering over a clickable node
       .onNodeHover(node => {
         container.style.cursor = node && node.url ? 'pointer' : null;
       })
-      // Fix 2: Actually navigate to the URL when clicked
       .onNodeClick(node => {
         if (node.url) {
             window.location.href = node.url;
