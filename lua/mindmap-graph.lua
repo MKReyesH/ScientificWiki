@@ -22,7 +22,7 @@ function CodeBlock(el)
       end
     end
 
-    -- Get the current working directory to debug pathing issues
+    -- 1. Get the current execution path
     local is_windows = package.config:sub(1,1) == '\\'
     local pwd_cmd = is_windows and "cd" or "pwd"
     local pwd_handle = io.popen(pwd_cmd)
@@ -30,6 +30,29 @@ function CodeBlock(el)
     if pwd_handle then
         current_dir = pwd_handle:read("*l") or current_dir
         pwd_handle:close()
+    end
+
+    -- 2. Grab Quarto's Project Root variable and calculate relative depth
+    local project_root = os.getenv("QUARTO_PROJECT_DIR") or current_dir
+    local current_dir_norm = current_dir:gsub("\\", "/")
+    local project_root_norm = project_root:gsub("\\", "/")
+
+    local subpath = ""
+    if #current_dir_norm > #project_root_norm then
+        -- Extract the relative path of the current file from the root
+        subpath = current_dir_norm:sub(#project_root_norm + 2)
+    end
+
+    -- Figure out how many levels deep we are to build the "../" prefixes for the URLs
+    local depth = 0
+    if #subpath > 0 then
+        local _, slashes = subpath:gsub("/", "")
+        depth = slashes + 1
+    end
+
+    local rel_prefix = ""
+    for i = 1, depth do
+        rel_prefix = rel_prefix .. "../"
     end
 
     for line in string.gmatch(raw_text, "[^\r\n]+") do
@@ -44,14 +67,16 @@ function CodeBlock(el)
         if string.match(target, "^auto:") then
           local folder = string.match(target, "^auto:(.*)")
           folder = folder:match("^%s*(.-)%s*$")
+          folder = folder:gsub("/$", "") -- Clean up trailing slashes
+          
+          -- Construct the absolute path from the project root for the OS to search
+          local os_target_dir = project_root_norm .. "/" .. folder
           
           local cmd
-          -- We now list ALL files simply, and let Lua do the filtering. 
-          -- This avoids all Mac/Linux/Windows wildcard bugs.
           if is_windows then
-            cmd = 'dir /b "' .. folder:gsub("/", "\\") .. '" 2>nul'
+            cmd = 'dir /b "' .. os_target_dir:gsub("/", "\\") .. '" 2>nul'
           else
-            cmd = 'ls -1 "' .. folder .. '" 2>/dev/null'
+            cmd = 'ls -1 "' .. os_target_dir .. '" 2>/dev/null'
           end
           
           local handle = io.popen(cmd)
@@ -62,11 +87,11 @@ function CodeBlock(el)
             handle:close()
             
             for filename in string.gmatch(result, "[^\r\n]+") do
-              -- Filter natively in Lua
               if filename:match("%.qmd$") then
                 files_found = true
                 local title = filename
-                local filepath = folder .. "/" .. filename
+                -- Read the physical file using the absolute OS path
+                local filepath = os_target_dir .. "/" .. filename
                 
                 local f = io.open(filepath, "r")
                 if f then
@@ -78,9 +103,9 @@ function CodeBlock(el)
                   if t then title = t:match("^%s*(.-)%s*$") end
                 end
                 
-                -- Ensure URL ends in .html for the final Quarto output
+                -- Construct the web URL dynamically based on depth
                 local out_html = filename:gsub("%.qmd$", ".html")
-                local url = folder .. "/" .. out_html
+                local url = rel_prefix .. folder .. "/" .. out_html
                 
                 add_node(title, url, 2)
                 table.insert(links, string.format("{ source: '%s', target: '%s' }", escape_js(source), escape_js(title)))
@@ -88,13 +113,12 @@ function CodeBlock(el)
             end
           end
           
-          -- Advanced Debugger: Tells you the target folder AND where Quarto is executing from
           if not files_found then
             local err_node = "[Missing/Empty: " .. folder .. "]"
             add_node(err_node, nil, 3) 
             table.insert(links, string.format("{ source: '%s', target: '%s' }", escape_js(source), escape_js(err_node)))
             
-            local dir_info_node = "(Quarto is running in: " .. current_dir .. ")"
+            local dir_info_node = "(Searched at: " .. os_target_dir .. ")"
             add_node(dir_info_node, nil, 3)
             table.insert(links, string.format("{ source: '%s', target: '%s' }", escape_js(err_node), escape_js(dir_info_node)))
           end
