@@ -38,12 +38,12 @@ function CodeBlock(el)
           local is_windows = package.config:sub(1,1) == '\\'
           local cmd
           
-          -- Fix 3: Handle Windows slashes correctly for directory reading
+          -- GitHub Actions / Linux Fix: Use 'find' instead of 'ls' for reliable subshell execution
           if is_windows then
             local win_folder = folder:gsub("/", "\\")
-            cmd = 'dir /b /s "' .. win_folder .. '\\*.qmd" 2>nul'
+            cmd = 'dir /b "' .. win_folder .. '\\*.qmd" 2>nul'
           else
-            cmd = 'ls -1 "' .. folder .. '"/*.qmd 2>/dev/null'
+            cmd = 'find "' .. folder .. '" -maxdepth 1 -type f -name "*.qmd" 2>/dev/null'
           end
           
           local handle = io.popen(cmd)
@@ -54,6 +54,7 @@ function CodeBlock(el)
             handle:close()
             
             for filepath in string.gmatch(result, "[^\r\n]+") do
+              -- 'find' returns the full relative path, so we extract just the filename
               local filename = string.match(filepath, "([^/\\]+)%.qmd$")
               
               if filename then
@@ -77,9 +78,9 @@ function CodeBlock(el)
             end
           end
           
-          -- Visual Debugger if folder read fails
+          -- Enhanced Debugger: Prints the exact folder path it failed to read
           if not files_found then
-            local err_node = "[Not Found: " .. folder .. "]"
+            local err_node = "[Missing/Empty: " .. folder .. "]"
             add_node(err_node, nil, 3) 
             table.insert(links, string.format("{ source: '%s', target: '%s' }", escape_js(source), escape_js(err_node)))
           end
@@ -127,19 +128,17 @@ function CodeBlock(el)
         ctx.font = `bold ${fontSize}px Sans-Serif`;
         
         const textWidth = ctx.measureText(label).width;
-        // Fix 1: Calculate proper padding for the box
         const bckgDimensions = [textWidth, fontSize].map(n => n + fontSize * 1.2);
 
-        // Determine colors based on group
         let bgColor = '#f4f4f5';
         let borderColor = '#d4d4d8';
         let textColor = '#3f3f46';
 
-        if (node.group === 2) { // Auto-generated files (clickable links)
+        if (node.group === 2) { 
             bgColor = '#e0f2fe';
             borderColor = '#38bdf8';
             textColor = '#0369a1';
-        } else if (node.group === 3) { // Error nodes
+        } else if (node.group === 3) { 
             bgColor = '#fee2e2';
             borderColor = '#f87171';
             textColor = '#991b1b';
@@ -149,24 +148,22 @@ function CodeBlock(el)
         ctx.strokeStyle = borderColor;
         ctx.lineWidth = 1.5 / globalScale;
 
-        // Fix 1: Draw a rounded rectangle for the node
         ctx.beginPath();
         const x = node.x - bckgDimensions[0] / 2;
         const y = node.y - bckgDimensions[1] / 2;
         const w = bckgDimensions[0];
         const h = bckgDimensions[1];
-        const r = 6 / globalScale; // border radius
+        const r = 6 / globalScale; 
         
         if (ctx.roundRect) {
             ctx.roundRect(x, y, w, h, r);
         } else {
-            ctx.rect(x, y, w, h); // Fallback for very old browsers
+            ctx.rect(x, y, w, h); 
         }
         
         ctx.fill();
         ctx.stroke();
 
-        // Draw text
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.fillStyle = textColor; 
@@ -181,11 +178,9 @@ function CodeBlock(el)
             ctx.fillRect(node.x - bckgDimensions[0] / 2, node.y - bckgDimensions[1] / 2, ...bckgDimensions);
         }
       })
-      // Fix 2: Turn the mouse into a pointer hand when hovering over a clickable node
       .onNodeHover(node => {
         container.style.cursor = node && node.url ? 'pointer' : null;
       })
-      // Fix 2: Actually navigate to the URL when clicked
       .onNodeClick(node => {
         if (node.url) {
             window.location.href = node.url;
