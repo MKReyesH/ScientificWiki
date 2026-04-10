@@ -1,10 +1,14 @@
-function Div(el)
+function CodeBlock(el)
   if el.classes:includes("mindmap-graph") then
     
-    local raw_text = pandoc.utils.stringify(el)
+    -- Because it's a CodeBlock, el.text perfectly preserves your newlines! No stringify needed.
+    local raw_text = el.text
     local nodes = {}
     local links = {}
     local added_nodes = {}
+    
+    -- Generate a unique ID so multiple graphs on one page don't conflict
+    local graph_id = "graph-" .. tostring(math.random(100000, 999999))
     
     local function escape_js(str)
       return str:gsub("'", "\\'")
@@ -61,52 +65,47 @@ function Div(el)
     local nodes_js = table.concat(nodes, ",\n        ")
     local links_js = table.concat(links, ",\n        ")
     
-    -- The new, significantly cleaner JavaScript
     local html_code = [[
-<div id="obsidian-graph" style="width: 100%; height: 600px; border: 1px solid #ddd; background: #fafafa; border-radius: 8px;"></div>
+<div id="]] .. graph_id .. [[" style="width: 100%; height: 600px; border: 1px solid #ddd; background: #fafafa; border-radius: 8px;"></div>
 
-<script src="https://unpkg.com/force-graph"></script>
+<script src="[https://unpkg.com/force-graph](https://unpkg.com/force-graph)"></script>
 <script>
-  const graphData = {
-    nodes: [ ]] .. nodes_js .. [[ ],
-    links: [ ]] .. links_js .. [[ ]
-  };
+  (function() {
+    const graphData = {
+      nodes: [ ]] .. nodes_js .. [[ ],
+      links: [ ]] .. links_js .. [[ ]
+    };
 
-  const Graph = ForceGraph()(document.getElementById('obsidian-graph'))
-    .graphData(graphData)
-    .linkDirectionalParticles(2)
-    .nodeCanvasObject((node, ctx, globalScale) => {
-      // 1. Set font size that scales smoothly as you zoom
-      const label = node.id;
-      const fontSize = 14 / globalScale;
-      ctx.font = `${fontSize}px Sans-Serif`;
-      
-      // 2. Calculate the background box size based on text length
-      const textWidth = ctx.measureText(label).width;
-      const bckgDimensions = [textWidth, fontSize].map(n => n + fontSize * 0.4);
+    const Graph = ForceGraph()(document.getElementById(']] .. graph_id .. [['))
+      .graphData(graphData)
+      .linkDirectionalParticles(2)
+      .nodeCanvasObject((node, ctx, globalScale) => {
+        const label = node.id;
+        const fontSize = 14 / globalScale;
+        ctx.font = `${fontSize}px Sans-Serif`;
+        
+        const textWidth = ctx.measureText(label).width;
+        const bckgDimensions = [textWidth, fontSize].map(n => n + fontSize * 0.4);
 
-      // 3. Draw a crisp white box behind the text
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
-      ctx.fillRect(node.x - bckgDimensions[0] / 2, node.y - bckgDimensions[1] / 2, ...bckgDimensions);
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+        ctx.fillRect(node.x - bckgDimensions[0] / 2, node.y - bckgDimensions[1] / 2, ...bckgDimensions);
 
-      // 4. Draw the actual text over the box
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillStyle = node.group === 1 ? '#555' : '#4285F4'; 
-      ctx.fillText(label, node.x, node.y);
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillStyle = node.group === 1 ? '#555' : '#4285F4'; 
+        ctx.fillText(label, node.x, node.y);
 
-      // Save hitbox dimensions for hovering/clicking
-      node.__bckgDimensions = bckgDimensions; 
-    })
-    .nodePointerAreaPaint((node, color, ctx) => {
-      // Create the invisible hover/click area matching the text box size
-      ctx.fillStyle = color;
-      const bckgDimensions = node.__bckgDimensions;
-      bckgDimensions && ctx.fillRect(node.x - bckgDimensions[0] / 2, node.y - bckgDimensions[1] / 2, ...bckgDimensions);
-    })
-    .onNodeClick(node => {
-      if (node.url) window.location.href = node.url;
-    });
+        node.__bckgDimensions = bckgDimensions; 
+      })
+      .nodePointerAreaPaint((node, color, ctx) => {
+        ctx.fillStyle = color;
+        const bckgDimensions = node.__bckgDimensions;
+        bckgDimensions && ctx.fillRect(node.x - bckgDimensions[0] / 2, node.y - bckgDimensions[1] / 2, ...bckgDimensions);
+      })
+      .onNodeClick(node => {
+        if (node.url) window.location.href = node.url;
+      });
+  })();
 </script>
     ]]
     

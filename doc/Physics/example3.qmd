@@ -33,14 +33,14 @@ The model does not predict the values of these cosmic densities, so they should 
 
 \section{HTML5 map}
 
-::: mindmap-graph
+``` mindmap-graph
 Wiki Home -> Physics
 Wiki Home -> Mathematics
 Wiki Home -> Examples
 Mathematics -> Calculus
 Physics -> auto:doc/Physics
 Physics -> auto:doc/Examples
-:::
+```
 
 ## List of Authors {id="authors" .appendix}
 
