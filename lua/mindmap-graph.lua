@@ -22,38 +22,26 @@ function CodeBlock(el)
       end
     end
 
-    -- 1. Get the current execution path
-    local is_windows = package.config:sub(1,1) == '\\'
-    local pwd_cmd = is_windows and "cd" or "pwd"
-    local pwd_handle = io.popen(pwd_cmd)
-    local current_dir = "Unknown"
-    if pwd_handle then
-        current_dir = pwd_handle:read("*l") or current_dir
-        pwd_handle:close()
-    end
+    -- 1. Get the current execution path (Linux environment)
+    local pwd_handle = io.popen("pwd")
+    local current_dir = pwd_handle and pwd_handle:read("*l") or "Unknown"
+    if pwd_handle then pwd_handle:close() end
 
     -- 2. Grab Quarto's Project Root variable and calculate relative depth
     local project_root = os.getenv("QUARTO_PROJECT_DIR") or current_dir
-    local current_dir_norm = current_dir:gsub("\\", "/")
-    local project_root_norm = project_root:gsub("\\", "/")
 
     local subpath = ""
-    if #current_dir_norm > #project_root_norm then
-        -- Extract the relative path of the current file from the root
-        subpath = current_dir_norm:sub(#project_root_norm + 2)
+    if #current_dir > #project_root then
+        subpath = current_dir:sub(#project_root + 2)
     end
 
-    -- Figure out how many levels deep we are to build the "../" prefixes for the URLs
     local depth = 0
     if #subpath > 0 then
         local _, slashes = subpath:gsub("/", "")
         depth = slashes + 1
     end
 
-    local rel_prefix = ""
-    for i = 1, depth do
-        rel_prefix = rel_prefix .. "../"
-    end
+    local rel_prefix = string.rep("../", depth)
 
     for line in string.gmatch(raw_text, "[^\r\n]+") do
       local source, target = string.match(line, "(.-)%s*->%s*(.*)")
@@ -65,20 +53,10 @@ function CodeBlock(el)
         add_node(source, nil, 1)
 
         if string.match(target, "^auto:") then
-          local folder = string.match(target, "^auto:(.*)")
-          folder = folder:match("^%s*(.-)%s*$")
-          folder = folder:gsub("/$", "") -- Clean up trailing slashes
+          local folder = string.match(target, "^auto:(.*)"):match("^%s*(.-)%s*$"):gsub("/$", "")
+          local os_target_dir = project_root .. "/" .. folder
           
-          -- Construct the absolute path from the project root for the OS to search
-          local os_target_dir = project_root_norm .. "/" .. folder
-          
-          local cmd
-          if is_windows then
-            cmd = 'dir /b "' .. os_target_dir:gsub("/", "\\") .. '" 2>nul'
-          else
-            cmd = 'ls -1 "' .. os_target_dir .. '" 2>/dev/null'
-          end
-          
+          local cmd = 'ls -1 "' .. os_target_dir .. '" 2>/dev/null'
           local handle = io.popen(cmd)
           local files_found = false
           
@@ -90,7 +68,6 @@ function CodeBlock(el)
               if filename:match("%.qmd$") then
                 files_found = true
                 local title = filename
-                -- Read the physical file using the absolute OS path
                 local filepath = os_target_dir .. "/" .. filename
                 
                 local f = io.open(filepath, "r")
@@ -103,10 +80,7 @@ function CodeBlock(el)
                   if t then title = t:match("^%s*(.-)%s*$") end
                 end
                 
-                -- Construct the web URL dynamically based on depth
-                local out_html = filename:gsub("%.qmd$", ".html")
-                local url = rel_prefix .. folder .. "/" .. out_html
-                
+                local url = rel_prefix .. folder .. "/" .. filename:gsub("%.qmd$", ".html")
                 add_node(title, url, 2)
                 table.insert(links, string.format("{ source: '%s', target: '%s' }", escape_js(source), escape_js(title)))
               end
@@ -114,13 +88,9 @@ function CodeBlock(el)
           end
           
           if not files_found then
-            local err_node = "[Missing/Empty: " .. folder .. "]"
+            local err_node = "[Missing: " .. folder .. "]"
             add_node(err_node, nil, 3) 
             table.insert(links, string.format("{ source: '%s', target: '%s' }", escape_js(source), escape_js(err_node)))
-            
-            local dir_info_node = "(Searched at: " .. os_target_dir .. ")"
-            add_node(dir_info_node, nil, 3)
-            table.insert(links, string.format("{ source: '%s', target: '%s' }", escape_js(err_node), escape_js(dir_info_node)))
           end
           
         else
