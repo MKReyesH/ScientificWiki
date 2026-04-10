@@ -39,7 +39,7 @@ Wiki Home -> Mathematics
 Wiki Home -> Examples
 Mathematics -> Calculus
 Physics -> auto:doc/Physics
-Physics -> auto:doc/Examples
+Examples -> auto:doc/Examples
 ```
 
 ## List of Authors {id="authors" .appendix}
