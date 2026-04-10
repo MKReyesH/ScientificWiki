@@ -22,6 +22,16 @@ function CodeBlock(el)
       end
     end
 
+    -- Get the current working directory to debug pathing issues
+    local is_windows = package.config:sub(1,1) == '\\'
+    local pwd_cmd = is_windows and "cd" or "pwd"
+    local pwd_handle = io.popen(pwd_cmd)
+    local current_dir = "Unknown"
+    if pwd_handle then
+        current_dir = pwd_handle:read("*l") or current_dir
+        pwd_handle:close()
+    end
+
     for line in string.gmatch(raw_text, "[^\r\n]+") do
       local source, target = string.match(line, "(.-)%s*->%s*(.*)")
       
@@ -35,15 +45,13 @@ function CodeBlock(el)
           local folder = string.match(target, "^auto:(.*)")
           folder = folder:match("^%s*(.-)%s*$")
           
-          local is_windows = package.config:sub(1,1) == '\\'
           local cmd
-          
-          -- GitHub Actions / Linux Fix: Use 'find' instead of 'ls' for reliable subshell execution
+          -- We now list ALL files simply, and let Lua do the filtering. 
+          -- This avoids all Mac/Linux/Windows wildcard bugs.
           if is_windows then
-            local win_folder = folder:gsub("/", "\\")
-            cmd = 'dir /b "' .. win_folder .. '\\*.qmd" 2>nul'
+            cmd = 'dir /b "' .. folder:gsub("/", "\\") .. '" 2>nul'
           else
-            cmd = 'find "' .. folder .. '" -maxdepth 1 -type f -name "*.qmd" 2>/dev/null'
+            cmd = 'ls -1 "' .. folder .. '" 2>/dev/null'
           end
           
           local handle = io.popen(cmd)
@@ -53,13 +61,12 @@ function CodeBlock(el)
             local result = handle:read("*a")
             handle:close()
             
-            for filepath in string.gmatch(result, "[^\r\n]+") do
-              -- 'find' returns the full relative path, so we extract just the filename
-              local filename = string.match(filepath, "([^/\\]+)%.qmd$")
-              
-              if filename then
+            for filename in string.gmatch(result, "[^\r\n]+") do
+              -- Filter natively in Lua
+              if filename:match("%.qmd$") then
                 files_found = true
                 local title = filename
+                local filepath = folder .. "/" .. filename
                 
                 local f = io.open(filepath, "r")
                 if f then
@@ -71,18 +78,25 @@ function CodeBlock(el)
                   if t then title = t:match("^%s*(.-)%s*$") end
                 end
                 
-                local url = folder .. "/" .. filename .. ".html"
+                -- Ensure URL ends in .html for the final Quarto output
+                local out_html = filename:gsub("%.qmd$", ".html")
+                local url = folder .. "/" .. out_html
+                
                 add_node(title, url, 2)
                 table.insert(links, string.format("{ source: '%s', target: '%s' }", escape_js(source), escape_js(title)))
               end
             end
           end
           
-          -- Enhanced Debugger: Prints the exact folder path it failed to read
+          -- Advanced Debugger: Tells you the target folder AND where Quarto is executing from
           if not files_found then
             local err_node = "[Missing/Empty: " .. folder .. "]"
             add_node(err_node, nil, 3) 
             table.insert(links, string.format("{ source: '%s', target: '%s' }", escape_js(source), escape_js(err_node)))
+            
+            local dir_info_node = "(Quarto is running in: " .. current_dir .. ")"
+            add_node(dir_info_node, nil, 3)
+            table.insert(links, string.format("{ source: '%s', target: '%s' }", escape_js(err_node), escape_js(dir_info_node)))
           end
           
         else
