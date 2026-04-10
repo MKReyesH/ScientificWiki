@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.9.36">
+<meta name="generator" content="quarto-1.9.37">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -58,10 +58,10 @@ div.csl-indent {
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-2a8600961620fb22bbdc41287d7e474a.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-bfc81c90a4e668f7cc6782dca231ae32.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -337,7 +337,6 @@ H(z) = H_0 \sqrt{\Omega_r (1+z)^4 + \Omega_m (1+z)^3 + \Omega_k (1+z)^2 + \Omega
   #mindmap-container svg {
     width: 100% !important;
     height: auto !important; 
-    display: block; 
   }
 </style>
 <script src="https://unpkg.com/@panzoom/panzoom@4.5.1/dist/panzoom.min.js"></script>
@@ -363,6 +362,42 @@ function initMindmap() {
 }
 
 window.addEventListener('load', initMindmap);
+</script>
+</section>
+<section id="html5-map" class="level1">
+<h1>HTML5 Map</h1>
+<div id="obsidian-graph" style="width: 100%; height: 600px; border: 1px solid #ddd; background: #fafafa; border-radius: 8px;">
+
+</div>
+<script src="https://unpkg.com/force-graph"></script>
+<script>
+  // A. Define your data (Nodes and how they connect)
+  const graphData = {
+    nodes: [
+      { id: 'Wiki Home', group: 1, url: 'index.html' },
+      { id: 'Physics', group: 2, url: 'physics.html' },
+      { id: 'Mathematics', group: 2, url: 'math.html' },
+      { id: 'Calculus', group: 3, url: 'calculus.html' },
+      { id: 'Quantum Mechanics', group: 3, url: 'quantum.html' }
+    ],
+    links: [
+      { source: 'Wiki Home', target: 'Physics' },
+      { source: 'Wiki Home', target: 'Mathematics' },
+      { source: 'Mathematics', target: 'Calculus' },
+      { source: 'Physics', target: 'Quantum Mechanics' }
+    ]
+  };
+
+  // B. Initialize and format the graph
+  const Graph = ForceGraph()(document.getElementById('obsidian-graph'))
+    .graphData(graphData)
+    .nodeLabel('id')           // Shows the node name when you hover over it
+    .nodeAutoColorBy('group')  // Automatically assigns colors based on the "group" number
+    .linkDirectionalParticles(2) // Adds moving particles on the lines (optional, but very cool)
+    .onNodeClick(node => {
+      // C. Make the nodes act like actual links!
+      if (node.url) window.location.href = node.url;
+    });
 </script>
 
 </section>
