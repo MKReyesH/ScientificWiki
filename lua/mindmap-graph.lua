@@ -69,8 +69,8 @@ function CodeBlock(el)
         
         local found_anything = false
         for item in string.gmatch(result, "[^\r\n]+") do
-            found_anything = true
             if item:match("%.qmd$") then
+                found_anything = true
                 -- Process QMD file
                 local filename = item
                 local filepath = os_target_dir .. "/" .. filename
@@ -90,17 +90,24 @@ function CodeBlock(el)
                 add_edge(parent_name, title)
                 
             elseif item:match("/$") and recursive then
-                -- Process Subdirectory
                 local subfolder_name = item:gsub("/$", "")
-                local subfolder_path = folder_path .. "/" .. subfolder_name
                 
-                -- Create a node for the folder as a branch point (NOW A CIRCLE)
-                local folder_label = subfolder_name:gsub("^%a", string.upper)
-                register_node(folder_label, { shape = 'circle' }) 
-                add_edge(parent_name, folder_label)
-                
-                -- Recurse into it
-                process_auto_dir(folder_label, subfolder_path, true, current_tgt_attrs)
+                -- BUG FIX: Ignore Quarto generated directories and hidden folders
+                if not subfolder_name:match("^%.") and 
+                   not subfolder_name:match("_files$") and 
+                   not subfolder_name:match("_cache$") then
+                   
+                    found_anything = true
+                    local subfolder_path = folder_path .. "/" .. subfolder_name
+                    
+                    -- Create a node for the folder as a branch point (NOW A CIRCLE)
+                    local folder_label = subfolder_name:gsub("^%a", string.upper)
+                    register_node(folder_label, { shape = 'circle' }) 
+                    add_edge(parent_name, folder_label)
+                    
+                    -- Recurse into it
+                    process_auto_dir(folder_label, subfolder_path, true, current_tgt_attrs)
+                end
             end
         end
         return found_anything
