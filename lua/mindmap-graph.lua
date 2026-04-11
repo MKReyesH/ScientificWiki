@@ -3,19 +3,38 @@ function CodeBlock(el)
     
     local raw_text = el.text
     
-    -- We use these to build our logical map first
     local edges = {}
-    local node_urls = {}
-    local node_groups = {} 
     local nodes_set = {}
+    local node_urls = {}
+    local node_colors = {}
+    local node_shapes = {}
+    local node_groups = {} 
 
-    local function register_node(id, url, group)
+    -- Helper to extract properties like {url: http..., color: #ff0000, shape: box}
+    local function parse_node_str(str)
+        local name, attr_str = str:match("^(.-)%s*%{(.+)%}%s*$")
+        if not name then
+            name = str
+            attr_str = ""
+        end
+        name = name:match("^%s*(.-)%s*$")
+        
+        local attrs = {}
+        if attr_str ~= "" then
+            for k, v in attr_str:gmatch("(%w+)%s*:%s*([^,]+)") do
+                attrs[k] = v:match("^%s*(.-)%s*$")
+            end
+        end
+        return name, attrs
+    end
+
+    local function register_node(id, attrs)
         if not id or id == "" then return end
         nodes_set[id] = true
-        if url then node_urls[id] = url end
-        if not node_groups[id] or group == 3 then
-            node_groups[id] = group
-        end
+        if attrs.url then node_urls[id] = attrs.url end
+        if attrs.color then node_colors[id] = attrs.color end
+        if attrs.shape then node_shapes[id] = attrs.shape end
+        if attrs.group then node_groups[id] = attrs.group end
     end
 
     local function add_edge(src, tgt)
@@ -39,18 +58,18 @@ function CodeBlock(el)
     end
     local rel_prefix = string.rep("../", depth_rel)
 
-    -- 2. Parse text and resolve 'auto:' links
+    -- 2. Parse text, inline attributes, and resolve 'auto:' links
     for line in string.gmatch(raw_text, "[^\r\n]+") do
-      local source, target = string.match(line, "(.-)%s*->%s*(.*)")
+      local src_str, tgt_str = string.match(line, "(.-)%s*->%s*(.*)")
       
-      if source and target then
-        source = source:match("^%s*(.-)%s*$")
-        target = target:match("^%s*(.-)%s*$")
+      if src_str and tgt_str then
+        local src_name, src_attrs = parse_node_str(src_str)
+        local tgt_name, tgt_attrs = parse_node_str(tgt_str)
         
-        register_node(source, nil, 1)
+        register_node(src_name, src_attrs)
 
-        if string.match(target, "^auto:") then
-          local folder = string.match(target, "^auto:(.*)"):match("^%s*(.-)%s*$"):gsub("/$", "")
+        if string.match(tgt_name, "^auto:") then
+          local folder = tgt_name:match("^auto:(.*)"):gsub("/$", "")
           local os_target_dir = project_root .. "/" .. folder
           
           local cmd = 'ls -1 "' .. os_target_dir .. '" 2>/dev/null'
@@ -76,22 +95,29 @@ function CodeBlock(el)
                   if t then title = t:match("^%s*(.-)%s*$") end
                 end
                 
-                local url = rel_prefix .. folder .. "/" .. filename:gsub("%.qmd$", ".html")
-                register_node(title, url, 2)
-                add_edge(source, title)
+                -- Pass down the shape and color defined on the auto: block!
+                local auto_url = rel_prefix .. folder .. "/" .. filename:gsub("%.qmd$", ".html")
+                register_node(title, { url = auto_url, color = tgt_attrs.color, shape = tgt_attrs.shape })
+                add_edge(src_name, title)
               end
             end
           end
           
           if not files_found then
             local err_node = "[Missing: " .. folder .. "]"
-            register_node(err_node, nil, 3) 
-            add_edge(source, err_node)
+            register_node(err_node, { group = 3 }) 
+            add_edge(src_name, err_node)
           end
           
         else
-          register_node(target, nil, 1)
-          add_edge(source, target)
+          register_node(tgt_name, tgt_attrs)
+          add_edge(src_name, tgt_name)
+        end
+      else
+        -- If a line doesn't have an arrow, treat it as a standalone node definition
+        local name, attrs = parse_node_str(line)
+        if name and name ~= "" then
+            register_node(name, attrs)
         end
       end
     end
@@ -110,14 +136,12 @@ function CodeBlock(el)
 
     local node_depths = {}
     local queue = {}
-    -- Find roots (nodes with no incoming connections)
     for node, deg in pairs(in_degree) do
         if deg == 0 then
             table.insert(queue, node)
             node_depths[node] = 0
         end
     end
-    -- Fallback in case every single node is in a closed loop (unlikely but safe)
     if #queue == 0 and next(nodes_set) then
         local first_node = next(nodes_set)
         table.insert(queue, first_node)
@@ -129,7 +153,6 @@ function CodeBlock(el)
         local curr = queue[head]
         head = head + 1
         local current_depth = node_depths[curr]
-        
         for _, neighbor in ipairs(out_edges[curr]) do
             if not node_depths[neighbor] then
                 node_depths[neighbor] = current_depth + 1
@@ -147,9 +170,13 @@ function CodeBlock(el)
     local nodes_js_arr = {}
     for node in pairs(nodes_set) do
         local url_str = node_urls[node] and string.format("'%s'", escape_js(node_urls[node])) or "null"
+        local color_str = node_colors[node] and string.format("'%s'", escape_js(node_colors[node])) or "null"
+        local shape_str = node_shapes[node] and string.format("'%s'", escape_js(node_shapes[node])) or "null"
         local grp = node_groups[node] or 1
         local dpt = node_depths[node] or 0 
-        table.insert(nodes_js_arr, string.format("{ id: '%s', url: %s, group: %d, depth: %d }", escape_js(node), url_str, grp, dpt))
+        
+        table.insert(nodes_js_arr, string.format("{ id: '%s', url: %s, group: %d, depth: %d, color: %s, shape: %s }", 
+            escape_js(node), url_str, grp, dpt, color_str, shape_str))
     end
 
     local links_js_arr = {}
@@ -166,7 +193,6 @@ function CodeBlock(el)
     
     local graph_id = "graph_" .. tostring(math.random(100000, 999999))
     
-    -- Notice overflow:hidden and position:relative added to the div
     local html_code = [[
 <div id="]] .. graph_id .. [[" style="width: 100%; height: 600px; border: 1px solid #ddd; background: #ffffff; border-radius: 8px; overflow: hidden; position: relative;"></div>
 
@@ -193,14 +219,13 @@ function CodeBlock(el)
       .nodeCanvasObject((node, ctx, globalScale) => {
         const label = node.id;
         
-        // 1. Calculate sizing based on depth hierarchy
-        const cappedDepth = Math.min(node.depth || 0, 4); // Max depth scaling capped at 4
-        const baseFontSize = 18 - (cappedDepth * 2.5); // Roots get size 18, children scale down
+        const cappedDepth = Math.min(node.depth || 0, 4); 
+        const baseFontSize = 16 - (cappedDepth * 2); 
         const fontSize = baseFontSize / globalScale;
         ctx.font = `bold ${fontSize}px Sans-Serif`;
         
-        // 2. Text Wrapping Algorithm
-        const maxTextWidth = (140 - (cappedDepth * 10)) / globalScale; 
+        // Text Wrapping Algorithm
+        const maxTextWidth = (130 - (cappedDepth * 8)) / globalScale; 
         const words = label.split(' ');
         let lines = [];
         let currentLine = words[0];
@@ -217,50 +242,56 @@ function CodeBlock(el)
         }
         lines.push(currentLine);
 
-        // 3. Dynamic Shape Dimensions
+        // Compute Dimensions
         const lineHeight = fontSize * 1.2;
         const textWidth = Math.max(...lines.map(l => ctx.measureText(l).width));
-        const padding = fontSize * 1.2;
-        const bckgDimensions = [textWidth + padding, lines.length * lineHeight + padding];
+        const padding = fontSize * 1.5;
+        const boxW = textWidth + padding;
+        const boxH = lines.length * lineHeight + padding;
+        
+        // Compute radius for circle to encompass the text box
+        const radius = Math.sqrt(Math.pow(boxW/2, 2) + Math.pow(boxH/2, 2));
 
-        // 4. Color Hierarchy by Depth
+        // Styling
         const palettes = [
-            { bg: '#3b82f6', border: '#2563eb', text: '#ffffff' }, // Depth 0: Strong Blue
-            { bg: '#93c5fd', border: '#3b82f6', text: '#1e3a8a' }, // Depth 1: Soft Blue
-            { bg: '#dbeafe', border: '#93c5fd', text: '#1e40af' }, // Depth 2: Very Light Blue
-            { bg: '#f1f5f9', border: '#cbd5e1', text: '#334155' }, // Depth 3: Light Slate
-            { bg: '#f8fafc', border: '#e2e8f0', text: '#475569' }  // Depth 4+: Pale Slate
+            { bg: '#3b82f6', border: '#2563eb', text: '#ffffff' }, // Depth 0
+            { bg: '#93c5fd', border: '#3b82f6', text: '#1e3a8a' }, // Depth 1
+            { bg: '#dbeafe', border: '#93c5fd', text: '#1e40af' }, // Depth 2
+            { bg: '#f1f5f9', border: '#cbd5e1', text: '#334155' }, // Depth 3
+            { bg: '#f8fafc', border: '#e2e8f0', text: '#475569' }  // Depth 4+
         ];
         
         let colors = palettes[cappedDepth];
         
-        // Override style if it's an error node
+        // Override Colors
+        if (node.color) {
+            colors = { bg: node.color, border: node.color, text: '#111827' }; // Dark text on custom colors
+        }
         if (node.group === 3) { 
-            colors = { bg: '#fee2e2', border: '#ef4444', text: '#991b1b' };
+            colors = { bg: '#fee2e2', border: '#ef4444', text: '#991b1b' }; // Errors
         }
 
         ctx.fillStyle = colors.bg;
         ctx.strokeStyle = colors.border;
         ctx.lineWidth = 1.5 / globalScale;
 
-        // Draw Custom Rounded Rectangle
+        // Draw Shape
         ctx.beginPath();
-        const x = node.x - bckgDimensions[0] / 2;
-        const y = node.y - bckgDimensions[1] / 2;
-        const w = bckgDimensions[0];
-        const h = bckgDimensions[1];
-        const r = (10 - cappedDepth) / globalScale; 
+        const isBox = node.shape === 'box';
         
-        if (ctx.roundRect) {
-            ctx.roundRect(x, y, w, h, r);
+        if (isBox) {
+            const r = (10 - cappedDepth) / globalScale; 
+            if (ctx.roundRect) ctx.roundRect(node.x - boxW/2, node.y - boxH/2, boxW, boxH, r);
+            else ctx.rect(node.x - boxW/2, node.y - boxH/2, boxW, boxH);
         } else {
-            ctx.rect(x, y, w, h); 
+            // Default to Circle
+            ctx.arc(node.x, node.y, radius, 0, 2 * Math.PI, false);
         }
         
         ctx.fill();
         ctx.stroke();
 
-        // Draw Wrapped Text Lines
+        // Draw Text
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.fillStyle = colors.text; 
@@ -270,13 +301,20 @@ function CodeBlock(el)
              ctx.fillText(line, node.x, startY + index * lineHeight);
         });
 
-        node.__bckgDimensions = bckgDimensions; 
+        // Store geometric data for hover area
+        node.__shapeData = { isBox, boxW, boxH, radius }; 
       })
       .nodePointerAreaPaint((node, color, ctx) => {
         ctx.fillStyle = color;
-        const bckgDimensions = node.__bckgDimensions;
-        if (bckgDimensions) {
-            ctx.fillRect(node.x - bckgDimensions[0] / 2, node.y - bckgDimensions[1] / 2, ...bckgDimensions);
+        const d = node.__shapeData;
+        if (d) {
+            ctx.beginPath();
+            if (d.isBox) {
+                ctx.fillRect(node.x - d.boxW / 2, node.y - d.boxH / 2, d.boxW, d.boxH);
+            } else {
+                ctx.arc(node.x, node.y, d.radius, 0, 2 * Math.PI, false);
+                ctx.fill();
+            }
         }
       })
       .onNodeHover(node => {
@@ -288,7 +326,6 @@ function CodeBlock(el)
         }
       });
 
-      // Responsive Observer to handle window resizing
       const resizeObserver = new ResizeObserver(entries => {
         for (let entry of entries) {
             Graph.width(entry.contentRect.width);
