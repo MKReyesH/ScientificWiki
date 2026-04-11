@@ -100,7 +100,7 @@ function CodeBlock(el)
           end
           
           if not files_found then
-            local err_node = "[Missing: " .. folder .. "]"
+            local err_node = "[Missing/Empty: " .. folder .. "]"
             register_node(err_node, { group = 3 }) 
             add_edge(src_name, err_node)
           end
@@ -205,7 +205,7 @@ function CodeBlock(el)
     const container = document.getElementById(']] .. graph_id .. [[');
     if (!container) return;
 
-    // Generates a monochromatic contrast theme (Light background -> Dark text/border. Dark background -> Light text/border)
+    // Generates a true monochromatic contrast theme using HSL color shifting
     function getThemeColors(hexColor) {
         if (!hexColor) return { bg: '#ffffff', fg: '#000000' };
         
@@ -215,26 +215,61 @@ function CodeBlock(el)
         const g = parseInt(hex.substr(2, 2), 16);
         const b = parseInt(hex.substr(4, 2), 16);
         
-        // YIQ equation calculates perceived luminance
+        // Convert RGB to HSL
+        let rNorm = r / 255, gNorm = g / 255, bNorm = b / 255;
+        let max = Math.max(rNorm, gNorm, bNorm), min = Math.min(rNorm, gNorm, bNorm);
+        let h, s, l = (max + min) / 2;
+
+        if (max === min) {
+            h = s = 0; // achromatic
+        } else {
+            let d = max - min;
+            s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+            switch (max) {
+                case rNorm: h = (gNorm - bNorm) / d + (gNorm < bNorm ? 6 : 0); break;
+                case gNorm: h = (bNorm - rNorm) / d + 2; break;
+                case bNorm: h = (rNorm - gNorm) / d + 4; break;
+            }
+            h /= 6;
+        }
+
         const yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000;
-        let outR, outG, outB;
+        let targetL;
         
         if (yiq >= 140) {
-            // Light Background -> Darken RGB channels by 70%
-            outR = Math.floor(r * 0.3);
-            outG = Math.floor(g * 0.3);
-            outB = Math.floor(b * 0.3);
+            // Light background -> Make text/border a rich, dark version of the same hue
+            targetL = Math.max(0.15, l - 0.5); 
+            s = Math.min(1.0, s + 0.3); // Boost saturation slightly to prevent greying out
         } else {
-            // Dark Background -> Blend RGB channels with white by 80%
-            outR = Math.floor(r + (255 - r) * 0.8);
-            outG = Math.floor(g + (255 - g) * 0.8);
-            outB = Math.floor(b + (255 - b) * 0.8);
+            // Dark background -> Make text/border a bright, pastel version
+            targetL = Math.min(0.95, l + 0.5); 
+            s = Math.max(0.0, s - 0.1); 
         }
-        
+
+        // Convert HSL back to RGB
+        let outR, outG, outB;
+        if (s === 0) {
+            outR = outG = outB = targetL;
+        } else {
+            const hue2rgb = (p, q, t) => {
+                if (t < 0) t += 1;
+                if (t > 1) t -= 1;
+                if (t < 1/6) return p + (q - p) * 6 * t;
+                if (t < 1/2) return q;
+                if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+                return p;
+            };
+            let q = targetL < 0.5 ? targetL * (1 + s) : targetL + s - targetL * s;
+            let p = 2 * targetL - q;
+            outR = hue2rgb(p, q, h + 1/3);
+            outG = hue2rgb(p, q, h);
+            outB = hue2rgb(p, q, h - 1/3);
+        }
+
         const fg = '#' + 
-            outR.toString(16).padStart(2, '0') + 
-            outG.toString(16).padStart(2, '0') + 
-            outB.toString(16).padStart(2, '0');
+            Math.round(outR * 255).toString(16).padStart(2, '0') + 
+            Math.round(outG * 255).toString(16).padStart(2, '0') + 
+            Math.round(outB * 255).toString(16).padStart(2, '0');
             
         return { bg: hexColor, fg: fg };
     }
@@ -281,7 +316,7 @@ function CodeBlock(el)
         let baseColor = node.color || depthColors[cappedDepth];
         if (node.group === 3) baseColor = '#fee2e2'; // Error color
 
-        // Generate Monochromatic Theme
+        // Generate True Monochromatic Theme
         const theme = getThemeColors(baseColor);
 
         // Styling
@@ -306,12 +341,12 @@ function CodeBlock(el)
         }
         
         ctx.fill();
-        ctx.stroke(); // Borders are back!
+        ctx.stroke(); 
 
         // Draw Text
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        ctx.fillStyle = theme.fg; // Text uses the same monochromatic contrast as the border
+        ctx.fillStyle = theme.fg; 
         
         const startY = node.y - (lines.length * lineHeight) / 2 + lineHeight / 2;
         lines.forEach((line, index) => {
