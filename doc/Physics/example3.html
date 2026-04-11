@@ -283,7 +283,7 @@ H(z) = H_0 \sqrt{\Omega_r (1+z)^4 + \Omega_m (1+z)^3 + \Omega_k (1+z)^2 + \Omega
 </section>
 <section id="html5-map" class="level1">
 <h1>HTML5 map</h1>
-<div id="graph_661335" style="width: 100%; height: 600px; border: 1px solid #ddd; background: #ffffff; border-radius: 8px; overflow: hidden; position: relative;"></div>
+<div id="graph_150207" style="width: 100%; height: 600px; border: 1px solid #ddd; background: #ffffff; border-radius: 8px; overflow: hidden; position: relative;"></div>
 
 <script src="https://unpkg.com/force-graph"></script>
 <script>
@@ -294,14 +294,14 @@ H(z) = H_0 \sqrt{\Omega_r (1+z)^4 + \Omega_m (1+z)^3 + \Omega_k (1+z)^2 + \Omega
     }
 
     const graphData = {
-      nodes: [ { id: 'Allowed LaTeX syntax for page writing', url: '../../doc/Examples/example2.html', group: 1, depth: 2, color: null, shape: 'rounded' },
+      nodes: [ { id: 'Examples', url: null, group: 1, depth: 1, color: '#EA7B7B', shape: 'rounded' },
+        { id: 'Physics', url: null, group: 1, depth: 1, color: null, shape: 'rounded' },
+        { id: 'Wiki Home', url: null, group: 1, depth: 0, color: null, shape: 'circle' },
+        { id: 'Allowed LaTeX syntax for page writing', url: '../../doc/Examples/example2.html', group: 1, depth: 2, color: null, shape: 'rounded' },
+        { id: 'Calculus', url: 'https://en.wikipedia.org/wiki/Calculus', group: 1, depth: 2, color: null, shape: 'rounded' },
         { id: 'How to write a page using Quarto Markdown', url: '../../doc/Examples/example1.html', group: 1, depth: 2, color: null, shape: 'rounded' },
         { id: '$\Lambda$CDM Cosmological Model', url: '../../doc/Physics/example3.html', group: 1, depth: 2, color: null, shape: 'rounded' },
-        { id: 'Mathematics', url: null, group: 1, depth: 1, color: null, shape: 'rounded' },
-        { id: 'Examples', url: null, group: 1, depth: 1, color: '#EA7B7B', shape: 'rounded' },
-        { id: 'Calculus', url: 'https://en.wikipedia.org/wiki/Calculus', group: 1, depth: 2, color: null, shape: 'rounded' },
-        { id: 'Physics', url: null, group: 1, depth: 1, color: null, shape: 'rounded' },
-        { id: 'Wiki Home', url: null, group: 1, depth: 0, color: null, shape: 'circle' } ],
+        { id: 'Mathematics', url: null, group: 1, depth: 1, color: null, shape: 'rounded' } ],
       links: [ { source: 'Wiki Home', target: 'Physics' },
         { source: 'Wiki Home', target: 'Mathematics' },
         { source: 'Wiki Home', target: 'Examples' },
@@ -311,10 +311,10 @@ H(z) = H_0 \sqrt{\Omega_r (1+z)^4 + \Omega_m (1+z)^3 + \Omega_k (1+z)^2 + \Omega
         { source: 'Examples', target: 'Allowed LaTeX syntax for page writing' } ]
     };
 
-    const container = document.getElementById('graph_661335');
+    const container = document.getElementById('graph_150207');
     if (!container) return;
 
-    // --- 1. PARENT-CHILD COLOR INHERITANCE LOGIC ---
+    // --- 1. ASYMPTOTIC COLOR CASCADE LOGIC ---
     
     function lightenColorCascade(hexColor) {
         if (!hexColor) return '#ffffff';
@@ -338,8 +338,14 @@ H(z) = H_0 \sqrt{\Omega_r (1+z)^4 + \Omega_m (1+z)^3 + \Omega_k (1+z)^2 + \Omega
             h /= 6;
         }
 
-        // Asymptotic Lightening: Move 25% of the remaining distance toward 0.98 lightness
-        l = l + (0.98 - l) * 0.25;
+        // --- ASYMPTOTIC FORMULA ---
+        // New L = Current L + (Target L - Current L) * Factor
+        // This ensures we get closer to 0.98 but never reach pure 1.0 (white).
+        // A factor of 0.4 ensures a visible jump even at shallow depths.
+        l = l + (0.98 - l) * 0.40;
+        
+        // Similarly, drop saturation asymptotically so colors become "softer"
+        s = s * 0.85; 
 
         let outR, outG, outB;
         if (s === 0) { outR = outG = outB = l; } else {
@@ -363,7 +369,7 @@ H(z) = H_0 \sqrt{\Omega_r (1+z)^4 + \Omega_m (1+z)^3 + \Omega_k (1+z)^2 + \Omega
             Math.round(outB * 255).toString(16).padStart(2, '0');
     }
 
-    // Build Adjacency and Indegree Maps for BFS
+    // Prepare inheritance
     const nodesMap = new Map();
     const childrenMap = new Map();
     const inDegreeMap = new Map();
@@ -381,217 +387,149 @@ H(z) = H_0 \sqrt{\Omega_r (1+z)^4 + \Omega_m (1+z)^3 + \Omega_k (1+z)^2 + \Omega
         }
     });
 
-    // BFS Queue Execution
-    const GLOBAL_DEFAULT_COLOR = '#3b82f6'; // The universal fallback color
-    let bfsQueue = [];
+    // BFS to resolve colors from parents
+    const GLOBAL_ROOT_COLOR = '#3b82f6';
+    let queue = [];
     let visited = new Set();
 
     nodesMap.forEach((node, id) => {
         if (inDegreeMap.get(id) === 0) {
-            bfsQueue.push({ id: id, incomingColor: GLOBAL_DEFAULT_COLOR });
+            queue.push({ id, parentColor: GLOBAL_ROOT_COLOR, isRoot: true });
             visited.add(id);
         }
     });
 
-    if (bfsQueue.length === 0 && graphData.nodes.length > 0) {
-        bfsQueue.push({ id: graphData.nodes[0].id, incomingColor: GLOBAL_DEFAULT_COLOR });
-        visited.add(graphData.nodes[0].id);
-    }
-
-    while (bfsQueue.length > 0) {
-        const { id, incomingColor } = bfsQueue.shift();
+    while (queue.length > 0) {
+        const { id, parentColor, isRoot } = queue.shift();
         const node = nodesMap.get(id);
 
-        // Explicit > Inherited
-        node._resolvedColor = node.color || incomingColor;
-        if (node.group === 3) node._resolvedColor = '#fee2e2'; // Error nodes
+        // If node has its own color, use it. Otherwise, use parent's lightened version.
+        // The Root node uses its own color or the Global Default without lightening it first.
+        if (isRoot) {
+            node._resolvedColor = node.color || GLOBAL_ROOT_COLOR;
+        } else {
+            node._resolvedColor = node.color || parentColor;
+        }
+        
+        if (node.group === 3) node._resolvedColor = '#fee2e2'; 
 
-        // Compute the cascading color for this node's children
-        const colorForChildren = lightenColorCascade(node._resolvedColor);
+        // Calculate the lightened color for all children
+        const lightenedForChildren = lightenColorCascade(node._resolvedColor);
 
         childrenMap.get(id).forEach(childId => {
             if (!visited.has(childId)) {
                 visited.add(childId);
-                bfsQueue.push({ id: childId, incomingColor: colorForChildren });
+                queue.push({ id: childId, parentColor: lightenedForChildren, isRoot: false });
             }
         });
     }
 
-    // Fallback for disconnected floating nodes
-    nodesMap.forEach(node => {
-        if (!node._resolvedColor) node._resolvedColor = node.color || GLOBAL_DEFAULT_COLOR;
-    });
-
-    // --- 2. CONTRAST THEME GENERATION ---
+    // --- 2. THEME GENERATOR (Contrast) ---
     
     function getThemeColors(hexColor) {
-        if (!hexColor) return { bg: '#ffffff', fg: '#000000' };
-        
         let hex = hexColor.replace('#', '');
         if (hex.length === 3) hex = hex[0]+hex[0]+hex[1]+hex[1]+hex[2]+hex[2];
         const r = parseInt(hex.substr(0, 2), 16);
         const g = parseInt(hex.substr(2, 2), 16);
         const b = parseInt(hex.substr(4, 2), 16);
         
-        let rNorm = r / 255, gNorm = g / 255, bNorm = b / 255;
-        let max = Math.max(rNorm, gNorm, bNorm), min = Math.min(rNorm, gNorm, bNorm);
+        // HSL for manipulation
+        let rN = r/255, gN = g/255, bN = b/255;
+        let max = Math.max(rN, gN, bN), min = Math.min(rN, gN, bN);
         let h, s, l = (max + min) / 2;
-
         if (max === min) { h = s = 0; } else {
             let d = max - min;
             s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
-            switch (max) {
-                case rNorm: h = (gNorm - bNorm) / d + (gNorm < bNorm ? 6 : 0); break;
-                case gNorm: h = (bNorm - rNorm) / d + 2; break;
-                case bNorm: h = (rNorm - gNorm) / d + 4; break;
-            }
+            if (max === rN) h = (gN - bN) / d + (gN < bN ? 6 : 0);
+            else if (max === gN) h = (bN - rN) / d + 2;
+            else h = (rN - gN) / d + 4;
             h /= 6;
         }
 
         const yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000;
-        let targetL;
+        let targetL, targetS;
         
-        if (yiq >= 140) {
-            targetL = Math.max(0.15, l - 0.5); 
-            s = Math.min(1.0, s + 0.3); 
-        } else {
-            targetL = Math.min(0.95, l + 0.5); 
-            s = Math.max(0.0, s - 0.1); 
+        if (yiq >= 150) { // Light background -> Dark rich text
+            targetL = Math.max(0.1, l - 0.6); 
+            targetS = Math.min(1.0, s + 0.4);
+        } else { // Dark background -> Bright pastel text
+            targetL = Math.min(0.95, l + 0.6); 
+            targetS = Math.max(0, s - 0.2);
         }
 
-        let outR, outG, outB;
-        if (s === 0) { outR = outG = outB = targetL; } else {
-            const hue2rgb = (p, q, t) => {
-                if (t < 0) t += 1; if (t > 1) t -= 1;
-                if (t < 1/6) return p + (q - p) * 6 * t;
-                if (t < 1/2) return q;
-                if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
-                return p;
-            };
-            let q = targetL < 0.5 ? targetL * (1 + s) : targetL + s - targetL * s;
-            let p = 2 * targetL - q;
-            outR = hue2rgb(p, q, h + 1/3);
-            outG = hue2rgb(p, q, h);
-            outB = hue2rgb(p, q, h - 1/3);
-        }
+        const hue2rgb = (p, q, t) => {
+            if (t < 0) t += 1; if (t > 1) t -= 1;
+            if (t < 1/6) return p + (q - p) * 6 * t;
+            if (t < 1/2) return q;
+            if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+            return p;
+        };
+        let q = targetL < 0.5 ? targetL * (1 + targetS) : targetL + targetS - targetL * targetS;
+        let p = 2 * targetL - q;
+        const fr = Math.round(hue2rgb(p, q, h + 1/3) * 255);
+        const fg = Math.round(hue2rgb(p, q, h) * 255);
+        const fb = Math.round(hue2rgb(p, q, h - 1/3) * 255);
 
-        const fg = '#' + 
-            Math.round(outR * 255).toString(16).padStart(2, '0') + 
-            Math.round(outG * 255).toString(16).padStart(2, '0') + 
-            Math.round(outB * 255).toString(16).padStart(2, '0');
-            
-        return { bg: hexColor, fg: fg };
+        const fgHex = '#' + fr.toString(16).padStart(2, '0') + fg.toString(16).padStart(2, '0') + fb.toString(16).padStart(2, '0');
+        return { bg: hexColor, fg: fgHex };
     }
 
-    // --- 3. GRAPH RENDERING ---
+    // --- 3. RENDER ---
 
     const Graph = ForceGraph()(container)
       .graphData(graphData)
       .linkDirectionalParticles(2)
       .linkColor(() => '#cccccc')
       .nodeCanvasObject((node, ctx, globalScale) => {
-        const label = node.id;
         const cappedDepth = Math.min(node.depth || 0, 4); 
-        const baseFontSize = 16 - (cappedDepth * 2); 
-        const fontSize = baseFontSize / globalScale;
+        const fontSize = (16 - (cappedDepth * 2)) / globalScale;
         ctx.font = `bold ${fontSize}px Sans-Serif`;
         
-        // Text Wrapping Algorithm
+        const label = node.id;
         const maxTextWidth = (130 - (cappedDepth * 8)) / globalScale; 
         const words = label.split(' ');
         let lines = [];
-        let currentLine = words[0];
-        
+        let curLine = words[0];
         for (let i = 1; i < words.length; i++) {
-            let word = words[i];
-            let width = ctx.measureText(currentLine + " " + word).width;
-            if (width < maxTextWidth) {
-                currentLine += " " + word;
-            } else {
-                lines.push(currentLine);
-                currentLine = word;
-            }
+            if (ctx.measureText(curLine + " " + words[i]).width < maxTextWidth) curLine += " " + words[i];
+            else { lines.push(curLine); curLine = words[i]; }
         }
-        lines.push(currentLine);
+        lines.push(curLine);
 
-        // Compute Dimensions
         const lineHeight = fontSize * 1.2;
         const textWidth = Math.max(...lines.map(l => ctx.measureText(l).width));
         const padding = fontSize * 1.5;
         const boxW = textWidth + padding;
         const boxH = lines.length * lineHeight + padding;
-        const maxDim = Math.max(boxW, boxH);
-        
-        // Generate True Monochromatic Theme (Using Inherited Resolved Color!)
         const theme = getThemeColors(node._resolvedColor);
 
-        // Styling
         ctx.fillStyle = theme.bg;
         ctx.strokeStyle = theme.fg;
         ctx.lineWidth = 1.5 / globalScale;
 
-        // Draw Shape
         ctx.beginPath();
-        const shape = node.shape || 'rounded';
-        
-        if (shape === 'circle') {
-            ctx.arc(node.x, node.y, maxDim / 2, 0, 2 * Math.PI, false);
-        } else if (shape === 'square') {
-            ctx.rect(node.x - maxDim / 2, node.y - maxDim / 2, maxDim, maxDim);
-        } else if (shape === 'box') {
-            ctx.rect(node.x - boxW / 2, node.y - boxH / 2, boxW, boxH);
-        } else {
-            const r = (10 - cappedDepth) / globalScale; 
-            if (ctx.roundRect) ctx.roundRect(node.x - boxW / 2, node.y - boxH / 2, boxW, boxH, r);
-            else ctx.rect(node.x - boxW / 2, node.y - boxH / 2, boxW, boxH);
-        }
-        
+        const r = 8 / globalScale;
+        if (node.shape === 'circle') ctx.arc(node.x, node.y, Math.max(boxW, boxH)/2, 0, 2*Math.PI);
+        else if (ctx.roundRect) ctx.roundRect(node.x - boxW/2, node.y - boxH/2, boxW, boxH, r);
+        else ctx.rect(node.x - boxW/2, node.y - boxH/2, boxW, boxH);
         ctx.fill();
-        ctx.stroke(); 
+        ctx.stroke();
 
-        // Draw Text
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        ctx.fillStyle = theme.fg; 
+        ctx.fillStyle = theme.fg;
+        const startY = node.y - (lines.length * lineHeight)/2 + lineHeight/2;
+        lines.forEach((line, i) => ctx.fillText(line, node.x, startY + i * lineHeight));
         
-        const startY = node.y - (lines.length * lineHeight) / 2 + lineHeight / 2;
-        lines.forEach((line, index) => {
-             ctx.fillText(line, node.x, startY + index * lineHeight);
-        });
+        node.__rect = { boxW, boxH };
+      })
+      .onNodeClick(node => { if(node.url) window.location.href = node.url; })
+      .onNodeHover(node => container.style.cursor = node && node.url ? 'pointer' : null);
 
-        node.__shapeData = { shape, boxW, boxH, maxDim }; 
-      })
-      .nodePointerAreaPaint((node, color, ctx) => {
-        ctx.fillStyle = color;
-        const d = node.__shapeData;
-        if (d) {
-            ctx.beginPath();
-            if (d.shape === 'circle') {
-                ctx.arc(node.x, node.y, d.maxDim / 2, 0, 2 * Math.PI, false);
-            } else if (d.shape === 'square') {
-                ctx.rect(node.x - d.maxDim / 2, node.y - d.maxDim / 2, d.maxDim, d.maxDim);
-            } else {
-                ctx.rect(node.x - d.boxW / 2, node.y - d.boxH / 2, d.boxW, d.boxH);
-            }
-            ctx.fill();
-        }
-      })
-      .onNodeHover(node => {
-        container.style.cursor = node && node.url ? 'pointer' : null;
-      })
-      .onNodeClick(node => {
-        if (node.url) {
-            window.location.href = node.url;
-        }
-      });
-
-      const resizeObserver = new ResizeObserver(entries => {
-        for (let entry of entries) {
-            Graph.width(entry.contentRect.width);
-            Graph.height(entry.contentRect.height);
-        }
-      });
-      resizeObserver.observe(container);
+      new ResizeObserver(() => {
+        Graph.width(container.offsetWidth);
+        Graph.height(container.offsetHeight);
+      }).observe(container);
 
   })();
 </script>
