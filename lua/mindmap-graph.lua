@@ -92,7 +92,6 @@ function CodeBlock(el)
             elseif item:match("/$") and recursive then
                 local subfolder_name = item:gsub("/$", "")
                 
-                -- BUG FIX: Ignore Quarto generated directories and hidden folders
                 if not subfolder_name:match("^%.") and 
                    not subfolder_name:match("_files$") and 
                    not subfolder_name:match("_cache$") then
@@ -100,7 +99,7 @@ function CodeBlock(el)
                     found_anything = true
                     local subfolder_path = folder_path .. "/" .. subfolder_name
                     
-                    -- Create a node for the folder as a branch point (NOW A CIRCLE)
+                    -- Create a circle node for the folder as a branch point
                     local folder_label = subfolder_name:gsub("^%a", string.upper)
                     register_node(folder_label, { shape = 'circle' }) 
                     add_edge(parent_name, folder_label)
@@ -325,13 +324,52 @@ function CodeBlock(el)
     function getThemeColors(hexColor) {
         let hex = hexColor.replace('#', '');
         if (hex.length === 3) hex = hex[0]+hex[0]+hex[1]+hex[1]+hex[2]+hex[2];
-        const r = parseInt(hex.substr(0, 2), 16);
-        const g = parseInt(hex.substr(2, 2), 16);
-        const b = parseInt(hex.substr(4, 2), 16);
+        const r = parseInt(hex.substr(0, 2), 16) / 255;
+        const g = parseInt(hex.substr(2, 2), 16) / 255;
+        const b = parseInt(hex.substr(4, 2), 16) / 255;
         
-        const yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000;
-        let fg = (yiq >= 155) ? '#1e293b' : '#f8fafc'; // Dark Slate or Light Ghost
-        return { bg: hexColor, fg: fg };
+        // Convert to HSL to preserve the exact hue and saturation
+        let max = Math.max(r, g, b), min = Math.min(r, g, b);
+        let h, s, l = (max + min) / 2;
+
+        if (max === min) { h = s = 0; } else {
+            let d = max - min;
+            s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+            switch (max) {
+                case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+                case g: h = (b - r) / d + 2; break;
+                case b: h = (r - g) / d + 4; break;
+            }
+            h /= 6;
+        }
+
+        // Dynamically shift lightness for the text color
+        // If background is light, make text very dark. If dark, make text very light.
+        let textL = l > 0.5 ? Math.max(0.15, l - 0.65) : Math.min(0.95, l + 0.65);
+
+        // Convert back to RGB for the canvas
+        let outR, outG, outB;
+        if (s === 0) { outR = outG = outB = textL; } else {
+            const hue2rgb = (p, q, t) => {
+                if (t < 0) t += 1; if (t > 1) t -= 1;
+                if (t < 1/6) return p + (q - p) * 6 * t;
+                if (t < 1/2) return q;
+                if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+                return p;
+            };
+            let q = textL < 0.5 ? textL * (1 + s) : textL + s - textL * s;
+            let p = 2 * textL - q;
+            outR = hue2rgb(p, q, h + 1/3);
+            outG = hue2rgb(p, q, h);
+            outB = hue2rgb(p, q, h - 1/3);
+        }
+
+        let dynamicFg = '#' + 
+            Math.round(outR * 255).toString(16).padStart(2, '0') + 
+            Math.round(outG * 255).toString(16).padStart(2, '0') + 
+            Math.round(outB * 255).toString(16).padStart(2, '0');
+
+        return { bg: hexColor, fg: dynamicFg };
     }
 
     // --- 3. RENDER ---
