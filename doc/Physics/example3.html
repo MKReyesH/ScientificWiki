@@ -283,7 +283,7 @@ H(z) = H_0 \sqrt{\Omega_r (1+z)^4 + \Omega_m (1+z)^3 + \Omega_k (1+z)^2 + \Omega
 </section>
 <section id="html5-map" class="level1">
 <h1>HTML5 map</h1>
-<div id="graph_513084" style="width: 100%; height: 600px; border: 1px solid #ddd; background: #ffffff; border-radius: 8px; overflow: hidden; position: relative;"></div>
+<div id="graph_957637" style="width: 100%; height: 600px; border: 1px solid #ddd; background: #ffffff; border-radius: 8px; overflow: hidden; position: relative;"></div>
 
 <script src="https://unpkg.com/force-graph"></script>
 <script>
@@ -294,14 +294,14 @@ H(z) = H_0 \sqrt{\Omega_r (1+z)^4 + \Omega_m (1+z)^3 + \Omega_k (1+z)^2 + \Omega
     }
 
     const graphData = {
-      nodes: [ { id: 'Physics', url: null, group: 1, depth: 1, color: null, shape: 'rounded' },
+      nodes: [ { id: 'Allowed LaTeX syntax for page writing', url: '../../doc/Examples/example2.html', group: 1, depth: 2, color: null, shape: 'rounded' },
+        { id: 'Examples', url: null, group: 1, depth: 1, color: null, shape: 'rounded' },
         { id: 'Mathematics', url: null, group: 1, depth: 1, color: null, shape: 'rounded' },
         { id: 'How to write a page using Quarto Markdown', url: '../../doc/Examples/example1.html', group: 1, depth: 2, color: null, shape: 'rounded' },
-        { id: 'Calculus', url: 'https://en.wikipedia.org/wiki/Calculus', group: 1, depth: 2, color: null, shape: 'rounded' },
-        { id: '$\Lambda$CDM Cosmological Model', url: '../../doc/Physics/example3.html', group: 1, depth: 2, color: null, shape: 'rounded' },
-        { id: 'Allowed LaTeX syntax for page writing', url: '../../doc/Examples/example2.html', group: 1, depth: 2, color: null, shape: 'rounded' },
         { id: 'Wiki Home', url: null, group: 1, depth: 0, color: null, shape: 'circle' },
-        { id: 'Examples', url: null, group: 1, depth: 1, color: null, shape: 'rounded' } ],
+        { id: 'Calculus', url: 'https://en.wikipedia.org/wiki/Calculus', group: 1, depth: 2, color: null, shape: 'rounded' },
+        { id: 'Physics', url: null, group: 1, depth: 1, color: null, shape: 'rounded' },
+        { id: '$\Lambda$CDM Cosmological Model', url: '../../doc/Physics/example3.html', group: 1, depth: 2, color: null, shape: 'rounded' } ],
       links: [ { source: 'Wiki Home', target: 'Physics' },
         { source: 'Wiki Home', target: 'Mathematics' },
         { source: 'Wiki Home', target: 'Examples' },
@@ -311,10 +311,10 @@ H(z) = H_0 \sqrt{\Omega_r (1+z)^4 + \Omega_m (1+z)^3 + \Omega_k (1+z)^2 + \Omega
         { source: 'Examples', target: 'Allowed LaTeX syntax for page writing' } ]
     };
 
-    const container = document.getElementById('graph_513084');
+    const container = document.getElementById('graph_957637');
     if (!container) return;
 
-    // Generates a monochromatic contrast theme (Light background -> Dark text/border. Dark background -> Light text/border)
+    // Generates a true monochromatic contrast theme using HSL color shifting
     function getThemeColors(hexColor) {
         if (!hexColor) return { bg: '#ffffff', fg: '#000000' };
         
@@ -324,26 +324,61 @@ H(z) = H_0 \sqrt{\Omega_r (1+z)^4 + \Omega_m (1+z)^3 + \Omega_k (1+z)^2 + \Omega
         const g = parseInt(hex.substr(2, 2), 16);
         const b = parseInt(hex.substr(4, 2), 16);
         
-        // YIQ equation calculates perceived luminance
+        // Convert RGB to HSL
+        let rNorm = r / 255, gNorm = g / 255, bNorm = b / 255;
+        let max = Math.max(rNorm, gNorm, bNorm), min = Math.min(rNorm, gNorm, bNorm);
+        let h, s, l = (max + min) / 2;
+
+        if (max === min) {
+            h = s = 0; // achromatic
+        } else {
+            let d = max - min;
+            s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+            switch (max) {
+                case rNorm: h = (gNorm - bNorm) / d + (gNorm < bNorm ? 6 : 0); break;
+                case gNorm: h = (bNorm - rNorm) / d + 2; break;
+                case bNorm: h = (rNorm - gNorm) / d + 4; break;
+            }
+            h /= 6;
+        }
+
         const yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000;
-        let outR, outG, outB;
+        let targetL;
         
         if (yiq >= 140) {
-            // Light Background -> Darken RGB channels by 70%
-            outR = Math.floor(r * 0.3);
-            outG = Math.floor(g * 0.3);
-            outB = Math.floor(b * 0.3);
+            // Light background -> Make text/border a rich, dark version of the same hue
+            targetL = Math.max(0.15, l - 0.5); 
+            s = Math.min(1.0, s + 0.3); // Boost saturation slightly to prevent greying out
         } else {
-            // Dark Background -> Blend RGB channels with white by 80%
-            outR = Math.floor(r + (255 - r) * 0.8);
-            outG = Math.floor(g + (255 - g) * 0.8);
-            outB = Math.floor(b + (255 - b) * 0.8);
+            // Dark background -> Make text/border a bright, pastel version
+            targetL = Math.min(0.95, l + 0.5); 
+            s = Math.max(0.0, s - 0.1); 
         }
-        
+
+        // Convert HSL back to RGB
+        let outR, outG, outB;
+        if (s === 0) {
+            outR = outG = outB = targetL;
+        } else {
+            const hue2rgb = (p, q, t) => {
+                if (t < 0) t += 1;
+                if (t > 1) t -= 1;
+                if (t < 1/6) return p + (q - p) * 6 * t;
+                if (t < 1/2) return q;
+                if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+                return p;
+            };
+            let q = targetL < 0.5 ? targetL * (1 + s) : targetL + s - targetL * s;
+            let p = 2 * targetL - q;
+            outR = hue2rgb(p, q, h + 1/3);
+            outG = hue2rgb(p, q, h);
+            outB = hue2rgb(p, q, h - 1/3);
+        }
+
         const fg = '#' + 
-            outR.toString(16).padStart(2, '0') + 
-            outG.toString(16).padStart(2, '0') + 
-            outB.toString(16).padStart(2, '0');
+            Math.round(outR * 255).toString(16).padStart(2, '0') + 
+            Math.round(outG * 255).toString(16).padStart(2, '0') + 
+            Math.round(outB * 255).toString(16).padStart(2, '0');
             
         return { bg: hexColor, fg: fg };
     }
@@ -390,7 +425,7 @@ H(z) = H_0 \sqrt{\Omega_r (1+z)^4 + \Omega_m (1+z)^3 + \Omega_k (1+z)^2 + \Omega
         let baseColor = node.color || depthColors[cappedDepth];
         if (node.group === 3) baseColor = '#fee2e2'; // Error color
 
-        // Generate Monochromatic Theme
+        // Generate True Monochromatic Theme
         const theme = getThemeColors(baseColor);
 
         // Styling
@@ -415,12 +450,12 @@ H(z) = H_0 \sqrt{\Omega_r (1+z)^4 + \Omega_m (1+z)^3 + \Omega_k (1+z)^2 + \Omega
         }
         
         ctx.fill();
-        ctx.stroke(); // Borders are back!
+        ctx.stroke(); 
 
         // Draw Text
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        ctx.fillStyle = theme.fg; // Text uses the same monochromatic contrast as the border
+        ctx.fillStyle = theme.fg; 
         
         const startY = node.y - (lines.length * lineHeight) / 2 + lineHeight / 2;
         lines.forEach((line, index) => {
