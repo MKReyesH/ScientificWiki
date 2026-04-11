@@ -205,16 +205,38 @@ function CodeBlock(el)
     const container = document.getElementById(']] .. graph_id .. [[');
     if (!container) return;
 
-    // Helper function to calculate luminance and return contrasting text color
-    function getContrastTextColor(hexColor) {
-        if (!hexColor) return '#0f172a';
+    // Generates a monochromatic contrast theme (Light background -> Dark text/border. Dark background -> Light text/border)
+    function getThemeColors(hexColor) {
+        if (!hexColor) return { bg: '#ffffff', fg: '#000000' };
+        
         let hex = hexColor.replace('#', '');
         if (hex.length === 3) hex = hex[0]+hex[0]+hex[1]+hex[1]+hex[2]+hex[2];
         const r = parseInt(hex.substr(0, 2), 16);
         const g = parseInt(hex.substr(2, 2), 16);
         const b = parseInt(hex.substr(4, 2), 16);
+        
+        // YIQ equation calculates perceived luminance
         const yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000;
-        return (yiq >= 140) ? '#0f172a' : '#f8fafc'; // Dark slate for light backgrounds, almost-white for dark backgrounds
+        let outR, outG, outB;
+        
+        if (yiq >= 140) {
+            // Light Background -> Darken RGB channels by 70%
+            outR = Math.floor(r * 0.3);
+            outG = Math.floor(g * 0.3);
+            outB = Math.floor(b * 0.3);
+        } else {
+            // Dark Background -> Blend RGB channels with white by 80%
+            outR = Math.floor(r + (255 - r) * 0.8);
+            outG = Math.floor(g + (255 - g) * 0.8);
+            outB = Math.floor(b + (255 - b) * 0.8);
+        }
+        
+        const fg = '#' + 
+            outR.toString(16).padStart(2, '0') + 
+            outG.toString(16).padStart(2, '0') + 
+            outB.toString(16).padStart(2, '0');
+            
+        return { bg: hexColor, fg: fg };
     }
 
     const Graph = ForceGraph()(container)
@@ -252,17 +274,20 @@ function CodeBlock(el)
         const padding = fontSize * 1.5;
         const boxW = textWidth + padding;
         const boxH = lines.length * lineHeight + padding;
-        const maxDim = Math.max(boxW, boxH); // Used for circles and squares
+        const maxDim = Math.max(boxW, boxH);
         
-        // Colors Array (Just background hexes now)
+        // Hierarchical Base Colors
         const depthColors = ['#3b82f6', '#93c5fd', '#dbeafe', '#f1f5f9', '#f8fafc'];
-        let bgColor = node.color || depthColors[cappedDepth];
-        
-        if (node.group === 3) bgColor = '#fee2e2'; // Error color
+        let baseColor = node.color || depthColors[cappedDepth];
+        if (node.group === 3) baseColor = '#fee2e2'; // Error color
 
-        const textColor = getContrastTextColor(bgColor);
+        // Generate Monochromatic Theme
+        const theme = getThemeColors(baseColor);
 
-        ctx.fillStyle = bgColor;
+        // Styling
+        ctx.fillStyle = theme.bg;
+        ctx.strokeStyle = theme.fg;
+        ctx.lineWidth = 1.5 / globalScale;
 
         // Draw Shape
         ctx.beginPath();
@@ -275,25 +300,24 @@ function CodeBlock(el)
         } else if (shape === 'box') {
             ctx.rect(node.x - boxW / 2, node.y - boxH / 2, boxW, boxH);
         } else {
-            // Default to 'rounded'
             const r = (10 - cappedDepth) / globalScale; 
             if (ctx.roundRect) ctx.roundRect(node.x - boxW / 2, node.y - boxH / 2, boxW, boxH, r);
             else ctx.rect(node.x - boxW / 2, node.y - boxH / 2, boxW, boxH);
         }
         
         ctx.fill();
+        ctx.stroke(); // Borders are back!
 
         // Draw Text
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        ctx.fillStyle = textColor; 
+        ctx.fillStyle = theme.fg; // Text uses the same monochromatic contrast as the border
         
         const startY = node.y - (lines.length * lineHeight) / 2 + lineHeight / 2;
         lines.forEach((line, index) => {
              ctx.fillText(line, node.x, startY + index * lineHeight);
         });
 
-        // Store geometric data for hover/click area mapping
         node.__shapeData = { shape, boxW, boxH, maxDim }; 
       })
       .nodePointerAreaPaint((node, color, ctx) => {
@@ -306,7 +330,6 @@ function CodeBlock(el)
             } else if (d.shape === 'square') {
                 ctx.rect(node.x - d.maxDim / 2, node.y - d.maxDim / 2, d.maxDim, d.maxDim);
             } else {
-                // box or rounded uses the same hit area
                 ctx.rect(node.x - d.boxW / 2, node.y - d.boxH / 2, d.boxW, d.boxH);
             }
             ctx.fill();

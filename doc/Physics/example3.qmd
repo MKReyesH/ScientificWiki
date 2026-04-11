@@ -37,7 +37,7 @@ The model does not predict the values of these cosmic densities, so they should 
 Wiki Home {shape: circle} -> Physics
 Wiki Home -> Mathematics
 Wiki Home -> Examples
-Mathematics -> Calculus {url:https://en.wikipedia.org/wiki/Calculus, color:#FFFFFF}
+Mathematics -> Calculus {url:https://en.wikipedia.org/wiki/Calculus}
 Physics -> auto:doc/Physics
 Examples -> auto:doc/Examples
 ```
