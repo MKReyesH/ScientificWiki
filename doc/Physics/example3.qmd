@@ -35,7 +35,7 @@ The model does not predict the values of these cosmic densities, so they should 
 
 ```mindmap-graph
 Wiki Home {shape: circle} -> URLs {shape:circle}
-Wiki Home -> auto:doc
+Wiki Home -> auto:doc {recursive: true}
 
 URLs -> Calculus {url:https://en.wikipedia.org/wiki/Calculus}
 URLs -> Algebra {url:https://en.wikipedia.org/wiki/Algebra}
