@@ -279,7 +279,7 @@ function CodeBlock(el)
     });
 
     // BFS to resolve colors from parents
-    const GLOBAL_ROOT_COLOR = '#3b82f6';
+    const GLOBAL_ROOT_COLOR = '#abe1ff';
     let queue = [];
     let visited = new Set();
 
