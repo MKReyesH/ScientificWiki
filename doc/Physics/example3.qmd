@@ -36,7 +36,7 @@ The model does not predict the values of these cosmic densities, so they should 
 ```mindmap-graph
 Wiki Home {shape: circle} -> Physics
 Wiki Home -> Mathematics
-Wiki Home -> Examples
+Wiki Home -> Examples  {color:#EA7B7B}
 Mathematics -> Calculus {url:https://en.wikipedia.org/wiki/Calculus}
 Physics -> auto:doc/Physics
 Examples -> auto:doc/Examples

@@ -205,7 +205,116 @@ function CodeBlock(el)
     const container = document.getElementById(']] .. graph_id .. [[');
     if (!container) return;
 
-    // Generates a true monochromatic contrast theme using HSL color shifting
+    // --- 1. PARENT-CHILD COLOR INHERITANCE LOGIC ---
+    
+    function lightenColorCascade(hexColor) {
+        if (!hexColor) return '#ffffff';
+        let hex = hexColor.replace('#', '');
+        if (hex.length === 3) hex = hex[0]+hex[0]+hex[1]+hex[1]+hex[2]+hex[2];
+        const r = parseInt(hex.substr(0, 2), 16) / 255;
+        const g = parseInt(hex.substr(2, 2), 16) / 255;
+        const b = parseInt(hex.substr(4, 2), 16) / 255;
+        
+        let max = Math.max(r, g, b), min = Math.min(r, g, b);
+        let h, s, l = (max + min) / 2;
+
+        if (max === min) { h = s = 0; } else {
+            let d = max - min;
+            s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+            switch (max) {
+                case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+                case g: h = (b - r) / d + 2; break;
+                case b: h = (r - g) / d + 4; break;
+            }
+            h /= 6;
+        }
+
+        // Asymptotic Lightening: Move 25% of the remaining distance toward 0.98 lightness
+        l = l + (0.98 - l) * 0.25;
+
+        let outR, outG, outB;
+        if (s === 0) { outR = outG = outB = l; } else {
+            const hue2rgb = (p, q, t) => {
+                if (t < 0) t += 1; if (t > 1) t -= 1;
+                if (t < 1/6) return p + (q - p) * 6 * t;
+                if (t < 1/2) return q;
+                if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+                return p;
+            };
+            let q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+            let p = 2 * l - q;
+            outR = hue2rgb(p, q, h + 1/3);
+            outG = hue2rgb(p, q, h);
+            outB = hue2rgb(p, q, h - 1/3);
+        }
+
+        return '#' + 
+            Math.round(outR * 255).toString(16).padStart(2, '0') + 
+            Math.round(outG * 255).toString(16).padStart(2, '0') + 
+            Math.round(outB * 255).toString(16).padStart(2, '0');
+    }
+
+    // Build Adjacency and Indegree Maps for BFS
+    const nodesMap = new Map();
+    const childrenMap = new Map();
+    const inDegreeMap = new Map();
+
+    graphData.nodes.forEach(n => {
+        nodesMap.set(n.id, n);
+        childrenMap.set(n.id, []);
+        inDegreeMap.set(n.id, 0);
+    });
+
+    graphData.links.forEach(l => {
+        if (childrenMap.has(l.source) && inDegreeMap.has(l.target)) {
+            childrenMap.get(l.source).push(l.target);
+            inDegreeMap.set(l.target, inDegreeMap.get(l.target) + 1);
+        }
+    });
+
+    // BFS Queue Execution
+    const GLOBAL_DEFAULT_COLOR = '#3b82f6'; // The universal fallback color
+    let bfsQueue = [];
+    let visited = new Set();
+
+    nodesMap.forEach((node, id) => {
+        if (inDegreeMap.get(id) === 0) {
+            bfsQueue.push({ id: id, incomingColor: GLOBAL_DEFAULT_COLOR });
+            visited.add(id);
+        }
+    });
+
+    if (bfsQueue.length === 0 && graphData.nodes.length > 0) {
+        bfsQueue.push({ id: graphData.nodes[0].id, incomingColor: GLOBAL_DEFAULT_COLOR });
+        visited.add(graphData.nodes[0].id);
+    }
+
+    while (bfsQueue.length > 0) {
+        const { id, incomingColor } = bfsQueue.shift();
+        const node = nodesMap.get(id);
+
+        // Explicit > Inherited
+        node._resolvedColor = node.color || incomingColor;
+        if (node.group === 3) node._resolvedColor = '#fee2e2'; // Error nodes
+
+        // Compute the cascading color for this node's children
+        const colorForChildren = lightenColorCascade(node._resolvedColor);
+
+        childrenMap.get(id).forEach(childId => {
+            if (!visited.has(childId)) {
+                visited.add(childId);
+                bfsQueue.push({ id: childId, incomingColor: colorForChildren });
+            }
+        });
+    }
+
+    // Fallback for disconnected floating nodes
+    nodesMap.forEach(node => {
+        if (!node._resolvedColor) node._resolvedColor = node.color || GLOBAL_DEFAULT_COLOR;
+    });
+
+    // --- 2. CONTRAST THEME GENERATION ---
+    
     function getThemeColors(hexColor) {
         if (!hexColor) return { bg: '#ffffff', fg: '#000000' };
         
@@ -215,14 +324,11 @@ function CodeBlock(el)
         const g = parseInt(hex.substr(2, 2), 16);
         const b = parseInt(hex.substr(4, 2), 16);
         
-        // Convert RGB to HSL
         let rNorm = r / 255, gNorm = g / 255, bNorm = b / 255;
         let max = Math.max(rNorm, gNorm, bNorm), min = Math.min(rNorm, gNorm, bNorm);
         let h, s, l = (max + min) / 2;
 
-        if (max === min) {
-            h = s = 0; // achromatic
-        } else {
+        if (max === min) { h = s = 0; } else {
             let d = max - min;
             s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
             switch (max) {
@@ -237,23 +343,17 @@ function CodeBlock(el)
         let targetL;
         
         if (yiq >= 140) {
-            // Light background -> Make text/border a rich, dark version of the same hue
             targetL = Math.max(0.15, l - 0.5); 
-            s = Math.min(1.0, s + 0.3); // Boost saturation slightly to prevent greying out
+            s = Math.min(1.0, s + 0.3); 
         } else {
-            // Dark background -> Make text/border a bright, pastel version
             targetL = Math.min(0.95, l + 0.5); 
             s = Math.max(0.0, s - 0.1); 
         }
 
-        // Convert HSL back to RGB
         let outR, outG, outB;
-        if (s === 0) {
-            outR = outG = outB = targetL;
-        } else {
+        if (s === 0) { outR = outG = outB = targetL; } else {
             const hue2rgb = (p, q, t) => {
-                if (t < 0) t += 1;
-                if (t > 1) t -= 1;
+                if (t < 0) t += 1; if (t > 1) t -= 1;
                 if (t < 1/6) return p + (q - p) * 6 * t;
                 if (t < 1/2) return q;
                 if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
@@ -273,6 +373,8 @@ function CodeBlock(el)
             
         return { bg: hexColor, fg: fg };
     }
+
+    // --- 3. GRAPH RENDERING ---
 
     const Graph = ForceGraph()(container)
       .graphData(graphData)
@@ -311,13 +413,8 @@ function CodeBlock(el)
         const boxH = lines.length * lineHeight + padding;
         const maxDim = Math.max(boxW, boxH);
         
-        // Hierarchical Base Colors
-        const depthColors = ['#3b82f6', '#93c5fd', '#dbeafe', '#f1f5f9', '#f8fafc'];
-        let baseColor = node.color || depthColors[cappedDepth];
-        if (node.group === 3) baseColor = '#fee2e2'; // Error color
-
-        // Generate True Monochromatic Theme
-        const theme = getThemeColors(baseColor);
+        // Generate True Monochromatic Theme (Using Inherited Resolved Color!)
+        const theme = getThemeColors(node._resolvedColor);
 
         // Styling
         ctx.fillStyle = theme.bg;
