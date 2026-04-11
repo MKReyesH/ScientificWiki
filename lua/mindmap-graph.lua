@@ -40,6 +40,7 @@ function CodeBlock(el)
         table.insert(edges, {src = src, tgt = tgt})
     end
 
+    -- Path Context
     local pwd_handle = io.popen("pwd")
     local current_dir = pwd_handle and pwd_handle:read("*l") or "Unknown"
     if pwd_handle then pwd_handle:close() end
@@ -56,67 +57,86 @@ function CodeBlock(el)
     end
     local rel_prefix = string.rep("../", depth_rel)
 
+    -- Recursive Folder Processor
+    local function process_auto_dir(parent_name, folder_path, recursive, current_tgt_attrs)
+        local os_target_dir = project_root .. "/" .. folder_path
+        local cmd = 'ls -p "' .. os_target_dir .. '" 2>/dev/null'
+        local handle = io.popen(cmd)
+        if not handle then return false end
+        
+        local result = handle:read("*a")
+        handle:close()
+        
+        local found_anything = false
+        for item in string.gmatch(result, "[^\r\n]+") do
+            found_anything = true
+            if item:match("%.qmd$") then
+                -- Process QMD file
+                local filename = item
+                local filepath = os_target_dir .. "/" .. filename
+                local title = filename
+                local f = io.open(filepath, "r")
+                if f then
+                    local content = f:read("*a")
+                    f:close()
+                    local t = string.match(content, "title:%s*'([^']+)'") 
+                           or string.match(content, 'title:%s*"([^"]+)"') 
+                           or string.match(content, "title:%s*([^\n\r]+)")
+                    if t then title = t:match("^%s*(.-)%s*$") end
+                end
+                
+                local auto_url = rel_prefix .. folder_path .. "/" .. filename:gsub("%.qmd$", ".html")
+                register_node(title, { url = auto_url, color = current_tgt_attrs.color, shape = current_tgt_attrs.shape })
+                add_edge(parent_name, title)
+                
+            elseif item:match("/$") and recursive then
+                -- Process Subdirectory
+                local subfolder_name = item:gsub("/$", "")
+                local subfolder_path = folder_path .. "/" .. subfolder_name
+                
+                -- Create a node for the folder as a branch point (NOW A CIRCLE)
+                local folder_label = subfolder_name:gsub("^%a", string.upper)
+                register_node(folder_label, { shape = 'circle' }) 
+                add_edge(parent_name, folder_label)
+                
+                -- Recurse into it
+                process_auto_dir(folder_label, subfolder_path, true, current_tgt_attrs)
+            end
+        end
+        return found_anything
+    end
+
+    -- Parser Loop
     for line in string.gmatch(raw_text, "[^\r\n]+") do
       local src_str, tgt_str = string.match(line, "(.-)%s*->%s*(.*)")
       
       if src_str and tgt_str then
         local src_name, src_attrs = parse_node_str(src_str)
         local tgt_name, tgt_attrs = parse_node_str(tgt_str)
-        
         register_node(src_name, src_attrs)
 
         if string.match(tgt_name, "^auto:") then
           local folder = tgt_name:match("^auto:(.*)"):gsub("/$", "")
-          local os_target_dir = project_root .. "/" .. folder
+          local is_recursive = (tgt_attrs.recursive == "true")
           
-          local cmd = 'ls -1 "' .. os_target_dir .. '" 2>/dev/null'
-          local handle = io.popen(cmd)
-          local files_found = false
+          local success = process_auto_dir(src_name, folder, is_recursive, tgt_attrs)
           
-          if handle then
-            local result = handle:read("*a")
-            handle:close()
-            for filename in string.gmatch(result, "[^\r\n]+") do
-              if filename:match("%.qmd$") then
-                files_found = true
-                local title = filename
-                local filepath = os_target_dir .. "/" .. filename
-                
-                local f = io.open(filepath, "r")
-                if f then
-                  local content = f:read("*a")
-                  f:close()
-                  local t = string.match(content, "title:%s*'([^']+)'") 
-                         or string.match(content, 'title:%s*"([^"]+)"') 
-                         or string.match(content, "title:%s*([^\n\r]+)")
-                  if t then title = t:match("^%s*(.-)%s*$") end
-                end
-                
-                local auto_url = rel_prefix .. folder .. "/" .. filename:gsub("%.qmd$", ".html")
-                register_node(title, { url = auto_url, color = tgt_attrs.color, shape = tgt_attrs.shape })
-                add_edge(src_name, title)
-              end
-            end
-          end
-          
-          if not files_found then
-            local err_node = "[Missing/Empty: " .. folder .. "]"
+          if not success then
+            local err_node = "[Empty/Missing: " .. folder .. "]"
             register_node(err_node, { group = 3 }) 
             add_edge(src_name, err_node)
           end
-          
         else
           register_node(tgt_name, tgt_attrs)
           add_edge(src_name, tgt_name)
         end
       else
         local name, attrs = parse_node_str(line)
-        if name and name ~= "" then
-            register_node(name, attrs)
-        end
+        if name and name ~= "" then register_node(name, attrs) end
       end
     end
     
+    -- Graph Metadata Generation
     local in_degree = {}
     local out_edges = {}
     for node in pairs(nodes_set) do
@@ -165,11 +185,10 @@ function CodeBlock(el)
         local url_str = node_urls[node] and string.format("'%s'", escape_js(node_urls[node])) or "null"
         local color_str = node_colors[node] and string.format("'%s'", escape_js(node_colors[node])) or "null"
         local shape_str = node_shapes[node] and string.format("'%s'", escape_js(node_shapes[node])) or "'rounded'"
-        local grp = node_groups[node] or 1
         local dpt = node_depths[node] or 0 
         
-        table.insert(nodes_js_arr, string.format("{ id: '%s', url: %s, group: %d, depth: %d, color: %s, shape: %s }", 
-            escape_js(node), url_str, grp, dpt, color_str, shape_str))
+        table.insert(nodes_js_arr, string.format("{ id: '%s', url: %s, depth: %d, color: %s, shape: %s }", 
+            escape_js(node), url_str, dpt, color_str, shape_str))
     end
 
     local links_js_arr = {}
@@ -177,13 +196,8 @@ function CodeBlock(el)
         table.insert(links_js_arr, string.format("{ source: '%s', target: '%s' }", escape_js(edge.src), escape_js(edge.tgt)))
     end
 
-    if #nodes_js_arr == 0 then
-      return pandoc.RawBlock("html", "<div style='padding: 20px; border: 2px solid red; color: red;'><strong>Graph Build Error:</strong> No nodes were found.</div>")
-    end
-    
     local nodes_js = table.concat(nodes_js_arr, ",\n        ")
     local links_js = table.concat(links_js_arr, ",\n        ")
-    
     local graph_id = "graph_" .. tostring(math.random(100000, 999999))
     
     local html_code = [[
@@ -229,13 +243,7 @@ function CodeBlock(el)
             h /= 6;
         }
 
-        // --- ASYMPTOTIC FORMULA ---
-        // New L = Current L + (Target L - Current L) * Factor
-        // This ensures we get closer to 0.98 but never reach pure 1.0 (white).
-        // A factor of 0.4 ensures a visible jump even at shallow depths.
         l = l + (0.98 - l) * 0.40;
-        
-        // Similarly, drop saturation asymptotically so colors become "softer"
         s = s * 0.85; 
 
         let outR, outG, outB;
@@ -260,7 +268,6 @@ function CodeBlock(el)
             Math.round(outB * 255).toString(16).padStart(2, '0');
     }
 
-    // Prepare inheritance
     const nodesMap = new Map();
     const childrenMap = new Map();
     const inDegreeMap = new Map();
@@ -278,8 +285,9 @@ function CodeBlock(el)
         }
     });
 
-    // BFS to resolve colors from parents
-    const GLOBAL_ROOT_COLOR = '#abe1ff';
+    // --- GLOBAL DEFAULT COLOR ---
+    const GLOBAL_ROOT_COLOR = '#84cfff';
+    
     let queue = [];
     let visited = new Set();
 
@@ -294,17 +302,7 @@ function CodeBlock(el)
         const { id, parentColor, isRoot } = queue.shift();
         const node = nodesMap.get(id);
 
-        // If node has its own color, use it. Otherwise, use parent's lightened version.
-        // The Root node uses its own color or the Global Default without lightening it first.
-        if (isRoot) {
-            node._resolvedColor = node.color || GLOBAL_ROOT_COLOR;
-        } else {
-            node._resolvedColor = node.color || parentColor;
-        }
-        
-        if (node.group === 3) node._resolvedColor = '#fee2e2'; 
-
-        // Calculate the lightened color for all children
+        node._resolvedColor = (isRoot) ? (node.color || GLOBAL_ROOT_COLOR) : (node.color || parentColor);
         const lightenedForChildren = lightenColorCascade(node._resolvedColor);
 
         childrenMap.get(id).forEach(childId => {
@@ -315,7 +313,7 @@ function CodeBlock(el)
         });
     }
 
-    // --- 2. THEME GENERATOR (Contrast) ---
+    // --- 2. CONTRAST THEME GENERATOR ---
     
     function getThemeColors(hexColor) {
         let hex = hexColor.replace('#', '');
@@ -324,45 +322,9 @@ function CodeBlock(el)
         const g = parseInt(hex.substr(2, 2), 16);
         const b = parseInt(hex.substr(4, 2), 16);
         
-        // HSL for manipulation
-        let rN = r/255, gN = g/255, bN = b/255;
-        let max = Math.max(rN, gN, bN), min = Math.min(rN, gN, bN);
-        let h, s, l = (max + min) / 2;
-        if (max === min) { h = s = 0; } else {
-            let d = max - min;
-            s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
-            if (max === rN) h = (gN - bN) / d + (gN < bN ? 6 : 0);
-            else if (max === gN) h = (bN - rN) / d + 2;
-            else h = (rN - gN) / d + 4;
-            h /= 6;
-        }
-
         const yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000;
-        let targetL, targetS;
-        
-        if (yiq >= 150) { // Light background -> Dark rich text
-            targetL = Math.max(0.1, l - 0.6); 
-            targetS = Math.min(1.0, s + 0.4);
-        } else { // Dark background -> Bright pastel text
-            targetL = Math.min(0.95, l + 0.6); 
-            targetS = Math.max(0, s - 0.2);
-        }
-
-        const hue2rgb = (p, q, t) => {
-            if (t < 0) t += 1; if (t > 1) t -= 1;
-            if (t < 1/6) return p + (q - p) * 6 * t;
-            if (t < 1/2) return q;
-            if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
-            return p;
-        };
-        let q = targetL < 0.5 ? targetL * (1 + targetS) : targetL + targetS - targetL * targetS;
-        let p = 2 * targetL - q;
-        const fr = Math.round(hue2rgb(p, q, h + 1/3) * 255);
-        const fg = Math.round(hue2rgb(p, q, h) * 255);
-        const fb = Math.round(hue2rgb(p, q, h - 1/3) * 255);
-
-        const fgHex = '#' + fr.toString(16).padStart(2, '0') + fg.toString(16).padStart(2, '0') + fb.toString(16).padStart(2, '0');
-        return { bg: hexColor, fg: fgHex };
+        let fg = (yiq >= 155) ? '#1e293b' : '#f8fafc'; // Dark Slate or Light Ghost
+        return { bg: hexColor, fg: fg };
     }
 
     // --- 3. RENDER ---
