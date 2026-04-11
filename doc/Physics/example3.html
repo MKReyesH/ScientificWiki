@@ -283,7 +283,7 @@ H(z) = H_0 \sqrt{\Omega_r (1+z)^4 + \Omega_m (1+z)^3 + \Omega_k (1+z)^2 + \Omega
 </section>
 <section id="html5-map" class="level1">
 <h1>HTML5 map</h1>
-<div id="graph_658778" style="width: 100%; height: 600px; border: 1px solid #ddd; background: #ffffff; border-radius: 8px; overflow: hidden; position: relative;"></div>
+<div id="graph_693562" style="width: 100%; height: 600px; border: 1px solid #ddd; background: #ffffff; border-radius: 8px; overflow: hidden; position: relative;"></div>
 
 <script src="https://unpkg.com/force-graph"></script>
 <script>
@@ -294,16 +294,16 @@ H(z) = H_0 \sqrt{\Omega_r (1+z)^4 + \Omega_m (1+z)^3 + \Omega_k (1+z)^2 + \Omega
     }
 
     const graphData = {
-      nodes: [ { id: '$\Lambda$CDM Cosmological Model', url: '../../doc/Physics/example3.html', depth: 3, color: null, shape: 'rounded' },
-        { id: 'Examples', url: null, depth: 2, color: null, shape: 'circle' },
-        { id: 'Algebra', url: 'https://en.wikipedia.org/wiki/Algebra', depth: 2, color: null, shape: 'rounded' },
-        { id: 'Calculus', url: 'https://en.wikipedia.org/wiki/Calculus', depth: 2, color: null, shape: 'rounded' },
+      nodes: [ { id: 'URLs', url: null, depth: 1, color: null, shape: 'circle' },
+        { id: '$\Lambda$CDM Cosmological Model', url: '../../doc/Physics/example3.html', depth: 3, color: null, shape: 'rounded' },
         { id: 'Allowed LaTeX syntax for page writing', url: '../../doc/Examples/example2.html', depth: 3, color: null, shape: 'rounded' },
         { id: 'Physics', url: null, depth: 2, color: null, shape: 'circle' },
-        { id: 'How to write a page using Quarto Markdown', url: '../../doc/Examples/example1.html', depth: 3, color: null, shape: 'rounded' },
         { id: 'Doc', url: null, depth: 1, color: null, shape: 'circle' },
-        { id: 'URLs', url: null, depth: 1, color: null, shape: 'circle' },
-        { id: 'Wiki Home', url: null, depth: 0, color: null, shape: 'circle' } ],
+        { id: 'Algebra', url: 'https://en.wikipedia.org/wiki/Algebra', depth: 2, color: null, shape: 'rounded' },
+        { id: 'How to write a page using Quarto Markdown', url: '../../doc/Examples/example1.html', depth: 3, color: null, shape: 'rounded' },
+        { id: 'Calculus', url: 'https://en.wikipedia.org/wiki/Calculus', depth: 2, color: null, shape: 'rounded' },
+        { id: 'Wiki Home', url: null, depth: 0, color: null, shape: 'circle' },
+        { id: 'Examples', url: null, depth: 2, color: null, shape: 'circle' } ],
       links: [ { source: 'Wiki Home', target: 'URLs' },
         { source: 'Wiki Home', target: 'Doc' },
         { source: 'URLs', target: 'Calculus' },
@@ -315,7 +315,7 @@ H(z) = H_0 \sqrt{\Omega_r (1+z)^4 + \Omega_m (1+z)^3 + \Omega_k (1+z)^2 + \Omega
         { source: 'Physics', target: '$\Lambda$CDM Cosmological Model' } ]
     };
 
-    const container = document.getElementById('graph_658778');
+    const container = document.getElementById('graph_693562');
     if (!container) return;
 
     // --- 1. ASYMPTOTIC COLOR CASCADE LOGIC ---
@@ -417,13 +417,52 @@ H(z) = H_0 \sqrt{\Omega_r (1+z)^4 + \Omega_m (1+z)^3 + \Omega_k (1+z)^2 + \Omega
     function getThemeColors(hexColor) {
         let hex = hexColor.replace('#', '');
         if (hex.length === 3) hex = hex[0]+hex[0]+hex[1]+hex[1]+hex[2]+hex[2];
-        const r = parseInt(hex.substr(0, 2), 16);
-        const g = parseInt(hex.substr(2, 2), 16);
-        const b = parseInt(hex.substr(4, 2), 16);
+        const r = parseInt(hex.substr(0, 2), 16) / 255;
+        const g = parseInt(hex.substr(2, 2), 16) / 255;
+        const b = parseInt(hex.substr(4, 2), 16) / 255;
         
-        const yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000;
-        let fg = (yiq >= 155) ? '#1e293b' : '#f8fafc'; // Dark Slate or Light Ghost
-        return { bg: hexColor, fg: fg };
+        // Convert to HSL to preserve the exact hue and saturation
+        let max = Math.max(r, g, b), min = Math.min(r, g, b);
+        let h, s, l = (max + min) / 2;
+
+        if (max === min) { h = s = 0; } else {
+            let d = max - min;
+            s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+            switch (max) {
+                case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+                case g: h = (b - r) / d + 2; break;
+                case b: h = (r - g) / d + 4; break;
+            }
+            h /= 6;
+        }
+
+        // Dynamically shift lightness for the text color
+        // If background is light, make text very dark. If dark, make text very light.
+        let textL = l > 0.5 ? Math.max(0.15, l - 0.65) : Math.min(0.95, l + 0.65);
+
+        // Convert back to RGB for the canvas
+        let outR, outG, outB;
+        if (s === 0) { outR = outG = outB = textL; } else {
+            const hue2rgb = (p, q, t) => {
+                if (t < 0) t += 1; if (t > 1) t -= 1;
+                if (t < 1/6) return p + (q - p) * 6 * t;
+                if (t < 1/2) return q;
+                if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+                return p;
+            };
+            let q = textL < 0.5 ? textL * (1 + s) : textL + s - textL * s;
+            let p = 2 * textL - q;
+            outR = hue2rgb(p, q, h + 1/3);
+            outG = hue2rgb(p, q, h);
+            outB = hue2rgb(p, q, h - 1/3);
+        }
+
+        let dynamicFg = '#' + 
+            Math.round(outR * 255).toString(16).padStart(2, '0') + 
+            Math.round(outG * 255).toString(16).padStart(2, '0') + 
+            Math.round(outB * 255).toString(16).padStart(2, '0');
+
+        return { bg: hexColor, fg: dynamicFg };
     }
 
     // --- 3. RENDER ---
