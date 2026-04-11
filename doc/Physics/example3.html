@@ -283,7 +283,7 @@ H(z) = H_0 \sqrt{\Omega_r (1+z)^4 + \Omega_m (1+z)^3 + \Omega_k (1+z)^2 + \Omega
 </section>
 <section id="html5-map" class="level1">
 <h1>HTML5 map</h1>
-<div id="graph_530552" style="width: 100%; height: 600px; border: 1px solid #ddd; background: #ffffff; border-radius: 8px; overflow: hidden; position: relative;"></div>
+<div id="graph_667585" style="width: 100%; height: 600px; border: 1px solid #ddd; background: #ffffff; border-radius: 8px; overflow: hidden; position: relative;"></div>
 
 <script src="https://unpkg.com/force-graph"></script>
 <script>
@@ -294,26 +294,16 @@ H(z) = H_0 \sqrt{\Omega_r (1+z)^4 + \Omega_m (1+z)^3 + \Omega_k (1+z)^2 + \Omega
     }
 
     const graphData = {
-      nodes: [ { id: '$\Lambda$CDM Cosmological Model', url: '../../doc/Physics/example3.html', group: 1, depth: 2, color: null, shape: 'rounded' },
-        { id: 'How to write a page using Quarto Markdown', url: '../../doc/Examples/example1.html', group: 1, depth: 2, color: null, shape: 'rounded' },
-        { id: 'Wiki Home', url: null, group: 1, depth: 0, color: null, shape: 'circle' },
-        { id: 'Physics', url: null, group: 1, depth: 1, color: null, shape: 'rounded' },
-        { id: 'Examples', url: null, group: 1, depth: 1, color: '#EA7B7B', shape: 'circle' },
-        { id: 'Mathematics', url: null, group: 1, depth: 1, color: null, shape: 'circle' },
-        { id: 'Allowed LaTeX syntax for page writing', url: '../../doc/Examples/example2.html', group: 1, depth: 2, color: null, shape: 'rounded' },
-        { id: 'Calculus', url: 'https://en.wikipedia.org/wiki/Calculus', group: 1, depth: 2, color: null, shape: 'rounded' },
-        { id: 'Algebra', url: 'https://en.wikipedia.org/wiki/Algebra', group: 1, depth: 2, color: null, shape: 'rounded' } ],
-      links: [ { source: 'Wiki Home', target: 'Physics' },
-        { source: 'Wiki Home', target: 'Mathematics' },
-        { source: 'Wiki Home', target: 'Examples' },
-        { source: 'Mathematics', target: 'Calculus' },
-        { source: 'Mathematics', target: 'Algebra' },
-        { source: 'Physics', target: '$\Lambda$CDM Cosmological Model' },
-        { source: 'Examples', target: 'How to write a page using Quarto Markdown' },
-        { source: 'Examples', target: 'Allowed LaTeX syntax for page writing' } ]
+      nodes: [ { id: 'Wiki Home', url: null, depth: 0, color: null, shape: 'circle' },
+        { id: 'URLs', url: null, depth: 1, color: null, shape: 'circle' },
+        { id: 'Algebra', url: 'https://en.wikipedia.org/wiki/Algebra', depth: 2, color: null, shape: 'rounded' },
+        { id: 'Calculus', url: 'https://en.wikipedia.org/wiki/Calculus', depth: 2, color: null, shape: 'rounded' } ],
+      links: [ { source: 'Wiki Home', target: 'URLs' },
+        { source: 'URLs', target: 'Calculus' },
+        { source: 'URLs', target: 'Algebra' } ]
     };
 
-    const container = document.getElementById('graph_530552');
+    const container = document.getElementById('graph_667585');
     if (!container) return;
 
     // --- 1. ASYMPTOTIC COLOR CASCADE LOGIC ---
@@ -340,13 +330,7 @@ H(z) = H_0 \sqrt{\Omega_r (1+z)^4 + \Omega_m (1+z)^3 + \Omega_k (1+z)^2 + \Omega
             h /= 6;
         }
 
-        // --- ASYMPTOTIC FORMULA ---
-        // New L = Current L + (Target L - Current L) * Factor
-        // This ensures we get closer to 0.98 but never reach pure 1.0 (white).
-        // A factor of 0.4 ensures a visible jump even at shallow depths.
         l = l + (0.98 - l) * 0.40;
-        
-        // Similarly, drop saturation asymptotically so colors become "softer"
         s = s * 0.85; 
 
         let outR, outG, outB;
@@ -371,7 +355,6 @@ H(z) = H_0 \sqrt{\Omega_r (1+z)^4 + \Omega_m (1+z)^3 + \Omega_k (1+z)^2 + \Omega
             Math.round(outB * 255).toString(16).padStart(2, '0');
     }
 
-    // Prepare inheritance
     const nodesMap = new Map();
     const childrenMap = new Map();
     const inDegreeMap = new Map();
@@ -389,8 +372,9 @@ H(z) = H_0 \sqrt{\Omega_r (1+z)^4 + \Omega_m (1+z)^3 + \Omega_k (1+z)^2 + \Omega
         }
     });
 
-    // BFS to resolve colors from parents
-    const GLOBAL_ROOT_COLOR = '#abe1ff';
+    // --- GLOBAL DEFAULT COLOR ---
+    const GLOBAL_ROOT_COLOR = '#84cfff';
+    
     let queue = [];
     let visited = new Set();
 
@@ -405,17 +389,7 @@ H(z) = H_0 \sqrt{\Omega_r (1+z)^4 + \Omega_m (1+z)^3 + \Omega_k (1+z)^2 + \Omega
         const { id, parentColor, isRoot } = queue.shift();
         const node = nodesMap.get(id);
 
-        // If node has its own color, use it. Otherwise, use parent's lightened version.
-        // The Root node uses its own color or the Global Default without lightening it first.
-        if (isRoot) {
-            node._resolvedColor = node.color || GLOBAL_ROOT_COLOR;
-        } else {
-            node._resolvedColor = node.color || parentColor;
-        }
-        
-        if (node.group === 3) node._resolvedColor = '#fee2e2'; 
-
-        // Calculate the lightened color for all children
+        node._resolvedColor = (isRoot) ? (node.color || GLOBAL_ROOT_COLOR) : (node.color || parentColor);
         const lightenedForChildren = lightenColorCascade(node._resolvedColor);
 
         childrenMap.get(id).forEach(childId => {
@@ -426,7 +400,7 @@ H(z) = H_0 \sqrt{\Omega_r (1+z)^4 + \Omega_m (1+z)^3 + \Omega_k (1+z)^2 + \Omega
         });
     }
 
-    // --- 2. THEME GENERATOR (Contrast) ---
+    // --- 2. CONTRAST THEME GENERATOR ---
     
     function getThemeColors(hexColor) {
         let hex = hexColor.replace('#', '');
@@ -435,45 +409,9 @@ H(z) = H_0 \sqrt{\Omega_r (1+z)^4 + \Omega_m (1+z)^3 + \Omega_k (1+z)^2 + \Omega
         const g = parseInt(hex.substr(2, 2), 16);
         const b = parseInt(hex.substr(4, 2), 16);
         
-        // HSL for manipulation
-        let rN = r/255, gN = g/255, bN = b/255;
-        let max = Math.max(rN, gN, bN), min = Math.min(rN, gN, bN);
-        let h, s, l = (max + min) / 2;
-        if (max === min) { h = s = 0; } else {
-            let d = max - min;
-            s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
-            if (max === rN) h = (gN - bN) / d + (gN < bN ? 6 : 0);
-            else if (max === gN) h = (bN - rN) / d + 2;
-            else h = (rN - gN) / d + 4;
-            h /= 6;
-        }
-
         const yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000;
-        let targetL, targetS;
-        
-        if (yiq >= 150) { // Light background -> Dark rich text
-            targetL = Math.max(0.1, l - 0.6); 
-            targetS = Math.min(1.0, s + 0.4);
-        } else { // Dark background -> Bright pastel text
-            targetL = Math.min(0.95, l + 0.6); 
-            targetS = Math.max(0, s - 0.2);
-        }
-
-        const hue2rgb = (p, q, t) => {
-            if (t < 0) t += 1; if (t > 1) t -= 1;
-            if (t < 1/6) return p + (q - p) * 6 * t;
-            if (t < 1/2) return q;
-            if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
-            return p;
-        };
-        let q = targetL < 0.5 ? targetL * (1 + targetS) : targetL + targetS - targetL * targetS;
-        let p = 2 * targetL - q;
-        const fr = Math.round(hue2rgb(p, q, h + 1/3) * 255);
-        const fg = Math.round(hue2rgb(p, q, h) * 255);
-        const fb = Math.round(hue2rgb(p, q, h - 1/3) * 255);
-
-        const fgHex = '#' + fr.toString(16).padStart(2, '0') + fg.toString(16).padStart(2, '0') + fb.toString(16).padStart(2, '0');
-        return { bg: hexColor, fg: fgHex };
+        let fg = (yiq >= 155) ? '#1e293b' : '#f8fafc'; // Dark Slate or Light Ghost
+        return { bg: hexColor, fg: fg };
     }
 
     // --- 3. RENDER ---
