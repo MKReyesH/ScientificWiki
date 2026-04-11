@@ -34,10 +34,10 @@ The model does not predict the values of these cosmic densities, so they should 
 \section{HTML5 map}
 
 ```mindmap-graph
-Wiki Home -> Physics
+Wiki Home {shape: circle} -> Physics
 Wiki Home -> Mathematics
 Wiki Home -> Examples
-Mathematics -> Calculus { url: https://en.wikipedia.org/wiki/Calculus, shape: box, color: #FFFFFF}
+Mathematics -> Calculus {url:https://en.wikipedia.org/wiki/Calculus, color:#FFFFFF}
 Physics -> auto:doc/Physics
 Examples -> auto:doc/Examples
 ```

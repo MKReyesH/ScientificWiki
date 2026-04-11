@@ -10,7 +10,6 @@ function CodeBlock(el)
     local node_shapes = {}
     local node_groups = {} 
 
-    -- Helper to extract properties like {url: http..., color: #ff0000, shape: box}
     local function parse_node_str(str)
         local name, attr_str = str:match("^(.-)%s*%{(.+)%}%s*$")
         if not name then
@@ -41,7 +40,6 @@ function CodeBlock(el)
         table.insert(edges, {src = src, tgt = tgt})
     end
 
-    -- 1. Setup paths
     local pwd_handle = io.popen("pwd")
     local current_dir = pwd_handle and pwd_handle:read("*l") or "Unknown"
     if pwd_handle then pwd_handle:close() end
@@ -58,7 +56,6 @@ function CodeBlock(el)
     end
     local rel_prefix = string.rep("../", depth_rel)
 
-    -- 2. Parse text, inline attributes, and resolve 'auto:' links
     for line in string.gmatch(raw_text, "[^\r\n]+") do
       local src_str, tgt_str = string.match(line, "(.-)%s*->%s*(.*)")
       
@@ -95,7 +92,6 @@ function CodeBlock(el)
                   if t then title = t:match("^%s*(.-)%s*$") end
                 end
                 
-                -- Pass down the shape and color defined on the auto: block!
                 local auto_url = rel_prefix .. folder .. "/" .. filename:gsub("%.qmd$", ".html")
                 register_node(title, { url = auto_url, color = tgt_attrs.color, shape = tgt_attrs.shape })
                 add_edge(src_name, title)
@@ -114,7 +110,6 @@ function CodeBlock(el)
           add_edge(src_name, tgt_name)
         end
       else
-        -- If a line doesn't have an arrow, treat it as a standalone node definition
         local name, attrs = parse_node_str(line)
         if name and name ~= "" then
             register_node(name, attrs)
@@ -122,7 +117,6 @@ function CodeBlock(el)
       end
     end
     
-    -- 3. Calculate Graph Hierarchy (Depths)
     local in_degree = {}
     local out_edges = {}
     for node in pairs(nodes_set) do
@@ -161,7 +155,6 @@ function CodeBlock(el)
         end
     end
 
-    -- 4. Construct JS Data Arrays
     local function escape_js(str)
       if not str then return "Unknown" end
       return str:gsub("'", "\\'")
@@ -171,7 +164,7 @@ function CodeBlock(el)
     for node in pairs(nodes_set) do
         local url_str = node_urls[node] and string.format("'%s'", escape_js(node_urls[node])) or "null"
         local color_str = node_colors[node] and string.format("'%s'", escape_js(node_colors[node])) or "null"
-        local shape_str = node_shapes[node] and string.format("'%s'", escape_js(node_shapes[node])) or "null"
+        local shape_str = node_shapes[node] and string.format("'%s'", escape_js(node_shapes[node])) or "'rounded'"
         local grp = node_groups[node] or 1
         local dpt = node_depths[node] or 0 
         
@@ -212,13 +205,24 @@ function CodeBlock(el)
     const container = document.getElementById(']] .. graph_id .. [[');
     if (!container) return;
 
+    // Helper function to calculate luminance and return contrasting text color
+    function getContrastTextColor(hexColor) {
+        if (!hexColor) return '#0f172a';
+        let hex = hexColor.replace('#', '');
+        if (hex.length === 3) hex = hex[0]+hex[0]+hex[1]+hex[1]+hex[2]+hex[2];
+        const r = parseInt(hex.substr(0, 2), 16);
+        const g = parseInt(hex.substr(2, 2), 16);
+        const b = parseInt(hex.substr(4, 2), 16);
+        const yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000;
+        return (yiq >= 140) ? '#0f172a' : '#f8fafc'; // Dark slate for light backgrounds, almost-white for dark backgrounds
+    }
+
     const Graph = ForceGraph()(container)
       .graphData(graphData)
       .linkDirectionalParticles(2)
       .linkColor(() => '#cccccc')
       .nodeCanvasObject((node, ctx, globalScale) => {
         const label = node.id;
-        
         const cappedDepth = Math.min(node.depth || 0, 4); 
         const baseFontSize = 16 - (cappedDepth * 2); 
         const fontSize = baseFontSize / globalScale;
@@ -248,73 +252,64 @@ function CodeBlock(el)
         const padding = fontSize * 1.5;
         const boxW = textWidth + padding;
         const boxH = lines.length * lineHeight + padding;
+        const maxDim = Math.max(boxW, boxH); // Used for circles and squares
         
-        // Compute radius for circle to encompass the text box
-        const radius = Math.sqrt(Math.pow(boxW/2, 2) + Math.pow(boxH/2, 2));
+        // Colors Array (Just background hexes now)
+        const depthColors = ['#3b82f6', '#93c5fd', '#dbeafe', '#f1f5f9', '#f8fafc'];
+        let bgColor = node.color || depthColors[cappedDepth];
+        
+        if (node.group === 3) bgColor = '#fee2e2'; // Error color
 
-        // Styling
-        const palettes = [
-            { bg: '#3b82f6', border: '#2563eb', text: '#ffffff' }, // Depth 0
-            { bg: '#93c5fd', border: '#3b82f6', text: '#1e3a8a' }, // Depth 1
-            { bg: '#dbeafe', border: '#93c5fd', text: '#1e40af' }, // Depth 2
-            { bg: '#f1f5f9', border: '#cbd5e1', text: '#334155' }, // Depth 3
-            { bg: '#f8fafc', border: '#e2e8f0', text: '#475569' }  // Depth 4+
-        ];
-        
-        let colors = palettes[cappedDepth];
-        
-        // Override Colors
-        if (node.color) {
-            colors = { bg: node.color, border: node.color, text: '#111827' }; // Dark text on custom colors
-        }
-        if (node.group === 3) { 
-            colors = { bg: '#fee2e2', border: '#ef4444', text: '#991b1b' }; // Errors
-        }
+        const textColor = getContrastTextColor(bgColor);
 
-        ctx.fillStyle = colors.bg;
-        ctx.strokeStyle = colors.border;
-        ctx.lineWidth = 1.5 / globalScale;
+        ctx.fillStyle = bgColor;
 
         // Draw Shape
         ctx.beginPath();
-        const isBox = node.shape === 'box';
+        const shape = node.shape || 'rounded';
         
-        if (isBox) {
-            const r = (10 - cappedDepth) / globalScale; 
-            if (ctx.roundRect) ctx.roundRect(node.x - boxW/2, node.y - boxH/2, boxW, boxH, r);
-            else ctx.rect(node.x - boxW/2, node.y - boxH/2, boxW, boxH);
+        if (shape === 'circle') {
+            ctx.arc(node.x, node.y, maxDim / 2, 0, 2 * Math.PI, false);
+        } else if (shape === 'square') {
+            ctx.rect(node.x - maxDim / 2, node.y - maxDim / 2, maxDim, maxDim);
+        } else if (shape === 'box') {
+            ctx.rect(node.x - boxW / 2, node.y - boxH / 2, boxW, boxH);
         } else {
-            // Default to Circle
-            ctx.arc(node.x, node.y, radius, 0, 2 * Math.PI, false);
+            // Default to 'rounded'
+            const r = (10 - cappedDepth) / globalScale; 
+            if (ctx.roundRect) ctx.roundRect(node.x - boxW / 2, node.y - boxH / 2, boxW, boxH, r);
+            else ctx.rect(node.x - boxW / 2, node.y - boxH / 2, boxW, boxH);
         }
         
         ctx.fill();
-        ctx.stroke();
 
         // Draw Text
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        ctx.fillStyle = colors.text; 
+        ctx.fillStyle = textColor; 
         
         const startY = node.y - (lines.length * lineHeight) / 2 + lineHeight / 2;
         lines.forEach((line, index) => {
              ctx.fillText(line, node.x, startY + index * lineHeight);
         });
 
-        // Store geometric data for hover area
-        node.__shapeData = { isBox, boxW, boxH, radius }; 
+        // Store geometric data for hover/click area mapping
+        node.__shapeData = { shape, boxW, boxH, maxDim }; 
       })
       .nodePointerAreaPaint((node, color, ctx) => {
         ctx.fillStyle = color;
         const d = node.__shapeData;
         if (d) {
             ctx.beginPath();
-            if (d.isBox) {
-                ctx.fillRect(node.x - d.boxW / 2, node.y - d.boxH / 2, d.boxW, d.boxH);
+            if (d.shape === 'circle') {
+                ctx.arc(node.x, node.y, d.maxDim / 2, 0, 2 * Math.PI, false);
+            } else if (d.shape === 'square') {
+                ctx.rect(node.x - d.maxDim / 2, node.y - d.maxDim / 2, d.maxDim, d.maxDim);
             } else {
-                ctx.arc(node.x, node.y, d.radius, 0, 2 * Math.PI, false);
-                ctx.fill();
+                // box or rounded uses the same hit area
+                ctx.rect(node.x - d.boxW / 2, node.y - d.boxH / 2, d.boxW, d.boxH);
             }
+            ctx.fill();
         }
       })
       .onNodeHover(node => {
