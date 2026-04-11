@@ -283,7 +283,7 @@ H(z) = H_0 \sqrt{\Omega_r (1+z)^4 + \Omega_m (1+z)^3 + \Omega_k (1+z)^2 + \Omega
 </section>
 <section id="html5-map" class="level1">
 <h1>HTML5 map</h1>
-<div id="graph_150207" style="width: 100%; height: 600px; border: 1px solid #ddd; background: #ffffff; border-radius: 8px; overflow: hidden; position: relative;"></div>
+<div id="graph_530552" style="width: 100%; height: 600px; border: 1px solid #ddd; background: #ffffff; border-radius: 8px; overflow: hidden; position: relative;"></div>
 
 <script src="https://unpkg.com/force-graph"></script>
 <script>
@@ -294,24 +294,26 @@ H(z) = H_0 \sqrt{\Omega_r (1+z)^4 + \Omega_m (1+z)^3 + \Omega_k (1+z)^2 + \Omega
     }
 
     const graphData = {
-      nodes: [ { id: 'Examples', url: null, group: 1, depth: 1, color: '#EA7B7B', shape: 'rounded' },
-        { id: 'Physics', url: null, group: 1, depth: 1, color: null, shape: 'rounded' },
+      nodes: [ { id: '$\Lambda$CDM Cosmological Model', url: '../../doc/Physics/example3.html', group: 1, depth: 2, color: null, shape: 'rounded' },
+        { id: 'How to write a page using Quarto Markdown', url: '../../doc/Examples/example1.html', group: 1, depth: 2, color: null, shape: 'rounded' },
         { id: 'Wiki Home', url: null, group: 1, depth: 0, color: null, shape: 'circle' },
+        { id: 'Physics', url: null, group: 1, depth: 1, color: null, shape: 'rounded' },
+        { id: 'Examples', url: null, group: 1, depth: 1, color: '#EA7B7B', shape: 'circle' },
+        { id: 'Mathematics', url: null, group: 1, depth: 1, color: null, shape: 'circle' },
         { id: 'Allowed LaTeX syntax for page writing', url: '../../doc/Examples/example2.html', group: 1, depth: 2, color: null, shape: 'rounded' },
         { id: 'Calculus', url: 'https://en.wikipedia.org/wiki/Calculus', group: 1, depth: 2, color: null, shape: 'rounded' },
-        { id: 'How to write a page using Quarto Markdown', url: '../../doc/Examples/example1.html', group: 1, depth: 2, color: null, shape: 'rounded' },
-        { id: '$\Lambda$CDM Cosmological Model', url: '../../doc/Physics/example3.html', group: 1, depth: 2, color: null, shape: 'rounded' },
-        { id: 'Mathematics', url: null, group: 1, depth: 1, color: null, shape: 'rounded' } ],
+        { id: 'Algebra', url: 'https://en.wikipedia.org/wiki/Algebra', group: 1, depth: 2, color: null, shape: 'rounded' } ],
       links: [ { source: 'Wiki Home', target: 'Physics' },
         { source: 'Wiki Home', target: 'Mathematics' },
         { source: 'Wiki Home', target: 'Examples' },
         { source: 'Mathematics', target: 'Calculus' },
+        { source: 'Mathematics', target: 'Algebra' },
         { source: 'Physics', target: '$\Lambda$CDM Cosmological Model' },
         { source: 'Examples', target: 'How to write a page using Quarto Markdown' },
         { source: 'Examples', target: 'Allowed LaTeX syntax for page writing' } ]
     };
 
-    const container = document.getElementById('graph_150207');
+    const container = document.getElementById('graph_530552');
     if (!container) return;
 
     // --- 1. ASYMPTOTIC COLOR CASCADE LOGIC ---
@@ -388,7 +390,7 @@ H(z) = H_0 \sqrt{\Omega_r (1+z)^4 + \Omega_m (1+z)^3 + \Omega_k (1+z)^2 + \Omega
     });
 
     // BFS to resolve colors from parents
-    const GLOBAL_ROOT_COLOR = '#3b82f6';
+    const GLOBAL_ROOT_COLOR = '#abe1ff';
     let queue = [];
     let visited = new Set();
 
