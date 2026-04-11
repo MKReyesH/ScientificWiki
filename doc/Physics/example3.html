@@ -283,7 +283,7 @@ H(z) = H_0 \sqrt{\Omega_r (1+z)^4 + \Omega_m (1+z)^3 + \Omega_k (1+z)^2 + \Omega
 </section>
 <section id="html5-map" class="level1">
 <h1>HTML5 map</h1>
-<div id="graph_421686" style="width: 100%; height: 600px; border: 1px solid #ddd; background: #ffffff; border-radius: 8px; overflow: hidden; position: relative;"></div>
+<div id="graph_208362" style="width: 100%; height: 600px; border: 1px solid #ddd; background: #ffffff; border-radius: 8px; overflow: hidden; position: relative;"></div>
 
 <script src="https://unpkg.com/force-graph"></script>
 <script>
@@ -294,14 +294,14 @@ H(z) = H_0 \sqrt{\Omega_r (1+z)^4 + \Omega_m (1+z)^3 + \Omega_k (1+z)^2 + \Omega
     }
 
     const graphData = {
-      nodes: [ { id: 'How to write a page using Quarto Markdown', url: '../../doc/Examples/example1.html', group: 2, depth: 2 },
-        { id: '$\Lambda$CDM Cosmological Model', url: '../../doc/Physics/example3.html', group: 2, depth: 2 },
-        { id: 'Examples', url: null, group: 1, depth: 1 },
-        { id: 'Mathematics', url: null, group: 1, depth: 1 },
-        { id: 'Allowed LaTeX syntax for page writing', url: '../../doc/Examples/example2.html', group: 2, depth: 2 },
-        { id: 'Calculus', url: null, group: 1, depth: 2 },
-        { id: 'Physics', url: null, group: 1, depth: 1 },
-        { id: 'Wiki Home', url: null, group: 1, depth: 0 } ],
+      nodes: [ { id: 'Mathematics', url: null, group: 1, depth: 1, color: null, shape: null },
+        { id: 'Calculus', url: 'https://en.wikipedia.org/wiki/Calculus', group: 1, depth: 2, color: '#FFFFFF', shape: 'box' },
+        { id: 'Examples', url: null, group: 1, depth: 1, color: null, shape: null },
+        { id: 'How to write a page using Quarto Markdown', url: '../../doc/Examples/example1.html', group: 1, depth: 2, color: null, shape: null },
+        { id: '$\Lambda$CDM Cosmological Model', url: '../../doc/Physics/example3.html', group: 1, depth: 2, color: null, shape: null },
+        { id: 'Wiki Home', url: null, group: 1, depth: 0, color: null, shape: null },
+        { id: 'Physics', url: null, group: 1, depth: 1, color: null, shape: null },
+        { id: 'Allowed LaTeX syntax for page writing', url: '../../doc/Examples/example2.html', group: 1, depth: 2, color: null, shape: null } ],
       links: [ { source: 'Wiki Home', target: 'Physics' },
         { source: 'Wiki Home', target: 'Mathematics' },
         { source: 'Wiki Home', target: 'Examples' },
@@ -311,7 +311,7 @@ H(z) = H_0 \sqrt{\Omega_r (1+z)^4 + \Omega_m (1+z)^3 + \Omega_k (1+z)^2 + \Omega
         { source: 'Examples', target: 'Allowed LaTeX syntax for page writing' } ]
     };
 
-    const container = document.getElementById('graph_421686');
+    const container = document.getElementById('graph_208362');
     if (!container) return;
 
     const Graph = ForceGraph()(container)
@@ -321,14 +321,13 @@ H(z) = H_0 \sqrt{\Omega_r (1+z)^4 + \Omega_m (1+z)^3 + \Omega_k (1+z)^2 + \Omega
       .nodeCanvasObject((node, ctx, globalScale) => {
         const label = node.id;
         
-        // 1. Calculate sizing based on depth hierarchy
-        const cappedDepth = Math.min(node.depth || 0, 4); // Max depth scaling capped at 4
-        const baseFontSize = 18 - (cappedDepth * 2.5); // Roots get size 18, children scale down
+        const cappedDepth = Math.min(node.depth || 0, 4); 
+        const baseFontSize = 16 - (cappedDepth * 2); 
         const fontSize = baseFontSize / globalScale;
         ctx.font = `bold ${fontSize}px Sans-Serif`;
         
-        // 2. Text Wrapping Algorithm
-        const maxTextWidth = (140 - (cappedDepth * 10)) / globalScale; 
+        // Text Wrapping Algorithm
+        const maxTextWidth = (130 - (cappedDepth * 8)) / globalScale; 
         const words = label.split(' ');
         let lines = [];
         let currentLine = words[0];
@@ -345,50 +344,56 @@ H(z) = H_0 \sqrt{\Omega_r (1+z)^4 + \Omega_m (1+z)^3 + \Omega_k (1+z)^2 + \Omega
         }
         lines.push(currentLine);
 
-        // 3. Dynamic Shape Dimensions
+        // Compute Dimensions
         const lineHeight = fontSize * 1.2;
         const textWidth = Math.max(...lines.map(l => ctx.measureText(l).width));
-        const padding = fontSize * 1.2;
-        const bckgDimensions = [textWidth + padding, lines.length * lineHeight + padding];
+        const padding = fontSize * 1.5;
+        const boxW = textWidth + padding;
+        const boxH = lines.length * lineHeight + padding;
+        
+        // Compute radius for circle to encompass the text box
+        const radius = Math.sqrt(Math.pow(boxW/2, 2) + Math.pow(boxH/2, 2));
 
-        // 4. Color Hierarchy by Depth
+        // Styling
         const palettes = [
-            { bg: '#3b82f6', border: '#2563eb', text: '#ffffff' }, // Depth 0: Strong Blue
-            { bg: '#93c5fd', border: '#3b82f6', text: '#1e3a8a' }, // Depth 1: Soft Blue
-            { bg: '#dbeafe', border: '#93c5fd', text: '#1e40af' }, // Depth 2: Very Light Blue
-            { bg: '#f1f5f9', border: '#cbd5e1', text: '#334155' }, // Depth 3: Light Slate
-            { bg: '#f8fafc', border: '#e2e8f0', text: '#475569' }  // Depth 4+: Pale Slate
+            { bg: '#3b82f6', border: '#2563eb', text: '#ffffff' }, // Depth 0
+            { bg: '#93c5fd', border: '#3b82f6', text: '#1e3a8a' }, // Depth 1
+            { bg: '#dbeafe', border: '#93c5fd', text: '#1e40af' }, // Depth 2
+            { bg: '#f1f5f9', border: '#cbd5e1', text: '#334155' }, // Depth 3
+            { bg: '#f8fafc', border: '#e2e8f0', text: '#475569' }  // Depth 4+
         ];
         
         let colors = palettes[cappedDepth];
         
-        // Override style if it's an error node
+        // Override Colors
+        if (node.color) {
+            colors = { bg: node.color, border: node.color, text: '#111827' }; // Dark text on custom colors
+        }
         if (node.group === 3) { 
-            colors = { bg: '#fee2e2', border: '#ef4444', text: '#991b1b' };
+            colors = { bg: '#fee2e2', border: '#ef4444', text: '#991b1b' }; // Errors
         }
 
         ctx.fillStyle = colors.bg;
         ctx.strokeStyle = colors.border;
         ctx.lineWidth = 1.5 / globalScale;
 
-        // Draw Custom Rounded Rectangle
+        // Draw Shape
         ctx.beginPath();
-        const x = node.x - bckgDimensions[0] / 2;
-        const y = node.y - bckgDimensions[1] / 2;
-        const w = bckgDimensions[0];
-        const h = bckgDimensions[1];
-        const r = (10 - cappedDepth) / globalScale; 
+        const isBox = node.shape === 'box';
         
-        if (ctx.roundRect) {
-            ctx.roundRect(x, y, w, h, r);
+        if (isBox) {
+            const r = (10 - cappedDepth) / globalScale; 
+            if (ctx.roundRect) ctx.roundRect(node.x - boxW/2, node.y - boxH/2, boxW, boxH, r);
+            else ctx.rect(node.x - boxW/2, node.y - boxH/2, boxW, boxH);
         } else {
-            ctx.rect(x, y, w, h); 
+            // Default to Circle
+            ctx.arc(node.x, node.y, radius, 0, 2 * Math.PI, false);
         }
         
         ctx.fill();
         ctx.stroke();
 
-        // Draw Wrapped Text Lines
+        // Draw Text
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.fillStyle = colors.text; 
@@ -398,13 +403,20 @@ H(z) = H_0 \sqrt{\Omega_r (1+z)^4 + \Omega_m (1+z)^3 + \Omega_k (1+z)^2 + \Omega
              ctx.fillText(line, node.x, startY + index * lineHeight);
         });
 
-        node.__bckgDimensions = bckgDimensions; 
+        // Store geometric data for hover area
+        node.__shapeData = { isBox, boxW, boxH, radius }; 
       })
       .nodePointerAreaPaint((node, color, ctx) => {
         ctx.fillStyle = color;
-        const bckgDimensions = node.__bckgDimensions;
-        if (bckgDimensions) {
-            ctx.fillRect(node.x - bckgDimensions[0] / 2, node.y - bckgDimensions[1] / 2, ...bckgDimensions);
+        const d = node.__shapeData;
+        if (d) {
+            ctx.beginPath();
+            if (d.isBox) {
+                ctx.fillRect(node.x - d.boxW / 2, node.y - d.boxH / 2, d.boxW, d.boxH);
+            } else {
+                ctx.arc(node.x, node.y, d.radius, 0, 2 * Math.PI, false);
+                ctx.fill();
+            }
         }
       })
       .onNodeHover(node => {
@@ -416,7 +428,6 @@ H(z) = H_0 \sqrt{\Omega_r (1+z)^4 + \Omega_m (1+z)^3 + \Omega_k (1+z)^2 + \Omega
         }
       });
 
-      // Responsive Observer to handle window resizing
       const resizeObserver = new ResizeObserver(entries => {
         for (let entry of entries) {
             Graph.width(entry.contentRect.width);
