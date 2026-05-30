@@ -1,5 +1,7 @@
 ---
 title: '$\Lambda$CDM Cosmological Model'
+mindmap-shape: 'diamond'
+mindmap-color: '#e74c3c'
 nocite: |
   @Carmona:2022pro
 ---
@@ -30,16 +32,6 @@ Using the FLRW metric, Eq. \eqref{eq:FLRW}, to solve the Einstein equations lead
     \label{eq:Hz_full}
 \end{gather}
 The model does not predict the values of these cosmic densities, so they should be adjusted using cosmological observations and measurements. For more information see \cite{ReyesHung:2023udr}.
-
-\section{HTML5 map}
-
-```mindmap-graph
-Wiki Home {shape: circle} -> URLs {shape:circle}
-Wiki Home -> Doc {shape:circle}
-
-URLs -> Calculus {url:https://en.wikipedia.org/wiki/Calculus}
-URLs -> Algebra {url:https://en.wikipedia.org/wiki/Algebra}
-```
 
 !mindmap-graph-auto: doc
 

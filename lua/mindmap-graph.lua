@@ -1,6 +1,4 @@
--- =====================================================================
--- 1. UTILITIES & METADATA PARSERS
--- =====================================================================
+-- Functions
 
 local function parse_dsl_string(str)
     local name, attr_str = str:match("^(.-)%s*%{(.+)%}%s*$")
@@ -29,26 +27,36 @@ local function parse_file_metadata(filepath)
     local yaml_block = content:match("^%-%-%-\n(.-)\n%-%-%-")
     if yaml_block then
         meta.title = yaml_block:match("\ntitle:%s*['\"]?(.-)['\"]?%s*\n") or yaml_block:match("^title:%s*['\"]?(.-)['\"]?%s*\n")
-        meta.shape = yaml_block:match("\nmap%-shape:%s*['\"]?(.-)['\"]?%s*\n") or yaml_block:match("^map%-shape:%s*['\"]?(.-)['\"]?%s*\n")
-        meta.color = yaml_block:match("\nmap%-color:%s*['\"]?(.-)['\"]?%s*\n") or yaml_block:match("^map%-color:%s*['\"]?(.-)['\"]?%s*\n")
+        meta.shape = yaml_block:match("\nmindmap%-shape:%s*['\"]?(.-)['\"]?%s*\n") or yaml_block:match("^map%-shape:%s*['\"]?(.-)['\"]?%s*\n")
+        meta.color = yaml_block:match("\nmindmap%-color:%s*['\"]?(.-)['\"]?%s*\n") or yaml_block:match("^map%-color:%s*['\"]?(.-)['\"]?%s*\n")
     end
     return meta, content
 end
 
 local function extract_internal_links(content)
     local links = {}
-    for link_target in string.gmatch(content, "%[.-%]%(([^%)]+)%)") do
+    
+    local function process_target(link_target)
         if not link_target:match("^http") and not link_target:match("^#") then
             local base = link_target:match("([^/]+)%.html$") or link_target:match("([^/]+)%.qmd$")
             if base then table.insert(links, base) end
         end
     end
+
+    -- Standard Markdown links: [text](target)
+    for link_target in string.gmatch(content, "%[.-%]%(([^%)]+)%)") do
+        process_target(link_target)
+    end
+    
+    -- LaTeX href links: \href{target}{text}
+    for link_target in string.gmatch(content, "\\href{([^}]+)}") do
+        process_target(link_target)
+    end
+
     return links
 end
 
--- =====================================================================
--- 2. THE CORE RENDERER (Used by both tools)
--- =====================================================================
+-- HTML renderer
 
 local function generate_graph_html(nodes_db, edges_db)
     local function escape_js(str) return str and str:gsub("'", "\\'") or "null" end
@@ -170,9 +178,7 @@ local function generate_graph_html(nodes_db, edges_db)
     return pandoc.RawBlock("html", html_code)
 end
 
--- =====================================================================
--- 3. TOOL A: MANUAL GRAPH PROCESSOR
--- =====================================================================
+-- Graph processors
 
 local function process_manual_graph(raw_text)
     local nodes_db = {}
@@ -209,10 +215,6 @@ local function process_manual_graph(raw_text)
     return generate_graph_html(nodes_db, edges_db)
 end
 
--- =====================================================================
--- 4. TOOL B: AUTO-FOLDER PROCESSOR (RECURSIVE UPGRADE)
--- =====================================================================
-
 local function process_auto_folder(folder_path)
     local nodes_db = {}
     local edges_db = {}
@@ -236,25 +238,20 @@ local function process_auto_folder(folder_path)
     local project_root = os.getenv("QUARTO_PROJECT_DIR") or "."
     local os_target_dir = project_root .. "/" .. folder_path
     
-    -- UPGRADE: Using 'find' to recursively search all subdirectories
     local cmd = 'find "' .. os_target_dir .. '" -type f -name "*.qmd" 2>/dev/null'
     local handle = io.popen(cmd)
     if not handle then return generate_graph_html(nodes_db, edges_db) end
     local result = handle:read("*a")
     handle:close()
     
-    -- Pass 1: Scan files and generate nodes
     for filepath in string.gmatch(result, "[^\r\n]+") do
         local meta, content = parse_file_metadata(filepath)
         if content then
-            -- Extract just the filename (e.g., "example3.qmd") from the full path
             local filename = filepath:match("([^/]+)$")
             local node_id = meta.title or filename
             
-            -- Clean up the URL so it works cleanly on your GitHub Pages deployment
             local rel_path = filepath
             if project_root ~= "." then
-                -- Strip the root directory out of the path
                 local safe_root = project_root:gsub("([%-%.%+%[%]%(%)%$%^%%%?%*])", "%%%1")
                 rel_path = filepath:gsub("^" .. safe_root .. "/?", "")
             else
@@ -270,7 +267,6 @@ local function process_auto_folder(folder_path)
         end
     end
 
-    -- Pass 2: Extract markdown links and generate edges
     for _, file_data in ipairs(scanned_files) do
         local links = extract_internal_links(file_data.content)
         for _, target_base in ipairs(links) do
@@ -282,19 +278,18 @@ local function process_auto_folder(folder_path)
     return generate_graph_html(nodes_db, edges_db)
 end
 
--- =====================================================================
--- 5. PANDOC FILTER ENTRY POINTS
--- =====================================================================
+-- Main functions
 
 return {
-    -- Catches the manual codeblocks
+    
+    -- Manual graph
     CodeBlock = function(el)
         if el.classes:includes("mindmap-graph") then
             return process_manual_graph(el.text)
         end
     end,
     
-    -- Catches the inline !auto-folder macro
+    -- Automatic graph generation from folder
     Para = function(el)
         local full_text = pandoc.utils.stringify(el)
         local folder_path = full_text:match("^!mindmap%-graph%-auto:%s*(.+)$")
@@ -302,4 +297,5 @@ return {
             return process_auto_folder(folder_path)
         end
     end
+    
 }
