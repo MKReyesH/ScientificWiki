@@ -283,7 +283,7 @@ H(z) = H_0 \sqrt{\Omega_r (1+z)^4 + \Omega_m (1+z)^3 + \Omega_k (1+z)^2 + \Omega
 </section>
 <section id="html5-map" class="level1">
 <h1>HTML5 map</h1>
-  <div id="graph_520493" style="width: 100%; height: 600px; border: 1px solid #ddd; background: #ffffff; border-radius: 8px; overflow: hidden; position: relative; margin-bottom: 1.5em;"></div>
+  <div id="graph_466612" style="width: 100%; height: 600px; border: 1px solid #ddd; background: #ffffff; border-radius: 8px; overflow: hidden; position: relative; margin-bottom: 1.5em;"></div>
   
   <script src="https://unpkg.com/force-graph"></script>
   <script>
@@ -291,20 +291,113 @@ H(z) = H_0 \sqrt{\Omega_r (1+z)^4 + \Omega_m (1+z)^3 + \Omega_k (1+z)^2 + \Omega
       if (typeof ForceGraph === 'undefined') { setTimeout(initGraph, 50); return; }
   
       const graphData = {
-        nodes: [ { id: 'Doc', url: null, color: null, shape: 'circle' },
-          { id: 'Calculus', url: 'https://en.wikipedia.org/wiki/Calculus', color: null, shape: 'rounded' },
+        nodes: [ { id: 'Calculus', url: 'https://en.wikipedia.org/wiki/Calculus', color: null, shape: 'rounded' },
+          { id: 'Doc', url: null, color: null, shape: 'circle' },
+          { id: 'URLs', url: null, color: null, shape: 'circle' },
           { id: 'Wiki Home', url: null, color: null, shape: 'circle' },
-          { id: 'Algebra', url: 'https://en.wikipedia.org/wiki/Algebra', color: null, shape: 'rounded' },
-          { id: 'auto:doc', url: null, color: null, shape: 'rounded' },
-          { id: 'URLs', url: null, color: null, shape: 'circle' } ],
-        links: [ { source: 'Doc', target: 'auto:doc' },
+          { id: 'Algebra', url: 'https://en.wikipedia.org/wiki/Algebra', color: null, shape: 'rounded' } ],
+        links: [ { source: 'Wiki Home', target: 'Doc' },
+          { source: 'URLs', target: 'Calculus' },
           { source: 'Wiki Home', target: 'URLs' },
-          { source: 'Wiki Home', target: 'Doc' },
-          { source: 'URLs', target: 'Algebra' },
-          { source: 'URLs', target: 'Calculus' } ]
+          { source: 'URLs', target: 'Algebra' } ]
       };
   
-      const container = document.getElementById('graph_520493');
+      const container = document.getElementById('graph_466612');
+      if (!container) return;
+  
+      function getContrastColor(hexColor) {
+          if (!hexColor) return '#000000';
+          let hex = hexColor.replace('#', '');
+          if (hex.length === 3) hex = hex[0]+hex[0]+hex[1]+hex[1]+hex[2]+hex[2];
+          const r = parseInt(hex.substr(0, 2), 16);
+          const g = parseInt(hex.substr(2, 2), 16);
+          const b = parseInt(hex.substr(4, 2), 16);
+          const yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000;
+          return (yiq >= 128) ? '#000000' : '#ffffff';
+      }
+  
+      function drawShape(ctx, shape, x, y, w, h) {
+          ctx.beginPath();
+          if (shape === 'circle') {
+              ctx.arc(x, y, Math.max(w, h)/2, 0, 2 * Math.PI);
+          } else if (shape === 'square') {
+              ctx.rect(x - w/2, y - h/2, w, h);
+          } else if (shape === 'diamond') {
+              ctx.moveTo(x, y - h/2); ctx.lineTo(x + w/2, y); ctx.lineTo(x, y + h/2); ctx.lineTo(x - w/2, y);
+          } else if (shape === 'triangle') {
+              ctx.moveTo(x, y - h/2); ctx.lineTo(x + w/2, y + h/2); ctx.lineTo(x - w/2, y + h/2);
+          } else if (shape === 'star') {
+              const spikes = 5; const outerRadius = Math.max(w, h)/2; const innerRadius = outerRadius / 2;
+              let rot = Math.PI / 2 * 3; let step = Math.PI / spikes;
+              ctx.moveTo(x, y - outerRadius);
+              for (let i = 0; i < spikes; i++) {
+                  ctx.lineTo(x + Math.cos(rot) * outerRadius, y + Math.sin(rot) * outerRadius); rot += step;
+                  ctx.lineTo(x + Math.cos(rot) * innerRadius, y + Math.sin(rot) * innerRadius); rot += step;
+              }
+          } else {
+              if (ctx.roundRect) ctx.roundRect(x - w/2, y - h/2, w, h, 8); else ctx.rect(x - w/2, y - h/2, w, h);
+          }
+          ctx.closePath();
+      }
+  
+      const Graph = ForceGraph()(container)
+        .graphData(graphData)
+        .linkDirectionalParticles(2)
+        .linkColor(() => '#cccccc')
+        .nodeCanvasObject((node, ctx, globalScale) => {
+          const fontSize = 14 / globalScale;
+          ctx.font = `bold ${fontSize}px Sans-Serif`;
+          
+          const label = node.id;
+          const maxTextWidth = 100 / globalScale;
+          const words = label.split(' ');
+          let lines = []; let curLine = words[0];
+          for (let i = 1; i < words.length; i++) {
+              if (ctx.measureText(curLine + " " + words[i]).width < maxTextWidth) curLine += " " + words[i];
+              else { lines.push(curLine); curLine = words[i]; }
+          }
+          lines.push(curLine);
+  
+          const lineHeight = fontSize * 1.2;
+          const textWidth = Math.max(...lines.map(l => ctx.measureText(l).width));
+          const padding = fontSize * 1.5;
+          const boxW = textWidth + padding;
+          const boxH = lines.length * lineHeight + padding;
+          
+          const bgColor = node.color || '#84cfff';
+          const fgColor = getContrastColor(bgColor);
+  
+          ctx.fillStyle = bgColor;
+          ctx.strokeStyle = '#333333';
+          ctx.lineWidth = 1.5 / globalScale;
+  
+          drawShape(ctx, node.shape, node.x, node.y, boxW, boxH);
+          ctx.fill(); ctx.stroke();
+  
+          ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = fgColor;
+          const startY = node.y - (lines.length * lineHeight)/2 + lineHeight/2;
+          lines.forEach((line, i) => ctx.fillText(line, node.x, startY + i * lineHeight));
+        })
+        .onNodeClick(node => { if(node.url) window.location.href = node.url; })
+        .onNodeHover(node => container.style.cursor = node && node.url ? 'pointer' : null);
+  
+        new ResizeObserver(() => { Graph.width(container.offsetWidth); Graph.height(container.offsetHeight); }).observe(container);
+    })();
+  </script>
+    
+  <div id="graph_724225" style="width: 100%; height: 600px; border: 1px solid #ddd; background: #ffffff; border-radius: 8px; overflow: hidden; position: relative; margin-bottom: 1.5em;"></div>
+  
+  <script src="https://unpkg.com/force-graph"></script>
+  <script>
+    (function initGraph() {
+      if (typeof ForceGraph === 'undefined') { setTimeout(initGraph, 50); return; }
+  
+      const graphData = {
+        nodes: [  ],
+        links: [  ]
+      };
+  
+      const container = document.getElementById('graph_724225');
       if (!container) return;
   
       function getContrastColor(hexColor) {
