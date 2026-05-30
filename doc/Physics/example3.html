@@ -283,7 +283,7 @@ H(z) = H_0 \sqrt{\Omega_r (1+z)^4 + \Omega_m (1+z)^3 + \Omega_k (1+z)^2 + \Omega
 </section>
 <section id="html5-map" class="level1">
 <h1>HTML5 map</h1>
-  <div id="graph_466612" style="width: 100%; height: 600px; border: 1px solid #ddd; background: #ffffff; border-radius: 8px; overflow: hidden; position: relative; margin-bottom: 1.5em;"></div>
+  <div id="graph_673703" style="width: 100%; height: 600px; border: 1px solid #ddd; background: #ffffff; border-radius: 8px; overflow: hidden; position: relative; margin-bottom: 1.5em;"></div>
   
   <script src="https://unpkg.com/force-graph"></script>
   <script>
@@ -291,18 +291,18 @@ H(z) = H_0 \sqrt{\Omega_r (1+z)^4 + \Omega_m (1+z)^3 + \Omega_k (1+z)^2 + \Omega
       if (typeof ForceGraph === 'undefined') { setTimeout(initGraph, 50); return; }
   
       const graphData = {
-        nodes: [ { id: 'Calculus', url: 'https://en.wikipedia.org/wiki/Calculus', color: null, shape: 'rounded' },
-          { id: 'Doc', url: null, color: null, shape: 'circle' },
+        nodes: [ { id: 'Wiki Home', url: null, color: null, shape: 'circle' },
+          { id: 'Calculus', url: 'https://en.wikipedia.org/wiki/Calculus', color: null, shape: 'rounded' },
           { id: 'URLs', url: null, color: null, shape: 'circle' },
-          { id: 'Wiki Home', url: null, color: null, shape: 'circle' },
-          { id: 'Algebra', url: 'https://en.wikipedia.org/wiki/Algebra', color: null, shape: 'rounded' } ],
-        links: [ { source: 'Wiki Home', target: 'Doc' },
-          { source: 'URLs', target: 'Calculus' },
-          { source: 'Wiki Home', target: 'URLs' },
-          { source: 'URLs', target: 'Algebra' } ]
+          { id: 'Algebra', url: 'https://en.wikipedia.org/wiki/Algebra', color: null, shape: 'rounded' },
+          { id: 'Doc', url: null, color: null, shape: 'circle' } ],
+        links: [ { source: 'Wiki Home', target: 'URLs' },
+          { source: 'Wiki Home', target: 'Doc' },
+          { source: 'URLs', target: 'Algebra' },
+          { source: 'URLs', target: 'Calculus' } ]
       };
   
-      const container = document.getElementById('graph_466612');
+      const container = document.getElementById('graph_673703');
       if (!container) return;
   
       function getContrastColor(hexColor) {
@@ -385,7 +385,7 @@ H(z) = H_0 \sqrt{\Omega_r (1+z)^4 + \Omega_m (1+z)^3 + \Omega_k (1+z)^2 + \Omega
     })();
   </script>
     
-  <div id="graph_724225" style="width: 100%; height: 600px; border: 1px solid #ddd; background: #ffffff; border-radius: 8px; overflow: hidden; position: relative; margin-bottom: 1.5em;"></div>
+  <div id="graph_260763" style="width: 100%; height: 600px; border: 1px solid #ddd; background: #ffffff; border-radius: 8px; overflow: hidden; position: relative; margin-bottom: 1.5em;"></div>
   
   <script src="https://unpkg.com/force-graph"></script>
   <script>
@@ -393,11 +393,14 @@ H(z) = H_0 \sqrt{\Omega_r (1+z)^4 + \Omega_m (1+z)^3 + \Omega_k (1+z)^2 + \Omega
       if (typeof ForceGraph === 'undefined') { setTimeout(initGraph, 50); return; }
   
       const graphData = {
-        nodes: [  ],
-        links: [  ]
+        nodes: [ { id: 'example2.qmd', url: 'doc/Examples/example2.html', color: null, shape: 'rounded' },
+          { id: '$\Lambda$CDM Cosmological Model', url: 'doc/Physics/example3.html', color: null, shape: 'rounded' },
+          { id: 'example1.qmd', url: 'doc/Examples/example1.html', color: null, shape: 'rounded' } ],
+        links: [ { source: 'example2.qmd', target: 'example1.qmd' },
+          { source: 'example1.qmd', target: 'example2.qmd' } ]
       };
   
-      const container = document.getElementById('graph_724225');
+      const container = document.getElementById('graph_260763');
       if (!container) return;
   
       function getContrastColor(hexColor) {
