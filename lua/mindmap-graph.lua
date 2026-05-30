@@ -210,7 +210,7 @@ local function process_manual_graph(raw_text)
 end
 
 -- =====================================================================
--- 4. TOOL B: AUTO-FOLDER PROCESSOR
+-- 4. TOOL B: AUTO-FOLDER PROCESSOR (RECURSIVE UPGRADE)
 -- =====================================================================
 
 local function process_auto_folder(folder_path)
@@ -236,27 +236,37 @@ local function process_auto_folder(folder_path)
     local project_root = os.getenv("QUARTO_PROJECT_DIR") or "."
     local os_target_dir = project_root .. "/" .. folder_path
     
-    local cmd = 'ls -p "' .. os_target_dir .. '" 2>/dev/null'
+    -- UPGRADE: Using 'find' to recursively search all subdirectories
+    local cmd = 'find "' .. os_target_dir .. '" -type f -name "*.qmd" 2>/dev/null'
     local handle = io.popen(cmd)
     if not handle then return generate_graph_html(nodes_db, edges_db) end
     local result = handle:read("*a")
     handle:close()
     
     -- Pass 1: Scan files and generate nodes
-    for filename in string.gmatch(result, "[^\r\n]+") do
-        if filename:match("%.qmd$") then
-            local filepath = os_target_dir .. "/" .. filename
-            local meta, content = parse_file_metadata(filepath)
-            if content then
-                local node_id = meta.title or filename
-                local url = folder_path .. "/" .. filename:gsub("%.qmd$", ".html")
-                
-                register_node(node_id, { url = url, shape = meta.shape, color = meta.color })
-                
-                local base_filename = filename:gsub("%.qmd$", "")
-                file_to_id[base_filename] = node_id
-                table.insert(scanned_files, { id = node_id, content = content })
+    for filepath in string.gmatch(result, "[^\r\n]+") do
+        local meta, content = parse_file_metadata(filepath)
+        if content then
+            -- Extract just the filename (e.g., "example3.qmd") from the full path
+            local filename = filepath:match("([^/]+)$")
+            local node_id = meta.title or filename
+            
+            -- Clean up the URL so it works cleanly on your GitHub Pages deployment
+            local rel_path = filepath
+            if project_root ~= "." then
+                -- Strip the root directory out of the path
+                local safe_root = project_root:gsub("([%-%.%+%[%]%(%)%$%^%%%?%*])", "%%%1")
+                rel_path = filepath:gsub("^" .. safe_root .. "/?", "")
+            else
+                rel_path = filepath:gsub("^%./", "")
             end
+            local url = rel_path:gsub("%.qmd$", ".html")
+            
+            register_node(node_id, { url = url, shape = meta.shape, color = meta.color })
+            
+            local base_filename = filename:gsub("%.qmd$", "")
+            file_to_id[base_filename] = node_id
+            table.insert(scanned_files, { id = node_id, content = content })
         end
     end
 
