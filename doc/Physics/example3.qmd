@@ -39,9 +39,9 @@ Wiki Home -> Doc {shape:circle}
 
 URLs -> Calculus {url:https://en.wikipedia.org/wiki/Calculus}
 URLs -> Algebra {url:https://en.wikipedia.org/wiki/Algebra}
-
-Doc -> auto:doc {recursive: true}
 ```
+
+!mindmap-graph-auto: doc
 
 ## List of Authors {id="authors" .appendix}
 
