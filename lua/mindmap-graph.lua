@@ -25,10 +25,18 @@ local function parse_file_metadata(filepath)
 
     local meta = {}
     local yaml_block = content:match("^%-%-%-\n(.-)\n%-%-%-")
+    
     if yaml_block then
-        meta.title = yaml_block:match("\ntitle:%s*['\"]?(.-)['\"]?%s*\n") or yaml_block:match("^title:%s*['\"]?(.-)['\"]?%s*\n")
-        meta.shape = yaml_block:match("\nmindmap%-shape:%s*['\"]?(.-)['\"]?%s*\n") or yaml_block:match("^map%-shape:%s*['\"]?(.-)['\"]?%s*\n")
-        meta.color = yaml_block:match("\nmindmap%-color:%s*['\"]?(.-)['\"]?%s*\n") or yaml_block:match("^map%-color:%s*['\"]?(.-)['\"]?%s*\n")
+        -- Read the YAML block line by line to avoid missing the last line
+        for line in yaml_block:gmatch("[^\r\n]+") do
+            if line:match("^title:") then
+                meta.title = line:match("^title:%s*['\"]?(.-)['\"]?%s*$")
+            elseif line:match("^mindmap%-shape:") then
+                meta.shape = line:match("shape:%s*['\"]?(.-)['\"]?%s*$")
+            elseif line:match("^mindmap%-color:") then
+                meta.color = line:match("color:%s*['\"]?(.-)['\"]?%s*$")
+            end
+        end
     end
     return meta, content
 end
@@ -80,7 +88,10 @@ local function generate_graph_html(nodes_db, edges_db)
     local graph_id = "graph_" .. tostring(math.random(100000, 999999))
     
     local html_code = [[
-  <div id="]] .. graph_id .. [[" style="width: 100%; height: 600px; border: 1px solid #ddd; background: #ffffff; border-radius: 8px; overflow: hidden; position: relative; margin-bottom: 1.5em;"></div>
+  <div id="wrapper_]] .. graph_id .. [[" style="position: relative; width: 100%; height: 600px; border: 1px solid #ddd; background: #ffffff; border-radius: 8px; overflow: hidden; margin-bottom: 1.5em;">
+      <div id="]] .. graph_id .. [[" style="width: 100%; height: 100%;"></div>
+      <button id="btn_]] .. graph_id .. [[" title="Toggle Fullscreen" style="position: absolute; bottom: 15px; right: 15px; z-index: 1000; width: 36px; height: 36px; padding: 0; background: rgba(255, 255, 255, 0.9); border: 1px solid #ccc; border-radius: 6px; cursor: pointer; font-size: 20px; color: #333; box-shadow: 0 2px 5px rgba(0,0,0,0.2); display: flex; align-items: center; justify-content: center; transition: background 0.2s; line-height: 1;">⛶</button>
+  </div>
   
   <script src="https://unpkg.com/force-graph"></script>
   <script>
@@ -92,8 +103,29 @@ local function generate_graph_html(nodes_db, edges_db)
         links: [ ]] .. table.concat(links_js_arr, ",\n          ") .. [[ ]
       };
   
+      const wrapper = document.getElementById('wrapper_]] .. graph_id .. [[');
       const container = document.getElementById(']] .. graph_id .. [[');
-      if (!container) return;
+      const fsBtn = document.getElementById('btn_]] .. graph_id .. [[');
+      if (!wrapper || !container || !fsBtn) return;
+  
+      // Fullscreen Toggle Logic now targets the WRAPPER
+      fsBtn.addEventListener('click', () => {
+          if (!document.fullscreenElement) {
+              wrapper.requestFullscreen().catch(err => console.log(err));
+          } else {
+              document.exitFullscreen();
+          }
+      });
+      
+      document.addEventListener('fullscreenchange', () => {
+          if (document.fullscreenElement === wrapper) {
+              fsBtn.innerHTML = '✖'; // Just an X when in fullscreen
+              wrapper.style.borderRadius = '0px';
+          } else {
+              fsBtn.innerHTML = '⛶'; // Back to square when minimized
+              wrapper.style.borderRadius = '8px';
+          }
+      });
   
       function getContrastColor(hexColor) {
           if (!hexColor) return '#000000';
@@ -135,7 +167,7 @@ local function generate_graph_html(nodes_db, edges_db)
         .linkDirectionalParticles(2)
         .linkColor(() => '#cccccc')
         .nodeCanvasObject((node, ctx, globalScale) => {
-          const fontSize = 14 / globalScale;
+          const fontSize = 10 / globalScale;
           ctx.font = `bold ${fontSize}px Sans-Serif`;
           
           const label = node.id;
@@ -150,7 +182,7 @@ local function generate_graph_html(nodes_db, edges_db)
   
           const lineHeight = fontSize * 1.2;
           const textWidth = Math.max(...lines.map(l => ctx.measureText(l).width));
-          const padding = fontSize * 1.5;
+          const padding = fontSize * 1.0;
           const boxW = textWidth + padding;
           const boxH = lines.length * lineHeight + padding;
           
@@ -170,8 +202,12 @@ local function generate_graph_html(nodes_db, edges_db)
         })
         .onNodeClick(node => { if(node.url) window.location.href = node.url; })
         .onNodeHover(node => container.style.cursor = node && node.url ? 'pointer' : null);
+        
+        Graph.d3Force('charge').strength(-600);
+        Graph.d3Force('link').distance(150);
   
-        new ResizeObserver(() => { Graph.width(container.offsetWidth); Graph.height(container.offsetHeight); }).observe(container);
+        // ResizeObserver now watches the WRAPPER to rescale the graph
+        new ResizeObserver(() => { Graph.width(wrapper.offsetWidth); Graph.height(wrapper.offsetHeight); }).observe(wrapper);
     })();
   </script>
     ]]
@@ -248,22 +284,29 @@ local function process_auto_folder(folder_path)
         local meta, content = parse_file_metadata(filepath)
         if content then
             local filename = filepath:match("([^/]+)$")
-            local node_id = meta.title or filename
             
-            local rel_path = filepath
-            if project_root ~= "." then
-                local safe_root = project_root:gsub("([%-%.%+%[%]%(%)%$%^%%%?%*])", "%%%1")
-                rel_path = filepath:gsub("^" .. safe_root .. "/?", "")
-            else
-                rel_path = filepath:gsub("^%./", "")
+            -- Use filename as fallback
+            -- local node_id = meta.title or filename
+            
+            -- Only process files that have a title
+            local node_id = meta.title
+            
+            if node_id and node_id ~= "" then
+                local rel_path = filepath
+                if project_root ~= "." then
+                    local safe_root = project_root:gsub("([%-%.%+%[%]%(%)%$%^%%%?%*])", "%%%1")
+                    rel_path = filepath:gsub("^" .. safe_root .. "/?", "")
+                else
+                    rel_path = filepath:gsub("^%./", "")
+                end
+                local url = rel_path:gsub("%.qmd$", ".html")
+                
+                register_node(node_id, { url = url, shape = meta.shape, color = meta.color })
+                
+                local base_filename = filename:gsub("%.qmd$", "")
+                file_to_id[base_filename] = node_id
+                table.insert(scanned_files, { id = node_id, content = content })
             end
-            local url = rel_path:gsub("%.qmd$", ".html")
-            
-            register_node(node_id, { url = url, shape = meta.shape, color = meta.color })
-            
-            local base_filename = filename:gsub("%.qmd$", "")
-            file_to_id[base_filename] = node_id
-            table.insert(scanned_files, { id = node_id, content = content })
         end
     end
 
